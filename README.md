@@ -18,9 +18,9 @@ Now, we can activate our virtual environment like so:
 
     . venv/bin/activate
 
-Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install flask:
+Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install the required libraries:
 
-    pip install flask
+    pip install flask sqlalchemy pyglet scikit-learn
 
 ## Getting Started (Windows)
 
@@ -40,9 +40,9 @@ Now, we can activate our virtual environment like so:
 
     venv\Scripts\activate
 
-Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not for the entire system. Type this to install flask:
+Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not for the entire system. Type this to install the required libraries:
 
-    pip install flask
+    pip install flask sqlalchemy scikit-learn
 
 ## Running the Project
 

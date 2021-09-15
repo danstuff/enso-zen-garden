@@ -2,11 +2,29 @@
 <html lang="en">
     <head>
         <title>Zen Garden</title>
+
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+
+                background-color: #6600cc;
+            }
+
+            canvas {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
     </head>
     <body>
-        {% block content %}{% endblock %}
+        <canvas id="main-canvas"></canvas>
 
         <script type="text/javascript" 
-            src="js/vendor/jquery-3.6.0.min.js"></script>
+            src="static/js/vendor/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" 
+            src="static/js/vendor/babylon.js"></script>
+        <script type="text/javascript" 
+                src="static/js/{{ scene }}.js"></script>
     </body>
 </html>
