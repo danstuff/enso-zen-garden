@@ -60,12 +60,12 @@ Now you can start the server:
 
 On Linux/macOS:
 
-    export FLASK_APP=server
+    export FLASK_APP=serverManager
     flask run
 
 On Windows:
 
-    set FLASK_APP=server
+    set FLASK_APP=serverManager
     flask run
 
 Flask should respond with an IP address that you can enter into your browser to view the app.
