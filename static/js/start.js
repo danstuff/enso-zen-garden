@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function(e) {
     var pathArray = window.location.pathname.split("/");
     
     //-1 indicates that there is no session ID.
@@ -11,6 +11,6 @@ $(document).ready(function() {
         sid = pathArray[2];
     }
 
-    var gmanager = GameManager("main_canvas", sid);
+    var gmanager = new GameManager("main_canvas", sid);
     gmanager.init();
 });
