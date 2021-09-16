@@ -11,6 +11,6 @@ $(document).ready(function() {
         sid = pathArray[2];
     }
 
-    var gmanager = GameManager("main_canvas", sid);
-    gmanager.init();
+    var gmanager = GameManager();
+    gmanager.init("main_canvas", sid);
 });
