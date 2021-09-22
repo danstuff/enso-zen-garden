@@ -12,7 +12,7 @@ class Session {
     }
 
     getGarden(callbackFun) {
-        //TODO
+        $.get("/garden/data/"+gid, callbackFun); 
     }
 
     getDialogue(callbackFun) {

@@ -15,6 +15,10 @@ class GameManager {
     }
 
     init() {
+        //babylon setup: create a scene, camera, and sun
+        const scene = new BABYLON.Scene(
+
+
         //connect and fetch the meshList, garden,
         //and first dialogue from the server
         this.session.connect(function() {

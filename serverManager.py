@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 class ServerManager:
     def __init__(self):
-        self.aiMan = AiManager()
-        self.dbMan = DatabaseManager()
+        self.aiMan = AiManager();
+        self.dbMan = DatabaseManager();
 
 serverMan = ServerManager()
 
@@ -26,16 +26,16 @@ def mainRoute(gardenID=None):
 @app.route("/garden/data/<gardenID>", methods=['GET', 'PUT'])
 def gardenDataRoute(gardenID=None):
     if request.method == 'GET':
-        return serverMan.dbMan.getGarden(gardenID)
+        return serverMan.dbMan.getGarden(gardenID);
     if request.method == 'PUT':
-        serverMan.dbMan.putGarden(gardenID, request.get_json())
+        serverMan.dbMan.putGarden(gardenID, request.get_json());
 
 #GET for reading mesh data from the server
-@app.route("/mesh/data/", methods=['GET'])
-def meshDataRoute():
-    return serverMan.dbMan.getMeshList()
+@app.route("/static/data/", methods=['GET'])
+def staticDataRoute():
+    return serverMan.dbMan.getStaticData();
 
 #GET for reading dialogue data from the server
 @app.route("/dialogue/data/", methods=['GET'])
 def dialogueDataRoute():
-    return serverMan.dbMan.getDialogue(request.get_json())
+    return serverMan.dbMan.getDialogue(request.get_json());
