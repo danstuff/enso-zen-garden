@@ -1,6 +1,6 @@
 class Session {
-    constructor(sid) {
-        this.sid = sid;
+    constructor(gid) {
+        this.gid = gid;
     }
 
     connect(callbackFun) {

@@ -3,8 +3,8 @@ const DRAW_MS = 16;     //1000/16 = 60 draw cycles per second (60 FPS)
 const PUT_MS = 10000;  //save the garden to the server every 10s
 
 class GameManager {
-    constructor(canvas_id, sid) {
-        this.session = new Session(sid);
+    constructor(canvas_id, gid) {
+        this.session = new Session(gid);
         this.canvas = document.getElementById(canvas_id);
 
         this.garden = null;

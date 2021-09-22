@@ -3,21 +3,21 @@ class DatabaseManager:
         # TODO
         pass
 
-    def getGarden(self, sid):
+    def getGarden(self, gid):
         # if the garden ID is null, default to -1 (title screen)
         if gid == None: gid = -1
 
         # TODO
         pass
 
-    def putGarden(self, sid): 
+    def putGarden(self, gid, garden): 
         # prevent modification if on title screen or gid = None
         if gid == -1 or gid == None: return
 
         # TODO
         pass
 
-    def getMeshList(self):
+    def getStaticData(self):
         # TODO
         pass
 

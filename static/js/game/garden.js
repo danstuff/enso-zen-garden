@@ -1,14 +1,13 @@
-class Vec3 {
-    constructor(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+class Mesh {
+    constructor(vertices, color) {
+        this.vertices = vertices;
+        this.color = color;
     }
 }
 
 class MeshRef {
-    constructor(id, pos, time) {
-        this.id = id;
+    constructor(mesh_id, pos, time) {
+        this.mesh_id = mesh_id;
         this.pos = pos;
         this.time = time;
     }
