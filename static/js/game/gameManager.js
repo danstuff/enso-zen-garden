@@ -1,5 +1,4 @@
 const UPDATE_MS = 100;  //10 updates per second
-const DRAW_MS = 16;     //1000/16 = 60 draw cycles per second (60 FPS)
 const PUT_MS = 10000;  //save the garden to the server every 10s
 
 class GameManager {
@@ -10,14 +9,15 @@ class GameManager {
         this.garden = null;
         this.dialogue = null;
 
-        this.meshList = null;
-        this.entityTypeList = null;
+        this.staticData = {};
+
+        this.babInterface = new BabylonInterface(this.canvas);
     }
 
     init() {
         //babylon setup: create a scene, camera, and sun
-        const scene = new BABYLON.Scene(
-
+        this.babScene = this.babInterface.createScene(this.canvas);
+        this.babInterface.startRendering();
 
         //connect and fetch the meshList, garden,
         //and first dialogue from the server
@@ -37,7 +37,6 @@ class GameManager {
 
             //after you're connected, update, save, and draw every X ms
             setInterval(this.update, UPDATE_MS);
-            setInterval(this.draw, DRAW_MS);
             setInterval(this.put, PUT_MS);
         });
     }
@@ -55,22 +54,6 @@ class GameManager {
             if(this.dialogue.time <= 0) {
                 this.dialogue = null;
             }
-        }
-    }
-
-    draw() {
-        //canvas must exist in order to draw
-        if(canvas == null) { return; }
-
-        //only draw if dialogue/garden are non-null
-        if(this.garden != null && this.meshList != null) {
-            this.garden.draw(this.canvas, 
-                this.entityTypeList,
-                this.meshList);
-        }
-
-        if(this.dialogue != null) {
-            this.dialogue.draw(this.canvas);
         }
     }
 
