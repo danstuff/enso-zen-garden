@@ -8,7 +8,7 @@ class Session {
     }
 
     getStaticData(callbackFun) {
-        //TODO
+        $.get("/static/data/"+gid, callbackFun);
     }
 
     getGarden(callbackFun) {
@@ -16,7 +16,7 @@ class Session {
     }
 
     getDialogue(callbackFun) {
-        //TODO
+        $.get("/dialogue/data/"+gid, callbackFun);
     }
 
     putGarden(g) {
