@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+from sqlalchemy_serializer import SerializerMixin
+
 #import pymysql
 
 
@@ -24,7 +26,7 @@ class Garden(db.Model):
 class Mesh(db.Model):
     __tablename__ = "mesh"
     id = db.Column(db.Integer, primary_key=True) # primary key
-    vertices = db.Column(db.integer(50), nullable=False) # vertices can not be null
+    vertices = db.Column(db.Integer, nullable=False) # vertices can not be null
     colors = db.Column(db.String(50), nullable=False) # color can not be null
     object = db.relationship("Object", backref="mesh")
 
@@ -35,7 +37,7 @@ class Dialogue(db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary key
     text = db.Column(db.String(100), nullable=False)
     options = db.Column(db.String(10), nullable=False)
-    font_size = db.Column(db.Integer(10), nullable=False)
+    font_size = db.Column(db.Integer, nullable=False)
     time = db.Column(db.String(6), nullable=False)
     weather_type = db.Column(db.String(10), nullable=False)
     day_time = db.Column(db.String(6), nullable=False)
@@ -45,10 +47,10 @@ class Dialogue(db.Model):
 class Object(db.Model):
     __tablename__ = "object"
     id = db.Column(db.Integer, primary_key=True) # primary key
-    pos = db.Column(db.Integer(100), nullable=False)
-    mesh_pos = db.Column(db.Integer(100), nullable=False)
-    garden_id = db.Column(db.Integer(100), db.ForeignKey("garden.id"))
-    mesh_id = db.Column(db.Integer(100), db.ForeignKey("mesh.id"))
+    pos = db.Column(db.Integer, nullable=False)
+    mesh_pos = db.Column(db.Integer, nullable=False)
+    garden_id = db.Column(db.Integer, db.ForeignKey("garden.id"))
+    mesh_id = db.Column(db.Integer, db.ForeignKey("mesh.id"))
 
 
 if __name__ == '__main__' :
