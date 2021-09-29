@@ -3,9 +3,9 @@ class Session {
         this.gid = gid;
     }
 
-    connect(callbackFun) {
-        //TODO
-    }
+    //connect(callbackFun) {
+        //TODO, remove entirely?
+    //}
 
     getStaticData(callbackFun) {
         $.get("/static/data/"+gid, callbackFun);
