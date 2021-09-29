@@ -24,6 +24,6 @@ class Session {
     }
 
     postDialogueResponse(r) {
-        //TODO
+        $.post("/dialogue/data/"+gid, r);
     }
 }
