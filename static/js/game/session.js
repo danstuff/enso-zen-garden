@@ -20,7 +20,7 @@ class Session {
     }
 
     putGarden(g) {
-        //TODO
+        $.put("/garden/data/"+gid, g);//Dan review this please
     }
 
     postDialogueResponse(r) {
