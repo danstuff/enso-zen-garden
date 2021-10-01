@@ -1,12 +1,12 @@
 import json
-from zengarden_database import db, Garden, Mesh, Dialogue, Object
+from zengarden_database import db, Mesh, Dialogue, Entities
 
-gar = {
-    'Water level': water_level,
+#gar = {
+    #'Water level': water_level,
 
-}
-jsonified_data = json.dumps(data1)
-json.loads(jsonified_data)
+#}
+#jsonified_data = json.dumps(data1)
+#json.loads(jsonified_data)
 
 #-------------------------------------------
 mes = {
@@ -33,12 +33,12 @@ json.loads(jsonified_data)
 
 #-------------------------------------------
 
-obj = {
+ent = {
     'Position' : pos,
     'Mesh position' : mesh_ops,
-    'Garden id' : garden_id,
+    #'Garden id' : garden_id,
     'Mesh id' : mesh_id
 
 }
-jsonified_data = json.dumps(obj)
+jsonified_data = json.dumps(ent)
 json.loads(jsonified_data)
