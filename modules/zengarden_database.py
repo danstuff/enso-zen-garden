@@ -7,7 +7,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + "database address"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + "first.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "12345"
 
@@ -15,11 +15,11 @@ db = SQLAlchemy(app)
 
 
 # table for Garden
-class Garden(db.Model):
-    __tablename__ = "garden"
-    id = db.Column(db.Integer, primary_key=True) # primary key
-    water_level = db.Column(db.String(10), nullable=False) # water level can not be null
-    object = db.relationship("Object", backref="garden")
+#class Garden(db.Model):
+    #__tablename__ = "garden"
+    #id = db.Column(db.Integer, primary_key=True) # primary key
+    #water_level = db.Column(db.String(10), nullable=False) # water level can not be null
+    #Entities = db.relationship("Entities", backref="garden")
 
 
 # table for Mesh
@@ -28,7 +28,7 @@ class Mesh(db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary key
     vertices = db.Column(db.Integer, nullable=False) # vertices can not be null
     colors = db.Column(db.String(50), nullable=False) # color can not be null
-    object = db.relationship("Object", backref="mesh")
+    Entities = db.relationship("Entities", backref="mesh")
 
 
 # table for Dialogue
@@ -44,12 +44,12 @@ class Dialogue(db.Model):
 
 
 # table for Object
-class Object(db.Model):
-    __tablename__ = "object"
+class Entities(db.Model):
+    __tablename__ = "Entities"
     id = db.Column(db.Integer, primary_key=True) # primary key
     pos = db.Column(db.Integer, nullable=False)
     mesh_pos = db.Column(db.Integer, nullable=False)
-    garden_id = db.Column(db.Integer, db.ForeignKey("garden.id"))
+    #garden_id = db.Column(db.Integer, db.ForeignKey("garden.id"))
     mesh_id = db.Column(db.Integer, db.ForeignKey("mesh.id"))
 
 
