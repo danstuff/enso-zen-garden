@@ -1,19 +1,19 @@
-from zengarden_database import db, Garden
+#from zengarden_database import db, Garden
 
 
 # Add -------------------------------------------------------------
-g = Garden(water_level="water level")
+#g = Garden(water_level="water level")
 
-db.session.add(g)
-db.session.commit()
+#db.session.add(g)
+#db.session.commit()
 # add all
 # db.session.add_all()
 # db.session.commit()
 
 # Check ------------------------------------------------------------
 # get
-gar = Garden.query.get()
-print(gar.water_level)
+#gar = Garden.query.get()
+#print(gar.water_level)
 
 # check all
 # gar = Garden.query.all()
@@ -31,13 +31,13 @@ print(gar.water_level)
 
 # Change -----------------------------------------------------------
 
-gar = Garden.query.filter(Garden.water_level == "").update({"": ""})
-print(gar) # numbers changed
-db.session.commit()
+#gar = Garden.query.filter(Garden.water_level == "").update({"": ""})
+#print(gar) # numbers changed
+#db.session.commit()
 
 
 # Delete -----------------------------------------------------------
 
-gar = Garden.query.filter(Garden.water_level == "").delete()
+#gar = Garden.query.filter(Garden.water_level == "").delete()
 
-db.session.commit()
+#db.session.commit()
