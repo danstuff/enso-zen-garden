@@ -1,20 +1,33 @@
-from zengarden_database import db, Object
+from zengarden_database import db, Entities
 
 
 # Add -------------------------------------------------------------
-ob = Object(pos="", mesh_pos="")
+def main_add1():
+    print('import data')
+    result = []
+    with open('json address', encoding='utf-8') as f:
+        result.append(json.load(f))
+        if result != None:
+            for r in result:
+                for i in r:
+                    try:
+                        ob = Entities(pos=i['position'], mesh_pos=i['mesh position'])
+                        db.session.add(ob)
+                    except:
+                        db.session.delete(ob)
+                db.session.commit()
 
+                #return render_template('success', content='import success')
+            #return ''
 
-db.session.add(ob)
-db.session.commit()
 # add all
 # db.session.add_all()
 # db.session.commit()
 
 # Check ------------------------------------------------------------
 # get
-obj = Object.query.get()
-print(obj.pos)
+#obj = Object.query.get()
+#print(obj.pos)
 
 # check all
 # obj = Object.query.all()
@@ -32,13 +45,13 @@ print(obj.pos)
 
 # Change -----------------------------------------------------------
 
-obj = Object.query.filter(Object.pos == "").update({"": ""})
-print(obj) # numbers changed
-db.session.commit()
+#obj = Object.query.filter(Object.pos == "").update({"": ""})
+#print(obj) # numbers changed
+#db.session.commit()
 
 
 # Delete -----------------------------------------------------------
 
-obj = Object.query.filter(Object.pos == "").delete()
+#obj = Object.query.filter(Object.pos == "").delete()
 
-db.session.commit()
+#db.session.commit()
