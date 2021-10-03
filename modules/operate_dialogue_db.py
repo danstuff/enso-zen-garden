@@ -2,19 +2,34 @@ from zengarden_database import db, Dialogue
 
 
 # Add -------------------------------------------------------------
-d = Dialogue(text="", options="", font_size="", time="", weather_type="", day_time="")
+def main_add2():
+    print('import data')
+    result = []
+    with open('json address', encoding='utf-8') as f:
+        result.append(json.load(f))
+        if result != None:
+            for r in result:
+                for i in r:
+                    try:
+                        di = Dialogue(text=i['text'], options=i['options'],
+                                      font_size=i['font size'], time=i['time'],
+                                      weather_type=i['weather type'],
+                                      day_time=i['day time'])
+                        db.session.add(di)
+                    except:
+                        db.session.delete(di)
+                db.session.commit()
 
-
-db.session.add(d)
-db.session.commit()
+                #return render_template('success', content='import success')
+            #return ''
 # add all
 # db.session.add_all()
 # db.session.commit()
 
 # Check ------------------------------------------------------------
 # get
-dia = Dialogue.query.get()
-print(dia.text)
+#dia = Dialogue.query.get()
+#print(dia.text)
 
 # check all
 # dia = Dialogue.query.all()
@@ -32,13 +47,13 @@ print(dia.text)
 
 # Change -----------------------------------------------------------
 
-dia = Dialogue.query.filter(Dialogue.text == "").update({"": ""})
-print(dia) # numbers changed
-db.session.commit()
+#dia = Dialogue.query.filter(Dialogue.text == "").update({"": ""})
+#print(dia) # numbers changed
+#db.session.commit()
 
 
 # Delete -----------------------------------------------------------
 
-dia = Dialogue.query.filter(Dialogue.text == "").delete()
+#dia = Dialogue.query.filter(Dialogue.text == "").delete()
 
-db.session.commit()
+#db.session.commit()
