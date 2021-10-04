@@ -3,12 +3,12 @@ class Session {
         this.gid = gid;
     }
 
-    connect(callbackFun) {
-        //TODO
-    }
+    //connect(callbackFun) {
+        //TODO, remove entirely?
+    //}
 
     getStaticData(callbackFun) {
-        //TODO
+        $.get("/static/data/"+gid, callbackFun);
     }
 
     getGarden(callbackFun) {
@@ -16,14 +16,14 @@ class Session {
     }
 
     getDialogue(callbackFun) {
-        //TODO
+        $.get("/dialogue/data/"+gid, callbackFun);
     }
 
     putGarden(g) {
-        //TODO
+        $.put("/garden/data/"+gid, g);//Dan review this please
     }
 
     postDialogueResponse(r) {
-        //TODO
+        $.post("/dialogue/data/"+gid, r);
     }
 }
