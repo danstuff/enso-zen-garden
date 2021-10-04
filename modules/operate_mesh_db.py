@@ -26,7 +26,13 @@ def main_add3():
 # Check ------------------------------------------------------------
 # get
 #mes = Mesh.query.get()
-#print(mes.vertices)
+me = Mesh.query.all()
+data =  {
+    'vertices': Mesh.vertices,
+    'colors': Mesh.colors
+}
+jsonified_data = json.dumps(data)
+
 
 # check all
 # mes = Mesh.query.all()
