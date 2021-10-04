@@ -1,8 +1,8 @@
 class BabylonInterface {
     constructor(canvas) {
-        this.engine = new BABYLON.Engine(canvas, true);
+        const engine = new BABYLON.Engine(canvas, true);
 
-        var engine = this.engine;
+        this.engine = engine;
         window.addEventListener("resize", function() {
             engine.resize();
         });
@@ -19,8 +19,7 @@ class BabylonInterface {
             new BABYLON.Vector3.Zero());    // camera point to look at
 
         this.camera.lowerRadiusLimit = 5;
-        this.camera.upperRadiusLimit = 50;
-        this.camera.lockedTarget = new BABYLON.Vector3.Zero();
+        this.camera.upperRadiusLimit = 100;
 
         this.camera.wheelPrecision = 20;
 

@@ -27,10 +27,6 @@ class GameManager {
                 this.entityTypeList = e;
             });
 
-            this.session.getGarden(function(g) {
-                this.garden = g;
-            });
-
             this.session.getDialogue(function(d) {
                 this.dialogue = d;
             });            
