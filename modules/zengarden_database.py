@@ -7,7 +7,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + "first.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + "zengarden.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "12345"
 
