@@ -1,6 +1,6 @@
 const UPDATE_MS = 100;  //10 updates per second
 
-class GameManager {
+class Game {
     constructor(canvas_id) {
         this.session = new Session();
         this.canvas = document.getElementById(canvas_id);
