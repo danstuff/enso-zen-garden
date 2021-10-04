@@ -1,12 +1,11 @@
 const UPDATE_MS = 100;  //10 updates per second
-const PUT_MS = 10000;  //save the garden to the server every 10s
 
 class GameManager {
-    constructor(canvas_id, gid) {
-        this.session = new Session(gid);
+    constructor(canvas_id) {
+        this.session = new Session();
         this.canvas = document.getElementById(canvas_id);
 
-        this.garden = null;
+        this.garden = new Garden();
         this.dialogue = null;
 
         this.staticData = {};
@@ -21,20 +20,15 @@ class GameManager {
 
         //connect and fetch the meshList, garden,
         //and first dialogue from the server
-        this.session.connect(function() {
-            this.session.getStaticData(function(m, e) {
-                this.meshList = m;
-                this.entityTypeList = e;
-            });
-
-            this.session.getDialogue(function(d) {
-                this.dialogue = d;
-            });            
-
-            //after you're connected, update, save, and draw every X ms
-            setInterval(this.update, UPDATE_MS);
-            setInterval(this.put, PUT_MS);
+        this.session.getStaticData(function(s) {
+            this.staticData = s;
         });
+
+        this.session.getDialogue(function(d) {
+            this.dialogue = d;
+        });            
+
+        setInterval(this.update, UPDATE_MS);
     }
 
     update() {
@@ -50,13 +44,6 @@ class GameManager {
             if(this.dialogue.time <= 0) {
                 this.dialogue = null;
             }
-        }
-    }
-
-    put() {
-        //if a garden exists, save it to the server
-        if(this.garden != null) {
-            this.session.putGarden(this.garden);
         }
     }
 }
