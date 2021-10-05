@@ -4,20 +4,20 @@ from zengarden_database import db, Entities
 
 
 # Add -------------------------------------------------------------
-#def main_add1():
-    #print('import data')
-    #result = []
-    #with open('json address', encoding='utf-8') as f:
-        #result.append(json.load(f))
-       # if result != None:
-            #for r in result:
-                #for i in r:
-                   # try:
-                        #ob = Entities(pos=i['position'], mesh_pos=i['mesh position'])
-                        #db.session.add(ob)
-                    #except:
-                       # db.session.delete(ob)
-                #db.session.commit()
+def main_add1():
+    print('import data')
+    result = []
+    with open('json address', encoding='utf-8') as f:
+        result.append(json.load(f))
+        if result != None:
+            for r in result:
+                for i in r:
+                    try:
+                        ob = Entities(pos=i['position'], mesh_pos=i['mesh position'])
+                        db.session.add(ob)
+                    except:
+                        db.session.delete(ob)
+                db.session.commit()
 
                # return render_template('success', content='import success')
          #   return ''
@@ -30,12 +30,12 @@ from zengarden_database import db, Entities
 # get
 
 # check all
-en = Entities.query.all()
-data =  {
-    'position': Entities.pos,
-    'mesh position': Entities.mesh_pos
-}
-jsonified_data = json.dumps(data)
+#en = Entities.query.all()
+#data =  {
+    #'position': Entities.pos,
+    #'mesh position': Entities.mesh_pos
+#}
+#jsonified_data = json.dumps(data)
 
 # filter()
 # obj = Object.query.filter(Object. <>==)
