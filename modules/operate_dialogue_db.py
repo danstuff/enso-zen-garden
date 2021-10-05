@@ -29,16 +29,16 @@ def main_add2():
 # Check ------------------------------------------------------------
 # get
 #dia = Dialogue.query.get()
-di = Dialogue.query.all()
-data =  {
-    'text': Dialogue.text,
-    'options': Dialogue.options,
-    'font size': Dialogue.font_size,
-    'time': Dialogue.time,
-    'weather type': Dialogue.weather_type,
-    'day time': Dialogue.day_time
-}
-jsonified_data = json.dumps(data)
+#di = Dialogue.query.all()
+#data =  {
+    #'text': Dialogue.text,
+    #'options': Dialogue.options,
+    #'font size': Dialogue.font_size,
+    #'time': Dialogue.time,
+    #'weather type': Dialogue.weather_type,
+    #'day time': Dialogue.day_time
+#}
+#jsonified_data = json.dumps(data)
 
 # check all
 # dia = Dialogue.query.all()
