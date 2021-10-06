@@ -33,18 +33,20 @@ class Game {
             //apply weather condition to particle system
             game.particle.setCondition(data.weather[0].description);
 
-            //ask server for dialogue forever
-            game.dialogue.get(
+            //generate a weather condition string
+            var condition_str = 
                 data.weather[0].description.replace(" ", "_") +
-                data.wind.speed);       
+                data.wind.speed;
+
+            //ask server for dialogue based on condition string
+            game.dialogue.get(condition_str);
         }, this);
 
 
         setInterval(function(game) {
             game.garden.update(UPDATE_MS);
-            game.dialogue.update(UPDATE_MS);
-
             game.audio.tweenStrength();
+
         }, UPDATE_MS, this);
     }
 }

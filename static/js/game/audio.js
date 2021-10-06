@@ -29,13 +29,12 @@ class Audio {
     }
 
     playNoise() {
-        // https://noisehack.com/generate-noise-web-audio-api/
+        //this is a slightly modified version of:
+        //https://noisehack.com/generate-noise-web-audio-api/
         var bufferSize = 4096;
         var brownNoise = (function() {
             var lastOut = 0.0;
-
             var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
-
             node.onaudioprocess = function(e) {
                 var output = e.outputBuffer.getChannelData(0);
                 for (var i = 0; i < bufferSize; i++) {

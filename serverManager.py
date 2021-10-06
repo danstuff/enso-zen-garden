@@ -25,7 +25,8 @@ def entityGetRoute(entityName=None):
 #GET for reading dialogue data from the server
 @app.route("/dialogue/get/<eventString>", methods=['GET'])
 def dialogueGetRoute(eventString=None):
-    return dbMan.getDialogueJSON(eventString)
+    #return dbMan.getDialogueString(eventString)
+    return "Hello world!"
 
 #GET for reading secure data from the server
 @app.route("/secure/get/", methods=['GET'])

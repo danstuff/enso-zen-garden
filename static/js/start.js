@@ -1,6 +1,8 @@
-$(document).ready(function() {
-    $("#main_canvas").fadeIn();
+const CANVAS_ID = "main_canvas";
 
-    var game = new Game("main_canvas");
+$(document).ready(function() {
+    $("#"+CANVAS_ID).fadeIn();
+
+    var game = new Game(CANVAS_ID);
     game.init();
 });

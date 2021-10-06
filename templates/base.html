@@ -26,10 +26,20 @@
                 overflow: unset;
                 display: none;
             }
+
+            #main_dialogue {
+                z-index: 100;
+                position: absolute;
+                top: 0px;
+                left: 20px;
+                display: none;
+            }
         </style>
     </head>
     <body>
         <canvas id="main_canvas"></canvas>
+
+        <p id="main_dialogue"></p>
 
         <script type="text/javascript" 
                 src="{{ jsdir }}/vendor/babylon.js"></script>

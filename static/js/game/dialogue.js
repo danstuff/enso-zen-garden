@@ -1,26 +1,21 @@
+const DIALOGUE_ALIVE_TIME = 60000; // 1 minute
+const DIALOGUE_ID = "main_dialogue";
+
 class Dialogue {
     constructor() {
-        this.html = "";
-        this.font_size = 10;
-        this.time = 60000 //1 minute
+        $("#"+DIALOGUE_ID).fadeIn();
     }
 
     get(env_str) {
+        //fetch dialogue from the server
         $.get("/dialogue/get/"+env_str)
             .done(function(data) {
-                this.html = data.html;
-                this.font_size = data.font_size;
-                this.time = data.time;
 
-                //get(env_str);
+                //fade the dialogue out, replace it, and fade in
+                $("#"+DIALOGUE_ID).fadeOut(function() {
+                    $("#"+DIALOGUE_ID).html(data);
+                    $("#"+DIALOGUE_ID).fadeIn();
+                }); 
             });
-    }
-    
-    update(update_ms) {
-        this.time -= update_ms;
-    }
-
-    draw(canvas) {
-        //TODO
     }
 }
