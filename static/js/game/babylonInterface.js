@@ -13,13 +13,16 @@ class BabylonInterface {
         
         this.camera = new BABYLON.ArcRotateCamera(
             "camera", 
-            -Math.PI/2,                     // maximum horizontal rotation
-            Math.PI/2.5,                    // maximum vertical rotation
+            -Math.PI/2,                     // starting horizontal rotation
+            Math.PI/2.5,                    // starting vertical rotation
             8,                              // radius
             new BABYLON.Vector3.Zero());    // camera point to look at
 
         this.camera.lowerRadiusLimit = 6;
         this.camera.upperRadiusLimit = 100;
+
+        this.camera.lowerBetaLimit = 0.5;
+        this.camera.upperBetaLimit = 1.4;
 
         this.camera.panningDistanceLimit = 6;
         this.camera.panningAxis = new BABYLON.Vector3(1, 0, 1);

@@ -1,4 +1,3 @@
-const DIALOGUE_ALIVE_TIME = 60000; // 1 minute
 const DIALOGUE_ID = "main_dialogue";
 
 class Dialogue {
