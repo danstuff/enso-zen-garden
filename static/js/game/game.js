@@ -24,22 +24,17 @@ class Game {
         this.audio.playNoise();
 
         //get environmental data from various APIs
-        this.environment.connect(function(data, game) {
+        this.environment.get(function(data, game) {
 
             //apply wind speed to noise and particle system
             game.audio.setWindSpeed(data.wind.speed);
             game.particle.setWindSpeed(data.wind.speed);
 
             //apply weather condition to particle system
-            game.particle.setCondition(data.weather[0].description);
-
-            //generate a weather condition string
-            var condition_str = 
-                data.weather[0].description.replace(" ", "_") +
-                data.wind.speed;
+            game.particle.setCondition(data);
 
             //ask server for dialogue based on condition string
-            game.dialogue.get(condition_str);
+            game.dialogue.request(data);
         }, this);
 
 

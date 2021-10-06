@@ -6,14 +6,14 @@ class Dialogue {
         $("#"+DIALOGUE_ID).fadeIn();
     }
 
-    get(env_str) {
+    request(env_data) {
         //fetch dialogue from the server
-        $.get("/dialogue/get/"+env_str)
-            .done(function(data) {
+        $.post("/environment/post/", env_data)
+            .done(function(dialogue_str) {
 
                 //fade the dialogue out, replace it, and fade in
                 $("#"+DIALOGUE_ID).fadeOut(function() {
-                    $("#"+DIALOGUE_ID).html(data);
+                    $("#"+DIALOGUE_ID).html(dialogue_str);
                     $("#"+DIALOGUE_ID).fadeIn();
                 }); 
             });

@@ -1,7 +1,7 @@
 class Environment {
     constructor() {}
 
-    connect(callbackFun, game) {
+    get(callbackFun, game) {
         //start by fetching an approximate location
         $.getJSON("https://geolocation-db.com/json/")
             .done(function(location) {
@@ -15,10 +15,8 @@ class Environment {
                             "&appid=" + secure.openWeather)
                             .done(function(data) {
 
-                                console.log("Weather is " +
-                                    data.weather[0].description +
-                                    " with " + data.wind.speed +
-                                    " m/s wind.");
+                                console.log("Got weather data:");
+                                console.log(data);
 
                                 callbackFun(data, game);
                             });

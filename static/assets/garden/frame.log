@@ -9,19 +9,30 @@ Exporter version: 2.93.4, Blender version: 2.93.4
 		Vert Color Precision:  3
 		Mat Weight Precision:  2
 		Keep Z-up r-handed  :  no
-		Texture directory   :  /home/dan/Projects/Zen-Garden-Capping/assets/
+		Texture directory   :  /home/dan/Projects/Zen-Garden-Capping/static/assets/garden/
 	Python World class constructor completed
-	processing begun of mesh:  Cube
-		processing begun of material:  Material
-		num positions      :  121
-		num normals        :  121
+	WARNING: No active camera has been assigned, or is not in a currently enabled collection
+	processing begun of mesh:  frame
+		processing begun of material:  Material.002
+		num positions      :  63
+		num normals        :  63
 		num tangents       :  0
-		num uvs            :  242
+		num uvs            :  126
 		num uvs2           :  0
 		num colors         :  0
-		num triangles      :  66
+		num triangles      :  26
+	processing begun of mesh:  base
+		processing begun of material:  Material.003
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  8
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
 ========= Writing of JSON file started =========
-	writing mesh:  Cube
+	writing mesh:  frame
+	writing mesh:  base
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.0122 secs
+elapsed time:  0 min, 0.0214 secs

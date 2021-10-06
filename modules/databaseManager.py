@@ -3,11 +3,11 @@ class DatabaseManager:
         # TODO
         pass
 
-    def getEntity(self, entityName):
+    def getEntityJSON(self, entityName):
         # TODO
         pass
 
-    def getDialogue(self, eventString):
+    def getDialogueString(self, eventJSON):
         # TODO filter dialogues by the event data (time, weather, etc)
         # then pick from the filtered dialogues at random
         pass

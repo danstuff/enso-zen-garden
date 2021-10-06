@@ -20,12 +20,13 @@ def mainRoute():
 #GET for reading mesh data from the server
 @app.route("/entity/get/<entityName>", methods=['GET'])
 def entityGetRoute(entityName=None):
-    return dbMan.getEntityJSON(entityName)
+    #return dbMan.getEntityJSON(entityName)
+    return "Hello world!"
 
 #GET for reading dialogue data from the server
-@app.route("/dialogue/get/<eventString>", methods=['GET'])
-def dialogueGetRoute(eventString=None):
-    #return dbMan.getDialogueString(eventString)
+@app.route("/environment/post/", methods=['POST'])
+def dialogueGetRoute():
+    #return dbMan.getDialogueString(request.json())
     return "Hello world!"
 
 #GET for reading secure data from the server
