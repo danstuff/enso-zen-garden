@@ -18,14 +18,11 @@ class Game {
         this.babScene = this.babInterface.createScene(this.canvas);
         this.babInterface.startRendering();
 
-        //connect and fetch the meshList, garden,
-        //and first dialogue from the server
-        this.session.getStaticData(function(s) {
-            this.staticData = s;
-        });
+        
 
+        //get first dialogue from the server
         this.session.getDialogue(function(d) {
-            this.dialogue = d;
+            getDialogueRecursive(d);
         });            
 
         setInterval(this.update, UPDATE_MS);
@@ -45,5 +42,13 @@ class Game {
                 this.dialogue = null;
             }
         }
+    }
+
+    getDialogueRecursive(d) {
+        this.dialogue = d;
+
+        this.session.getDialogue(function(d) {
+            getDialogueRecursive(d);
+        });
     }
 }
