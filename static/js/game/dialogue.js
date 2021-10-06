@@ -5,9 +5,6 @@ class Dialogue {
         this.time = 60000 //1 minute
     }
 
-    set(data) {
-    }
-
     get(env_str) {
         $.get("/dialogue/get/"+env_str)
             .done(function(data) {

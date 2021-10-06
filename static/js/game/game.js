@@ -18,7 +18,10 @@ class Game {
     init() {
         //babylon setup: create a scene, camera, and sun
         this.babScene = this.babInterface.createScene(this.canvas);
-        this.babInterface.startRendering();
+        this.babInterface.startRendering(); 
+
+        //enable brownian noise (silent until wind speed is set)
+        this.audio.playNoise();
 
         //get environmental data from various APIs
         this.environment.connect(function(data, game) {
@@ -30,13 +33,6 @@ class Game {
             //apply weather condition to particle system
             game.particle.setCondition(data.weather[0].description);
 
-            //enable brownian noise
-            game.audio.playNoise();
-
-            setTimeout(function() {
-                game.audio.setWindSpeed(10);
-            }, 5000);
- 
             //ask server for dialogue forever
             game.dialogue.get(
                 data.weather[0].description.replace(" ", "_") +

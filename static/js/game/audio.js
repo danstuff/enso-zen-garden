@@ -1,11 +1,13 @@
-const AUDIO_FADE_IN_TIME = 100000;
-const AUDIO_GAIN = 0.03;
+const NOISE_GAIN = 0.03;    //how loud the noise is at maximum
+const NOISE_TWEEN = 0.01;   //how quickly noise strength transitions
+const NOISE_FLOOR = 0.5;    //minimum volume for noise
+const NOISE_CURVE = 1.05;   //closer to 1 = flatter curve
 
+//create an audio context
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = new AudioContext();
 
-var audio_time = 0;
-
+//define noise strength
 var noise_strength = 0;
 var noise_strength_target = 0;
 
@@ -15,17 +17,15 @@ class Audio {
 
     setWindSpeed(wind_speed) {
         // strength is a gently sloping negative power of wind speed
+        var exp = -(wind_speed + NOISE_FLOOR);
         noise_strength_target = 
-            (1 - Math.pow(1.05, -(wind_speed + 0.1))) * AUDIO_GAIN;
+            (1 - Math.pow(NOISE_CURVE, exp)) * NOISE_GAIN;
     }
 
     tweenStrength() {
-        if(Math.abs(noise_strength_target - noise_strength) < 0.000001) {
-            return;
-        }
-
         //gradually move audio strength towards the new value
-        noise_strength += (noise_strength_target - noise_strength)*0.01;
+        noise_strength += 
+            (noise_strength_target - noise_strength)*NOISE_TWEEN;
     }
 
     playNoise() {
@@ -42,12 +42,6 @@ class Audio {
                     var white = Math.random() * 2 - 1;
                     output[i] = (lastOut + (noise_strength * white)) / 1.02;
                     lastOut = output[i];
-
-                    output[i] *= (audio_time / AUDIO_FADE_IN_TIME);
-
-                    if (audio_time < AUDIO_FADE_IN_TIME) {
-                        audio_time++; 
-                    }   
                 }
             }
             return node;
