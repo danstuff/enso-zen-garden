@@ -1,4 +1,4 @@
 $(document).ready(function() {
-    var gmanager = new GameManager("main_canvas");
-    gmanager.init();
+    var game = new Game("main_canvas");
+    game.init();
 });

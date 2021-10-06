@@ -2,13 +2,15 @@ const UPDATE_MS = 100;  //10 updates per second
 
 class Game {
     constructor(canvas_id) {
-        this.session = new Session();
         this.canvas = document.getElementById(canvas_id);
 
         this.garden = new Garden();
-        this.dialogue = null;
+        this.dialogue = new Dialogue();
 
-        this.staticData = {};
+        this.environment = new Environment();
+
+        this.audio = new Audio();
+        this.particle = new Particle();
 
         this.babInterface = new BabylonInterface(this.canvas);
     }
@@ -18,37 +20,26 @@ class Game {
         this.babScene = this.babInterface.createScene(this.canvas);
         this.babInterface.startRendering();
 
-        
+        //get environmental data from various APIs
+        this.environment.connect(function(data, game) {
 
-        //get first dialogue from the server
-        this.session.getDialogue(function(d) {
-            getDialogueRecursive(d);
-        });            
+            //apply wind speed to noise and particle system
+            game.audio.playNoise(data.wind.speed);
+            game.particle.setWindSpeed(data.wind.speed);
 
-        setInterval(this.update, UPDATE_MS);
-    }
+            //apply weather condition to particle system
+            game.particle.setCondition(data.weather[0].description);
+ 
+            //ask server for dialogue forever
+            game.dialogue.get(
+                data.weather[0].description.replace(" ", "_") +
+                data.wind.speed);       
+        }, this);
 
-    update() {
-        //only update if dialogue/garden are non-null
-        if(this.garden != null) {
-            this.garden.update(UPDATE_MS);
-        }
 
-        if(this.dialogue != null) {
-            this.dialogue.update(UPDATE_MS);
-
-            //destroy dialogue if it ran out of time
-            if(this.dialogue.time <= 0) {
-                this.dialogue = null;
-            }
-        }
-    }
-
-    getDialogueRecursive(d) {
-        this.dialogue = d;
-
-        this.session.getDialogue(function(d) {
-            getDialogueRecursive(d);
-        });
+        setInterval(function(game) {
+            game.garden.update(UPDATE_MS);
+            game.dialogue.update(UPDATE_MS);
+        }, UPDATE_MS, this);
     }
 }

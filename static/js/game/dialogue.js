@@ -1,13 +1,26 @@
 class Dialogue {
     constructor() {
-        text = "";
-        options = [];
-        font_size = 10;
-        time = 60000 //1 minute
+        this.html = "";
+        this.font_size = 10;
+        this.time = 60000 //1 minute
     }
 
+    set(data) {
+    }
+
+    get(env_str) {
+        $.get("/dialogue/get/"+env_str)
+            .done(function(data) {
+                this.html = data.html;
+                this.font_size = data.font_size;
+                this.time = data.time;
+
+                //get(env_str);
+            });
+    }
+    
     update(update_ms) {
-        time -= update_ms;
+        this.time -= update_ms;
     }
 
     draw(canvas) {

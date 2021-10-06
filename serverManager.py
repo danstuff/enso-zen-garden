@@ -28,6 +28,6 @@ def dialogueGetRoute(eventString=None):
     return dbMan.getDialogueJSON(eventString)
 
 #GET for reading secure data from the server
-@app.route("secure/get/", methods=['GET'])
+@app.route("/secure/get/", methods=['GET'])
 def secureGetRoute():
     return secureData.asJSON()
