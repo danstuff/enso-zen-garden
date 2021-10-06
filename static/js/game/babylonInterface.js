@@ -18,8 +18,11 @@ class BabylonInterface {
             8,                              // radius
             new BABYLON.Vector3.Zero());    // camera point to look at
 
-        this.camera.lowerRadiusLimit = 5;
+        this.camera.lowerRadiusLimit = 6;
         this.camera.upperRadiusLimit = 100;
+
+        this.camera.panningDistanceLimit = 6;
+        this.camera.panningAxis = new BABYLON.Vector3(1, 0, 1);
 
         this.camera.wheelPrecision = 20;
 
@@ -38,7 +41,7 @@ class BabylonInterface {
         this.sandParticles = new BABYLON.SolidParticleSystem(
             "sandParticles", this.scene, {});
 
-        this.sandParticles.addShape(this.sandMesh, 2000);
+        this.sandParticles.addShape(this.sandMesh, 3000);
         this.sandModel = this.sandParticles.buildMesh();
 
         this.sandMesh.dispose();
@@ -46,9 +49,9 @@ class BabylonInterface {
         for(var i in this.sandParticles.particles) {
             var p = this.sandParticles.particles[i];
 
-            p.position.x = (Math.random() - 0.5) * 5.4;
+            p.position.x = (Math.random() - 0.5) * 6;
             p.position.y = (Math.random() - 0.5) * 0.25 + 0.8;
-            p.position.z = (Math.random() - 0.5) * 5.4;
+            p.position.z = (Math.random() - 0.5) * 6;
 
             p.rotation.x = Math.random() * 3.15;
             p.rotation.y = Math.random() * 3.15;
