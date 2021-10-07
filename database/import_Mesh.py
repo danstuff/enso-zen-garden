@@ -7,9 +7,8 @@ with open('testmesh.json', 'r') as f:
     data = json.load(f)
 
     for line in data['Mesh']:
-        sql = "insert into Mesh(vertices,color) values('%s',%s)" % (
-            line['vertices'],
-            line['color']
+        sql = "insert into Mesh(vertices,color) values('%s')" % (
+            line['mesh_json']
         )
 
         connect.execute(sql)
