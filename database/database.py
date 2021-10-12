@@ -8,8 +8,8 @@ cur.execute('''
 
 CREATE TABLE Dialogue (
     id                INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    dialogue_html     STRING NOT NULL UNIQUE,
-    weather_condition STRING NOT NULL UNIQUE,
+    dialogue_html     STRING  NOT NULL UNIQUE,
+    weather_condition STRING  NOT NULL UNIQUE,
     wind_speed_min    INTEGER NOT NULL UNIQUE,
     wind_speed_max    INTEGER NOT NULL UNIQUE,
     day_time_start    INTEGER NOT NULL UNIQUE,
