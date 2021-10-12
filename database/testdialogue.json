@@ -1,0 +1,10 @@
+{
+  "Dialogue":
+          [
+            { "text": "enter" ,
+             "option": "1" ,
+             "font_size": "2" ,
+             "time": "12.00"
+            }
+          ]
+}
