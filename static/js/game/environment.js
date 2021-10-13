@@ -1,7 +1,7 @@
 class Environment {
     constructor() {}
 
-    get(callbackFun, game) {
+    getWeatherData(callbackFun, game) {
         //start by fetching an approximate location
         $.getJSON("https://geolocation-db.com/json/")
             .done(function(location) {

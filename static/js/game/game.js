@@ -24,7 +24,7 @@ class Game {
         this.audio.playNoise();
 
         //get environmental data from various APIs
-        this.environment.get(function(data, game) {
+        this.environment.getWeatherData(function(data, game) {
 
             //apply wind speed to noise and particle system
             game.audio.setWindSpeed(data.wind.speed);
