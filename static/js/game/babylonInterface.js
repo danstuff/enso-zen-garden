@@ -77,6 +77,21 @@ class BabylonInterface {
             p.color = new BABYLON.Color4(
                 randWhite(), randWhite(), randWhite(), 1.0);
         }
+		
+		/* scene.onPointerDown = function(evt, pickResult) {
+		var faceId = pickResult.faceId;
+		if (faceId == -1) {return;}
+		var picked = SPS.pickedParticle(pickResult);
+		var idx = picked.idx;
+		var p = SPS.particles[idx];
+		p.color.r = 1;
+		p.color.b = 0;
+		p.color.g = 0;
+		p.scale.x = 5;
+		p.scale.y = 5;
+		p.scale.z = 5;
+		SPS.setParticles();
+	  }; */
 
         this.sandParticles.setParticles();
 
