@@ -41,7 +41,11 @@ class BabylonInterface {
 		/*  SPS init
 		SPS.initParticles = function () {
 		for (var p = 0; p < SPS.nbParticles; p++) {
-			myPositionFunction(SPS.particles[p]); */
+			myPositionFunction(SPS.particles[p]);
+			
+		SPS.initParticles();		// compute particle initial status
+		SPS.setParticles();		// updates the SPS mesh and draws it
+		SPS.refreshVisibleSize(); // updates the BBox for pickability			*/
 	  }
   }
         this.sandMesh = BABYLON.MeshBuilder.CreatePolyhedron(
