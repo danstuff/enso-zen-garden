@@ -80,7 +80,8 @@ class BabylonInterface {
                 randWhite(), randWhite(), randWhite(), 1.0);
         }
 		
-		/* scene.onPointerDown = function(evt, pickResult) {
+		/* scene.onPointerDown = function(evt, pickResult) { //This function is the basis for "click" or general trigger detection
+															 //(and furthermore object manipulation).
 				var faceId = pickResult.faceId;
 				if (faceId == -1) {return;}
 				var picked = SPS.pickedParticle(pickResult);
