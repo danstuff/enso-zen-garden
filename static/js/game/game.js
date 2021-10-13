@@ -11,7 +11,7 @@ class Game {
 
         this.audio = new Audio();
         this.particle = new Particle();
-
+		var SPS = new BABYLON.SolidParticleSystem("SPS", scene, { isPickable: true });
         this.babInterface = new BabylonInterface(this.canvas);
     }
 
