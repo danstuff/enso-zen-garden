@@ -37,6 +37,7 @@ class BabylonInterface {
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
             "static/assets/garden/", "frame.babylon");
+		this.SPS = new BABYLON.SolidParticleSystem("SPS", scene, { isPickable: true });
 
         this.sandMesh = BABYLON.MeshBuilder.CreatePolyhedron(
             "sandMesh", {type: 1, size: 0.1}, this.scene);
