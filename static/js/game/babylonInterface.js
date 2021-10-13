@@ -37,7 +37,8 @@ class BabylonInterface {
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
             "static/assets/garden/", "frame.babylon");
-		this.SPS = new BABYLON.SolidParticleSystem("SPS", scene, { isPickable: true });
+		this.SPS = new BABYLON.SolidParticleSystem("SPS", scene, { isPickable: true });//SPS creation in scene
+		
 		/*  SPS init
 		SPS.initParticles = function () {
 		for (var p = 0; p < SPS.nbParticles; p++) {
@@ -45,7 +46,8 @@ class BabylonInterface {
 			
 		SPS.initParticles();		// compute particle initial status
 		SPS.setParticles();		// updates the SPS mesh and draws it
-		SPS.refreshVisibleSize(); // updates the BBox for pickability			*/
+		SPS.refreshVisibleSize(); // updates the BBox for pickability	*/
+		
 	  }
   }
         this.sandMesh = BABYLON.MeshBuilder.CreatePolyhedron(
@@ -79,19 +81,19 @@ class BabylonInterface {
         }
 		
 		/* scene.onPointerDown = function(evt, pickResult) {
-		var faceId = pickResult.faceId;
-		if (faceId == -1) {return;}
-		var picked = SPS.pickedParticle(pickResult);
-		var idx = picked.idx;
-		var p = SPS.particles[idx];
-		p.color.r = 1;
-		p.color.b = 0;
-		p.color.g = 0;
-		p.scale.x = 5;
-		p.scale.y = 5;
-		p.scale.z = 5;
-		SPS.setParticles();
-	  }; */
+				var faceId = pickResult.faceId;
+				if (faceId == -1) {return;}
+				var picked = SPS.pickedParticle(pickResult);
+				var idx = picked.idx;
+				var p = SPS.particles[idx];
+				p.color.r = 1;
+				p.color.b = 0;
+				p.color.g = 0;
+				p.scale.x = 5;
+				p.scale.y = 5;
+				p.scale.z = 5;
+				SPS.setParticles();
+			}; */
 
         this.sandParticles.setParticles();
 
