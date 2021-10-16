@@ -25,6 +25,7 @@ class Game {
 
         //get environmental data from various APIs
         this.environment.getWeatherData(function(data, game) {
+            //TODO add day time brightness
 
             //apply wind speed to noise and particle system
             game.audio.setWindSpeed(data.wind.speed);
