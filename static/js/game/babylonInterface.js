@@ -36,39 +36,7 @@ class BabylonInterface {
             new BABYLON.Vector3(0.5, 1, 0.5)); // light direction
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
-            "static/assets/garden/", "frame.babylon");
-
-        this.sandMesh = BABYLON.MeshBuilder.CreatePolyhedron(
-            "sandMesh", {type: 1, size: 0.1}, this.scene);
-
-        this.sandParticles = new BABYLON.SolidParticleSystem(
-            "sandParticles", this.scene, {});
-
-        this.sandParticles.addShape(this.sandMesh, 3000);
-        this.sandModel = this.sandParticles.buildMesh();
-
-        this.sandMesh.dispose();
-
-        for(var i in this.sandParticles.particles) {
-            var p = this.sandParticles.particles[i];
-
-            p.position.x = (Math.random() - 0.5) * 6;
-            p.position.y = (Math.random() - 0.5) * 0.25 + 0.8;
-            p.position.z = (Math.random() - 0.5) * 6;
-
-            p.rotation.x = Math.random() * 3.15;
-            p.rotation.y = Math.random() * 3.15;
-            p.rotation.z = Math.random() * 1.5;
-
-            var randWhite = function() {
-                return Math.random() * 0.1 + 0.9; 
-            }
-
-            p.color = new BABYLON.Color4(
-                randWhite(), randWhite(), randWhite(), 1.0);
-        }
-
-        this.sandParticles.setParticles();
+            "static/assets/", "zen-garden.babylon");
 
         return this.scene;
     }
