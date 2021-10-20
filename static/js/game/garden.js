@@ -48,10 +48,11 @@ class Garden {
     constructor() {
         this.water_level = 0;
         this.exist_time = 0;
-
         this.terrain = [];
-
         this.entities = [];
+        this.totaltime=0;
+        this.total_phase =0;
+        
     }
 
     update(update_ms) {
@@ -65,7 +66,7 @@ class Garden {
 
     draw(canvas, entityTypeList, meshList) {
         //TODO draw terrain and water
-       
+        
         //draw every entity
         for(i in this.entities) {
             this.entities[i].draw(canvas, entityTypeList, meshList); 
@@ -77,4 +78,13 @@ class Garden {
         var l = this.entities.length;
         this.entities[l] = entity;
     }
+    //Set phase 
+    setphase(phase){
+        this.total_phase =phase
+    }
+    //Set total game time
+    settotalnumber(phases){
+       this.totaltime=(phases/2)* (10+5*(phases-1))
+    }
+    
 }
