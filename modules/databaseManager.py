@@ -22,35 +22,33 @@ class Dialogue(Model):
 
 class DatabaseManager:
     def __init__(self):
-        self.engine = create_engine("sqlite:///main_database.db");
-
-        # create the dialogue table
+        #connect to the database and create an engine
+        self.engine = create_engine("sqlite:///main_database.db")
         Model.metadata.create_all(self.engine)
+        
 
-        # create a new session and add the dialogue
-        self.session = sessionmaker(bind=self.engine)()
- 
-        # create example dialogue
-        d = Dialogue(innerHTML=
-                "The obstacle in the path becomes the path.<br>" +
-                "Never forget, within every obstacle is an opportunity" +
-                "<br> to improve our condition.")
-       
-        #self.addDialogue(d)
+    def addDialogue(self, _innerHTML, _tags):
+        #connect a session, add the dialogue, commit, and close
+        session = sessionmaker(bind=self.engine)
 
-    def addDialogue(self, d):
-        self.session.add(d)
-        self.session.commit()
+        d = Dialogue(innerHTML=_innerHTML, tags=_tags)
+
+        session.add(d)
+        session.commit()
+
+        session.close()
 
     def getDialogueString(self, eventJSON):
-        # TODO filter dialogues by the event data (time, weather, etc)
+        # TODO filter dialogues by the event tags,
         # then pick from the filtered dialogues at random
-        self.query = self.session.query(Dialogue)
-        instance = self.query.first()
+        session = sessionmaker(bind=self.engine)()
 
-        print(instance)
+        query = session.query(Dialogue)
+        instance = query.first()
+
+        session.close()
 
         if instance:
             return instance.innerHTML
         else:
-            return ""
+            return "No dialogues found."

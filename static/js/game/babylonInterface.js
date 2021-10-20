@@ -11,6 +11,34 @@ class BabylonInterface {
         });
     }
 
+    addTransition(property, y0, y1, easeFun) {
+        const transition = new BABYLON.Animation(
+            "transition",
+            property,
+            ANIMATION_FRAMERATE,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+        );
+
+        const keys = []
+        keys.push({
+            frame: 0, 
+            value: y0
+        });
+
+        keys.push({
+            frame: 1*ANIMATION_FRAMERATE,
+            value: y1
+        });
+
+        transition.setKeys(keys);
+
+        easeFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
+        transition.setEasingFunction(easeFun);
+
+        return transition;
+    }
+
     createScene(canvas, meshCallback) {
         this.scene = new BABYLON.Scene(this.engine);
         this.scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.4);
@@ -43,56 +71,14 @@ class BabylonInterface {
 
         //create easing animations for objects
         //drop in from above
-        this.dropIn = new BABYLON.Animation(
-            "dropIn",
-            "position.y",
-            ANIMATION_FRAMERATE,
-            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-        );
-
-        const dropInKeys = []
-        dropInKeys.push({
-            frame: 0, 
-            value: 20
-        });
-
-        dropInKeys.push({
-            frame: 1*ANIMATION_FRAMERATE,
-            value: .6
-        });
-
-        this.dropIn.setKeys(dropInKeys);
-
-        var bounceEase = new BABYLON.BounceEase(1, 6);
-        bounceEase.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
-        this.dropIn.setEasingFunction(bounceEase);
-
+        this.dropIn = this.addTransition(
+            "position.y", 20, .6,
+            new BABYLON.BounceEase(1, 5));
+        
         //rise up from below
-        this.riseUp = new BABYLON.Animation(
-            "riseUp",
-            "position.y",
-            ANIMATION_FRAMERATE,
-            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-        );
-
-        const riseUpKeys = []
-        riseUpKeys.push({
-            frame: 0, 
-            value: -20
-        });
-
-        riseUpKeys.push({
-            frame: 1*ANIMATION_FRAMERATE,
-            value: 0
-        });
-
-        this.riseUp.setKeys(riseUpKeys);
-
-        var sineEase = new BABYLON.CubicEase();
-        sineEase.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
-        this.riseUp.setEasingFunction(sineEase);
+        this.riseUp = this.addTransition(
+            "position.y", -20, 0,
+            new BABYLON.CubicEase(1, 5));
 
         const babInt = this;
 
@@ -106,16 +92,8 @@ class BabylonInterface {
                 }
 
                 babInt.meshes = result.meshes;
-                
-                babInt.createMeshInstance("succulent",
-                    new BABYLON.Vector3(0, -100, 0), 
-                    new BABYLON.Vector3(0, 0, 0));
-                babInt.createMeshInstance("frame_corner",
-                    new BABYLON.Vector3(0, -100, 0), 
-                    new BABYLON.Vector3(0, 0, 0), false);
-                babInt.createMeshInstance("sand_big_curve",
-                    new BABYLON.Vector3(0, -100, 0), 
-                    new BABYLON.Vector3(0, 0, 0), false);
+
+                meshCallback(babInt);
 
                 babInt.startRendering(); 
             });

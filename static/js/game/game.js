@@ -17,7 +17,19 @@ class Game {
 
     init() {
         //babylon setup: create a scene, camera, and sun
-        this.babScene = this.babInterface.createScene(this.canvas);
+        this.babScene = this.babInterface.createScene(this.canvas,
+            function(babInt) {
+                babInt.createMeshInstance("succulent",
+                    new BABYLON.Vector3(0, -100, 0), 
+                    new BABYLON.Vector3(0, 0, 0));
+                babInt.createMeshInstance("frame_corner",
+                    new BABYLON.Vector3(0, -100, 0), 
+                    new BABYLON.Vector3(0, 0, 0), false);
+                babInt.createMeshInstance("sand_big_curve",
+                    new BABYLON.Vector3(0, -100, 0), 
+                    new BABYLON.Vector3(0, 0, 0), false);
+            }
+        );
 
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();
