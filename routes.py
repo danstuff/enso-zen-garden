@@ -3,6 +3,7 @@ from flask import render_template
 from flask import url_for
 from flask import request
 
+from modules.databaseManager import DatabaseManager
 from modules.secure import APIKeys
 
 app = Flask(__name__)
