@@ -1,6 +1,7 @@
 # Zen Garden
 
 ## Getting Started (macOS/Linux)
+As a prerequisite, you must obtain the 'secure.py' file from the "Capping Shared Folder" google drive.
 
 To use this project, you must first have a be in a terminal environment with python 3.0 or greater installed. 
 
@@ -20,9 +21,11 @@ Now, we can activate our virtual environment like so:
 
 Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install the required libraries:
 
-    pip install flask sqlalchemy
+    pip install flask sqlalchemy pyglet scikit-learn
 
 ## Getting Started (Windows)
+
+As a prerequisite, you must obtain the 'secure.py' file from the "Capping Shared Folder" google drive.
 
 To use this project, you must first have a be in the Command Prompt with python 3.0 or greater installed. 
 
@@ -42,7 +45,7 @@ Now, we can activate our virtual environment like so:
 
 Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not for the entire system. Type this to install the required libraries:
 
-    pip install flask sqlalchemy
+    pip install flask sqlalchemy scikit-learn
 
 ## Running the Project
 
@@ -69,3 +72,4 @@ On Windows:
     flask run
 
 Flask should respond with an IP address that you can enter into your browser to view the app.
+    
