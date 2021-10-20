@@ -27,22 +27,28 @@ class DatabaseManager:
         # create the dialogue table
         Model.metadata.create_all(self.engine)
 
-        # create example dialogue
-        #d = Dialogue(innerHTML="It's <i>magic!!!</i>")
-
         # create a new session and add the dialogue
         self.session = sessionmaker(bind=self.engine)()
+ 
+        # create example dialogue
+        d = Dialogue(innerHTML=
+                "The obstacle in the path becomes the path.<br>" +
+                "Never forget, within every obstacle is an opportunity" +
+                "<br> to improve our condition.")
+       
+        #self.addDialogue(d)
 
     def addDialogue(self, d):
         self.session.add(d)
         self.session.commit()
 
     def getDialogueString(self, eventJSON):
-        print(eventJSON)
         # TODO filter dialogues by the event data (time, weather, etc)
         # then pick from the filtered dialogues at random
         self.query = self.session.query(Dialogue)
         instance = self.query.first()
+
+        print(instance)
 
         if instance:
             return instance.innerHTML

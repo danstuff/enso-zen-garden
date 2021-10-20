@@ -149,7 +149,7 @@ class BabylonInterface {
         //animate the mesh into position
         this.scene.beginDirectAnimation(
             inst,
-            [fromTop ? this.dropIn : this.riseUp ],
+            [fromTop ? this.dropIn : this.riseUp],
             0, 1*ANIMATION_FRAMERATE);
     }
 
