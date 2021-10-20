@@ -4,11 +4,7 @@ from sqlalchemy import Column, Integer, String, Time
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from modules.secure import DatabaseKeys
-
 Model = declarative_base()
-
-databaseKeys = DatabaseKeys()
 
 class Dialogue(Model):
     __tablename__ = "dialogue"
