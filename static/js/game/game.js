@@ -17,8 +17,13 @@ class Game {
 
     init() {
         //babylon setup: create a scene, camera, and sun
-        this.babScene = this.babInterface.createScene(this.canvas);
-        this.babInterface.startRendering(); 
+        this.babScene = this.babInterface.createScene(this.canvas,
+            function(bInt){
+                bInt.createMeshInstance("succulent", 0, 10, 0);
+                bInt.createMeshInstance("frame_corner", 0, 10, 0, false);
+                bInt.createMeshInstance("sand_big_curve", 0, 10, 0, false);
+                bInt.startRendering(); 
+            });
 
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();
@@ -37,7 +42,6 @@ class Game {
             //ask server for dialogue based on condition string
             game.dialogue.request(data);
         }, this);
-
 
         setInterval(function(game) {
             game.garden.update(UPDATE_MS);

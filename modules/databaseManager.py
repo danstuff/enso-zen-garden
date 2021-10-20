@@ -47,4 +47,8 @@ class DatabaseManager:
         # then pick from the filtered dialogues at random
         self.query = self.session.query(Dialogue)
         instance = self.query.first()
-        return instance.innerHTML
+
+        if instance:
+            return instance.innerHTML
+        else:
+            return ""
