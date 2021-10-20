@@ -17,13 +17,7 @@ class Game {
 
     init() {
         //babylon setup: create a scene, camera, and sun
-        this.babScene = this.babInterface.createScene(this.canvas,
-            function(bInt){
-                bInt.createMeshInstance("succulent", 0, 10, 0);
-                bInt.createMeshInstance("frame_corner", 0, 10, 0, false);
-                bInt.createMeshInstance("sand_big_curve", 0, 10, 0, false);
-                bInt.startRendering(); 
-            });
+        this.babScene = this.babInterface.createScene(this.canvas);
 
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();

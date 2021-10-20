@@ -94,8 +94,6 @@ class BabylonInterface {
         sineEase.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
         this.riseUp.setEasingFunction(sineEase);
 
-
-
         const babInt = this;
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
@@ -109,7 +107,17 @@ class BabylonInterface {
 
                 babInt.meshes = result.meshes;
                 
-                meshCallback(babInt);
+                babInt.createMeshInstance("succulent",
+                    new BABYLON.Vector3(0, -100, 0), 
+                    new BABYLON.Vector3(0, 0, 0));
+                babInt.createMeshInstance("frame_corner",
+                    new BABYLON.Vector3(0, -100, 0), 
+                    new BABYLON.Vector3(0, 0, 0), false);
+                babInt.createMeshInstance("sand_big_curve",
+                    new BABYLON.Vector3(0, -100, 0), 
+                    new BABYLON.Vector3(0, 0, 0), false);
+
+                babInt.startRendering(); 
             });
 
         return this.scene;
@@ -130,7 +138,6 @@ class BabylonInterface {
             console.log(
                 "WARNING - Ignored attempt to access undefined mesh " +
                 name);
-            console.log(this.meshes);
             return;
         }
 
@@ -147,7 +154,7 @@ class BabylonInterface {
     }
 
     startRendering() {
-        var scene = this.scene;
+        const scene = this.scene;
         this.engine.runRenderLoop(function() {
             scene.render();
         });
