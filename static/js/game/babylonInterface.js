@@ -93,7 +93,7 @@ class BabylonInterface {
 
                 babInt.meshes = result.meshes;
 
-                meshCallback(babInt);
+                meshCallback();
 
                 babInt.startRendering(); 
             });
@@ -116,6 +116,7 @@ class BabylonInterface {
             console.log(
                 "WARNING - Ignored attempt to access undefined mesh " +
                 name);
+            console.log(this.meshes);
             return;
         }
 

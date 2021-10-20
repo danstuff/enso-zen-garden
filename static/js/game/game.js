@@ -4,30 +4,46 @@ class Game {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
 
-        this.garden = new Garden();
         this.dialogue = new Dialogue();
-
         this.environment = new Environment();
-
         this.audio = new Audio();
         this.particle = new Particle();
 
         this.babInterface = new BabylonInterface(this.canvas);
+        this.garden = new Garden(this.babInterface);
     }
 
     init() {
+        const game = this;
+
         //babylon setup: create a scene, camera, and sun
         this.babScene = this.babInterface.createScene(this.canvas,
-            function(babInt) {
-                babInt.createMeshInstance("succulent",
-                    new BABYLON.Vector3(0, -100, 0), 
-                    new BABYLON.Vector3(0, 0, 0));
-                babInt.createMeshInstance("frame_corner",
-                    new BABYLON.Vector3(0, -100, 0), 
-                    new BABYLON.Vector3(0, 0, 0), false);
-                babInt.createMeshInstance("sand_big_curve",
-                    new BABYLON.Vector3(0, -100, 0), 
-                    new BABYLON.Vector3(0, 0, 0), false);
+            function() {
+                game.garden.addTile(
+                    "sand_big_curve", 180, 
+                    "frame_corner", 0,
+                    -3, -3
+                );
+
+                game.garden.addTile(
+                    "sand_big_curve", 270, 
+                    "frame_corner", 90,
+                    -3, 3
+                );
+
+                game.garden.addTile(
+                    "sand_big_curve", 0, 
+                    "frame_corner", 180,
+                    3, 3
+                );
+
+                game.garden.addTile(
+                    "sand_big_curve", 90, 
+                    "frame_corner", 270,
+                    3, -3
+                );
+
+                game.garden.addEntity("succulent", 0, 0);
             }
         );
 
@@ -35,7 +51,7 @@ class Game {
         this.audio.playNoise();
 
         //get environmental data from various APIs
-        this.environment.getWeatherData(function(data, game) {
+        this.environment.getWeatherData(function(data) {
             //TODO add day time brightness
 
             //apply wind speed to noise and particle system
@@ -47,12 +63,11 @@ class Game {
 
             //ask server for dialogue based on condition string
             game.dialogue.request(data);
-        }, this);
+        });
 
-        setInterval(function(game) {
-            game.garden.update(UPDATE_MS);
+        setInterval(function() {
             game.audio.tweenStrength();
 
-        }, UPDATE_MS, this);
+        }, UPDATE_MS);
     }
 }

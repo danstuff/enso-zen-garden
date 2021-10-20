@@ -1,90 +1,31 @@
-class Mesh {
-    constructor(vertices, color) {
-        this.vertices = vertices;
-        this.color = color;
-    }
-}
-
-class MeshRef {
-    constructor(mesh_id, pos, time) {
-        this.mesh_id = mesh_id;
-        this.pos = pos;
-        this.time = time;
-    }
-}
-
-class EntityType {
-    constructor() {
-        this.meshRefs = [];
-    }
-}
-
-class Entity {
-    constructor(pos, type_id) {
-        this.pos = pos;
-        this.type_id = type_id;
-        this.exist_time = 0;
-    }
-
-    update(update_ms) {
-        this.exist_time += update_ms;
-    }
-
-    draw(canvas, entityTypeList, meshList) {
-        var type = entityTypeList[this.type_id];
-
-        for(i in type.meshRefs) {
-            var mr = type.meshRefs[i];
-
-            if(this.exist_time >= mr.time) {
-                //TODO draw meshList[mr.id] at pos+mr.pos
-            }
-        }
-    }
-}
-
-
 class Garden {
-    constructor() {
-        this.water_level = 0;
-        this.exist_time = 0;
-        this.terrain = [];
-        this.entities = [];
-        this.totaltime=0;
-        this.total_phase =0;
+    constructor(babInt) {
+        this.tiles = [];
+        this.babInt = babInt;
+    }
+
+    addTile(sand_name, sand_yrot, frame_name, frame_yrot, x, z) {
+        var pos = new BABYLON.Vector3(x, -100, z);
+
+        var rots = new BABYLON.Vector3(0, sand_yrot*Math.PI/180, 0);
+        var rotf = new BABYLON.Vector3(0, frame_yrot*Math.PI/180, 0);
         
+        this.babInt.createMeshInstance(sand_name, pos, rots, false);
+        this.babInt.createMeshInstance(frame_name, pos, rotf, false);
     }
 
-    update(update_ms) {
-        this.exist_time += update_ms;
-
-        //update every entity
-        for(i in this.entities) {
-            this.entities[i].update(update_ms);
-        }
+    changeTile(new_sand_name, x, z, yrot) {
+        //TODO
     }
 
-    draw(canvas, entityTypeList, meshList) {
-        //TODO draw terrain and water
+    addEntity(entity_name, x, z) {
+        var pos = new BABYLON.Vector3(x, -100, z);
+        var rot = new BABYLON.Vector3(0, Math.random()*360, 0);
         
-        //draw every entity
-        for(i in this.entities) {
-            this.entities[i].draw(canvas, entityTypeList, meshList); 
-        }
+        this.babInt.createMeshInstance(entity_name, pos, rot);
     }
 
-    addEntity(entity) {
-        //push an entity to the garden's entity list
-        var l = this.entities.length;
-        this.entities[l] = entity;
+    removeEntity(x, z) {
+        //TODO
     }
-    //Set phase 
-    setphase(phase){
-        this.total_phase =phase
-    }
-    //Set total game time
-    settotalnumber(phases){
-       this.totaltime=(phases/2)* (10+5*(phases-1))
-    }
-    
 }
