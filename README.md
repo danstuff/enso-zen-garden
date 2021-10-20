@@ -20,7 +20,7 @@ Now, we can activate our virtual environment like so:
 
 Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install the required libraries:
 
-    pip install flask sqlalchemy pyglet scikit-learn
+    pip install flask sqlalchemy
 
 ## Getting Started (Windows)
 
@@ -42,7 +42,7 @@ Now, we can activate our virtual environment like so:
 
 Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not for the entire system. Type this to install the required libraries:
 
-    pip install flask sqlalchemy scikit-learn
+    pip install flask sqlalchemy
 
 ## Running the Project
 
@@ -60,12 +60,12 @@ Now you can start the server:
 
 On Linux/macOS:
 
-    export FLASK_APP=serverManager
+    export FLASK_APP=routes
     flask run
 
 On Windows:
 
-    set FLASK_APP=serverManager
+    set FLASK_APP=routes
     flask run
 
 Flask should respond with an IP address that you can enter into your browser to view the app.
