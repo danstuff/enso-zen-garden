@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from flask import url_for
+from flask import send_file
 from flask import request
 
 from modules.databaseManager import DatabaseManager

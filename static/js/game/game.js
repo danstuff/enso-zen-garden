@@ -19,6 +19,7 @@ class Game {
         //babylon setup: create a scene, camera, and sun
         this.babScene = this.babInterface.createScene(this.canvas,
             function() {
+                //for the demo, add some sample objects
                 game.garden.addTile(
                     "sand_big_curve", 180, 
                     "frame_corner", 0,

@@ -69,6 +69,9 @@ class BabylonInterface {
             "light", 
             new BABYLON.Vector3(0.5, 1, 0.5)); // light direction
 
+        //for the demo, add some rain
+        this.startRain();
+
         //create easing animations for objects
         //drop in from above
         this.dropIn = this.addTransition(
@@ -89,6 +92,9 @@ class BabylonInterface {
                 //hide all meshes
                 for(var i in result.meshes) {
                     result.meshes[i].isVisible = false;
+
+                    //TODO fix backface culling
+                    result.meshes[i].backFaceCulling = false;
                 }
 
                 babInt.meshes = result.meshes;
@@ -137,5 +143,12 @@ class BabylonInterface {
         this.engine.runRenderLoop(function() {
             scene.render();
         });
+    }
+
+    startRain() {
+        BABYLON.ParticleHelper.CreateAsync("rain", this.scene, false).
+            then(function(set) {
+                set.start();
+            });
     }
 }
