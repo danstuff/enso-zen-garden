@@ -50,20 +50,20 @@ class Game {
 
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();
+        this.audio.setWindSpeed(10);
+        this.dialogue.request(null);
 
         //get environmental data from various APIs
         this.environment.getWeatherData(function(data) {
             //TODO add day time brightness
 
             //apply wind speed to noise and particle system
-            game.audio.setWindSpeed(data.wind.speed);
             game.particle.setWindSpeed(data.wind.speed);
 
             //apply weather condition to particle system
             game.particle.setCondition(data);
 
             //ask server for dialogue based on condition string
-            game.dialogue.request(data);
         });
 
         setInterval(function() {

@@ -146,9 +146,30 @@ class BabylonInterface {
     }
 
     startRain() {
-        BABYLON.ParticleHelper.CreateAsync("rain", this.scene, false).
+        this.rain = new BABYLON.ParticleSystem("rain", 5000);
+
+        this.rain.particleTexture = 
+            new BABYLON.Texture("/static/assets/rain.png");
+
+        this.rain.minLifeTime = 1;
+        this.rain.maxLifeTime = 1;
+
+        this.rain.emitter = new BABYLON.Vector3(0, 35, 0);
+        
+        this.rain.minEmitBox = new BABYLON.Vector3(-10, 0, -10);
+        this.rain.maxEmitBox = new BABYLON.Vector3(10, 0, 10);
+
+        this.rain.direction1 = new BABYLON.Vector3(0, -50, 0);
+        this.rain.direction2 = new BABYLON.Vector3(0, -60, 0);        
+
+        this.rain.minSize = 0.1;
+        this.rain.maxSize = 0.9;
+
+        this.rain.start();
+
+        /*BABYLON.ParticleHelper.CreateAsync("rain", this.scene, false).
             then(function(set) {
                 set.start();
-            });
+            });*/
     }
 }
