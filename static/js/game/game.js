@@ -17,10 +17,8 @@ class Game {
 
     init() {
         //babylon setup: create a scene, camera, and sun
-<<<<<<< Updated upstream
         this.babScene = this.babInterface.createScene(this.canvas);
         this.babInterface.startRendering(); 
-=======
         this.babScene = this.babInterface.createScene(this.canvas,
             function() {
                 //for the demo, add some sample objects
@@ -52,7 +50,6 @@ class Game {
 				game.garden.addEntity("rock0", 0, 10);
             }
         );
->>>>>>> Stashed changes
 
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();
