@@ -45,6 +45,8 @@ class Game {
                 );
 
                 game.garden.addEntity("succulent", 0, 0);
+				game.garden.addEntity("rock_sml_0", 4, 2);
+				game.garden.addEntity("rock_sml_1", -3, 4);
             }
         );
 
