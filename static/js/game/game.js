@@ -17,8 +17,42 @@ class Game {
 
     init() {
         //babylon setup: create a scene, camera, and sun
+<<<<<<< Updated upstream
         this.babScene = this.babInterface.createScene(this.canvas);
         this.babInterface.startRendering(); 
+=======
+        this.babScene = this.babInterface.createScene(this.canvas,
+            function() {
+                //for the demo, add some sample objects
+                game.garden.addTile(
+                    "sand_big_curve", 180, 
+                    "frame_corner", 0,
+                    -3, -3
+                );
+
+                game.garden.addTile(
+                    "sand_big_curve", 270, 
+                    "frame_corner", 90,
+                    -3, 3
+                );
+
+                game.garden.addTile(
+                    "sand_big_curve", 0, 
+                    "frame_corner", 180,
+                    3, 3
+                );
+
+                game.garden.addTile(
+                    "sand_big_curve", 90, 
+                    "frame_corner", 270,
+                    3, -3
+                );
+
+                game.garden.addEntity("succulent", 0, 0);
+				game.garden.addEntity("rock0", 0, 10);
+            }
+        );
+>>>>>>> Stashed changes
 
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();
