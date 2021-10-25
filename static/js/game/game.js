@@ -20,29 +20,18 @@ class Game {
         this.babScene = this.babInterface.createScene(this.canvas,
             function() {
                 //for the demo, add some sample objects
-                game.garden.addTile(
-                    "sand_big_curve", 180, 
-                    "frame_corner", 0,
-                    -3, -3
-                );
+                const tiles = [{tile1: "180", tile2: "0"  , tile3: "-3", tile4: "-3"},
+                               {tile1: "270", tile2: "90" , tile3: "-3", tile4: "3" },
+                               {tile1: "0"  , tile2: "180", tile3: "3" , tile4: "3" },
+                               {tile1: "90" , tile2: "270", tile3: "3" , tile4: "-3"}
+                            ];
 
-                game.garden.addTile(
-                    "sand_big_curve", 270, 
-                    "frame_corner", 90,
-                    -3, 3
-                );
-
-                game.garden.addTile(
-                    "sand_big_curve", 0, 
-                    "frame_corner", 180,
-                    3, 3
-                );
-
-                game.garden.addTile(
-                    "sand_big_curve", 90, 
-                    "frame_corner", 270,
-                    3, -3
-                );
+                function addTile(tile) {
+                    game.garden.addTile("sand_big_curve", tile.tile1,
+                                        "frame_corner", tile.tile2, 
+                                        tile.tile3, tile.tile4)
+                }
+                tiles.map(addTile)
 
                 game.garden.addEntity("succulent", 0, 0);
 				game.garden.addEntity("rock_sml_0", 4, 2);
