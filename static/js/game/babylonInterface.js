@@ -82,7 +82,15 @@ class BabylonInterface {
         this.riseUp = this.addTransition(
             "position.y", -20, 0,
             new BABYLON.CubicEase(1, 5));
+		//Oct. 25: Code for GUI. Will allow the player to manipulate the scene.
+		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
+		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
+		//button1.width = "150px"
+		//button1.height = "40px";
+		//button1.color = "white";
+		//button1.cornerRadius = 20;
+		//button1.background = "green";
         const babInt = this;
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
