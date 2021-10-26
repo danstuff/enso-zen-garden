@@ -88,6 +88,8 @@ class BabylonInterface {
 		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
 		/* button1.width = "150px"
 		button1.height = "40px";
+		button1.top = "450px";
+		button1.left = "20px";
 		button1.color = "white";
 		button1.cornerRadius = 20;
 		button1.background = "green";
