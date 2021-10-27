@@ -159,7 +159,9 @@ class BabylonInterface {
             scene.render();
         });
     }
-
+	loadGUI() {
+		
+	}
     startRain() {
         this.rain = new BABYLON.ParticleSystem("rain", 5000);
 
