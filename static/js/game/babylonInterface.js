@@ -151,8 +151,8 @@ class BabylonInterface {
 		this.var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
 		this.var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		this.var rockButton = BABYLON.GUI.Button.CreateSimpleButton("rockBut", "Select Rock");
-		this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//Both of these have tentative text labels in game
+		this.var rockButton = BABYLON.GUI.Button.CreateImageButton("rockBut", "Select Rock", "static/assets/rockButton.png");
+		this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
 		button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
@@ -161,9 +161,9 @@ class BabylonInterface {
 		button1.cornerRadius = 20;
 		button1.background = "green";
 		
-		button1.onPointerUpObservable.add(function() {
+		/* button1.onPointerUpObservable.add(function() {
         alert("you did it!");
-		});//end function
+		});//end function */
 		AdvancedTexture.addControl(button1); */
 		
 	}
