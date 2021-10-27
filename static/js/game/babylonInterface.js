@@ -148,29 +148,31 @@ class BabylonInterface {
     }
 	loadGUI() {
 		//	Code for GUI. Will allow the player to manipulate the scene.
-		this.var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-		this.var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		this.var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
-		this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
+		this.var advancedTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
+		//this.var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
+		this.var rockButton = new BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
+		//this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
 		rockButton.width = "50px";
 		rockButton.height = "50px";
 		rockButton.top = "450px";
 		rockButton.left = "20px";
-		button1.width = "150px"
+		/* button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
 		button1.left = "20px";
 		button1.color = "white";
 		button1.cornerRadius = 20;
-		button1.background = "green";
+		button1.background = "green"; */
 		
 		/* button1.onPointerUpObservable.add(function() {
         alert("you did it!");
 		});//end function */
-		rockButton.onPointerUpObservable.add(function() {
+		
+		//rockButton.onPointerUpObservable.add(function() {
 			//code here will fetch list of rocks that the player will choose from that they will place down.
-		});
-		AdvancedTexture.addControl(button1); */
+		//});
+		
+		advancedTexture.addControl(this.rockButton); */
 		
 		
 	}
