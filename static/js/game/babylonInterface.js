@@ -169,7 +169,7 @@ class BabylonInterface {
 		});//end function */
 		rockButton.onPointerUpObservable.add(function() {
 			//code here will fetch list of rocks that the player will choose from that they will place down.
-		}	
+		});
 		AdvancedTexture.addControl(button1); */
 		
 		
