@@ -164,6 +164,9 @@ class BabylonInterface {
 		/* button1.onPointerUpObservable.add(function() {
         alert("you did it!");
 		});//end function */
+		rockButton.onPointerUpObservable.add(function() {
+			//code here will fetch list of rocks that the player will choose from that they will place down.
+			
 		AdvancedTexture.addControl(button1); */
 		
 	}
