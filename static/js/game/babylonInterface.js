@@ -147,11 +147,11 @@ class BabylonInterface {
         });
     }
 	loadGUI() {
-		//Oct. 25: Code for GUI. Will allow the player to manipulate the scene.
+		//	Code for GUI. Will allow the player to manipulate the scene.
 		this.var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
 		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		/* button1.width = "150px"
+		button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
 		button1.left = "20px";
