@@ -151,8 +151,12 @@ class BabylonInterface {
 		this.var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
 		this.var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		this.var rockButton = BABYLON.GUI.Button.CreateImageButton("rockBut", "Select Rock", "static/assets/rockButton.png");
+		this.var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
 		this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
+		rockButton.width = "50px";
+		rockButton.height = "50px";
+		rockButton.top = "450px";
+		rockButton.left = "20px";
 		button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
