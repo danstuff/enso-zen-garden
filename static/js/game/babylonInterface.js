@@ -71,7 +71,10 @@ class BabylonInterface {
 
         //for the demo, add some rain
         this.startRain();
-
+		
+		//Oct 26: Method call for creating GUI
+		this.loadGUI();
+		
         //create easing animations for objects
         //drop in from above
         this.dropIn = this.addTransition(
@@ -145,7 +148,7 @@ class BabylonInterface {
     }
 	loadGUI() {
 		//Oct. 25: Code for GUI. Will allow the player to manipulate the scene.
-		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+		this.var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
 		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
 		/* button1.width = "150px"
@@ -160,6 +163,7 @@ class BabylonInterface {
         alert("you did it!");
 		});//end function
 		AdvancedTexture.addControl(button1); */
+		this.var.
 	}
 	
     startRain() {
