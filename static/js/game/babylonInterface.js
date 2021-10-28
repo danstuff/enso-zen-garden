@@ -11,34 +11,6 @@ class BabylonInterface {
         });
     }
 
-    addTransition(property, y0, y1, easeFun) {
-        const transition = new BABYLON.Animation(
-            "transition",
-            property,
-            ANIMATION_FRAMERATE,
-            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-        );
-
-        const keys = []
-        keys.push({
-            frame: 0, 
-            value: y0
-        });
-
-        keys.push({
-            frame: 1*ANIMATION_FRAMERATE,
-            value: y1
-        });
-
-        transition.setKeys(keys);
-
-        easeFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
-        transition.setEasingFunction(easeFun);
-
-        return transition;
-    }
-
     createScene(canvas, meshCallback) {
         this.scene = new BABYLON.Scene(this.engine);
         this.scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.4);
@@ -69,8 +41,9 @@ class BabylonInterface {
             "light", 
             new BABYLON.Vector3(0.5, 1, 0.5)); // light direction
 
-        //for the demo, add some rain
-        this.startRain();
+        //for the demo, add some rain and clouds
+        this.addRain(50, 3);
+        this.addClouds(100, 1000, 2);
 
         //create easing animations for objects
         //drop in from above
@@ -92,9 +65,6 @@ class BabylonInterface {
                 //hide all meshes
                 for(var i in result.meshes) {
                     result.meshes[i].isVisible = false;
-
-                    //TODO fix backface culling
-                    result.meshes[i].backFaceCulling = false;
                 }
 
                 babInt.meshes = result.meshes;
@@ -105,6 +75,41 @@ class BabylonInterface {
             });
 
         return this.scene;
+    }
+
+    startRendering() {
+        const scene = this.scene;
+        this.engine.runRenderLoop(function() {
+            scene.render();
+        });
+    }
+
+    addTransition(property, y0, y1, easeFun) {
+        const transition = new BABYLON.Animation(
+            "transition",
+            property,
+            ANIMATION_FRAMERATE,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+        );
+
+        const keys = []
+        keys.push({
+            frame: 0, 
+            value: y0
+        });
+
+        keys.push({
+            frame: 1*ANIMATION_FRAMERATE,
+            value: y1
+        });
+
+        transition.setKeys(keys);
+
+        easeFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
+        transition.setEasingFunction(easeFun);
+
+        return transition;
     }
 
     getMesh(name) {
@@ -138,38 +143,4 @@ class BabylonInterface {
             0, 1*ANIMATION_FRAMERATE);
     }
 
-    startRendering() {
-        const scene = this.scene;
-        this.engine.runRenderLoop(function() {
-            scene.render();
-        });
-    }
-
-    startRain() {
-        this.rain = new BABYLON.ParticleSystem("rain", 5000);
-
-        this.rain.particleTexture = 
-            new BABYLON.Texture("/static/assets/rain.png");
-
-        this.rain.minLifeTime = 1;
-        this.rain.maxLifeTime = 1;
-
-        this.rain.emitter = new BABYLON.Vector3(0, 35, 0);
-        
-        this.rain.minEmitBox = new BABYLON.Vector3(-10, 0, -10);
-        this.rain.maxEmitBox = new BABYLON.Vector3(10, 0, 10);
-
-        this.rain.direction1 = new BABYLON.Vector3(0, -50, 0);
-        this.rain.direction2 = new BABYLON.Vector3(0, -60, 0);        
-
-        this.rain.minSize = 0.1;
-        this.rain.maxSize = 0.9;
-
-        this.rain.start();
-
-        /*BABYLON.ParticleHelper.CreateAsync("rain", this.scene, false).
-            then(function(set) {
-                set.start();
-            });*/
-    }
 }
