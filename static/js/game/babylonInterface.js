@@ -148,9 +148,9 @@ class BabylonInterface {
     }
 	loadGUI() {
 		//	Code for GUI. Will allow the player to manipulate the scene.
-		this.var advancedTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
+		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 		//this.var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		this.var rockButton = new BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
+		var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
 		//this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
 		rockButton.width = "50px";
 		rockButton.height = "50px";
@@ -172,7 +172,7 @@ class BabylonInterface {
 			//code here will fetch list of rocks that the player will choose from that they will place down.
 		//});
 		
-		advancedTexture.addControl(this.rockButton); */
+		advancedTexture.addControl(this.rockButton);
 		
 		
 	}
