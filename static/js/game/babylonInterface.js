@@ -41,6 +41,7 @@ class BabylonInterface {
 
     createScene(canvas, meshCallback) {
         this.scene = new BABYLON.Scene(this.engine);
+		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         this.scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.4);
         
         this.camera = new BABYLON.ArcRotateCamera(
@@ -72,8 +73,7 @@ class BabylonInterface {
         //for the demo, add some rain
         this.startRain();
 		
-		//Oct 26: Method call for creating GUI
-		this.loadGUI();
+		
 		
         //create easing animations for objects
         //drop in from above
@@ -105,7 +105,7 @@ class BabylonInterface {
 
                 babInt.startRendering(); 
             });
-
+		this.loadGUI();
         return this.scene;
     }
 
@@ -142,41 +142,40 @@ class BabylonInterface {
 
     startRendering() {
         const scene = this.scene;
+		
         this.engine.runRenderLoop(function() {
             scene.render();
         });
     }
 	loadGUI() {
 		//	Code for GUI. Will allow the player to manipulate the scene.
-		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-		//this.var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
+		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
+		//var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
 		//this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
-		rockButton.width = "50px";
+		/* rockButton.width = "50px";
 		rockButton.height = "50px";
 		rockButton.top = "450px";
-		rockButton.left = "20px";
-		/* button1.width = "150px"
+		rockButton.left = "20px"; */
+		button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
 		button1.left = "20px";
 		button1.color = "white";
 		button1.cornerRadius = 20;
-		button1.background = "green"; */
+		button1.background = "green";
 		
-		/* button1.onPointerUpObservable.add(function() {
-        alert("you did it!");
-		});//end function */
+		button1.onPointerUpObservable.add(function() {
+			alert("you did it!");
+		});//end function
 		
 		//rockButton.onPointerUpObservable.add(function() {
 			//code here will fetch list of rocks that the player will choose from that they will place down.
 		//});
 		
-		advancedTexture.addControl(this.rockButton);
+		advancedTexture.addControl(button1);
 		
 		
 	}
-	
     startRain() {
         this.rain = new BABYLON.ParticleSystem("rain", 5000);
 

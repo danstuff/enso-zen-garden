@@ -31,14 +31,15 @@ class Game {
                                         "frame_corner", tile.tile2, 
                                         tile.tile3, tile.tile4)
                 }
-                tiles.map(addTile)
+                tiles.map(addTile);
 
                 game.garden.addEntity("succulent", 0, 0);
 				game.garden.addEntity("rock_sml_0", 4, 2);
 				game.garden.addEntity("rock_sml_1", -3, 4);
             }
         );
-
+		//Oct 26: Method call for creating GUI
+		this.loadGUI();
         //enable brownian noise (silent until wind speed is set)
         this.audio.playNoise();
         this.audio.setWindSpeed(10);
@@ -62,4 +63,5 @@ class Game {
 
         }, UPDATE_MS);
     }
+		
 }
