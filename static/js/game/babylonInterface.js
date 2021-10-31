@@ -41,7 +41,6 @@ class BabylonInterface {
 
     createScene(canvas, meshCallback) {
         this.scene = new BABYLON.Scene(this.engine);
-		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         this.scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.4);
         
         this.camera = new BABYLON.ArcRotateCamera(
@@ -105,6 +104,7 @@ class BabylonInterface {
 
                 babInt.startRendering(); 
             });
+		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", this.scene);
 		this.loadGUI();
         return this.scene;
     }
