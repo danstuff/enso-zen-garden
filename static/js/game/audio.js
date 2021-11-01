@@ -15,9 +15,9 @@ class Audio {
     constructor() {
     }
 
-    setWindSpeed(wind_speed) {
+    setNoiseStrength(amount) {
         // strength is a gently sloping negative power of wind speed
-        var exp = -(wind_speed + NOISE_FLOOR);
+        var exp = -(amount + NOISE_FLOOR);
         noise_strength_target = 
             (1 - Math.pow(NOISE_CURVE, exp)) * NOISE_GAIN;
     }
@@ -47,5 +47,10 @@ class Audio {
         })();
 
         brownNoise.connect(audioContext.destination);
+
+        const audio = this;
+        window.setInterval(function() {
+            audio.tweenStrength();
+        }, UPDATE_MS);
     }
 }

@@ -41,10 +41,6 @@ class BabylonInterface {
             "light", 
             new BABYLON.Vector3(0.5, 1, 0.5)); // light direction
 
-        //for the demo, add some rain and clouds
-        this.addRain(50, 3);
-        this.addClouds(100, 1000, 2);
-
         //create easing animations for objects
         //drop in from above
         this.dropIn = this.addTransition(

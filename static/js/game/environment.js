@@ -1,7 +1,18 @@
-class Environment {
-    constructor() {}
+const TEXTURE_FILE_RAIN = "/static/assets/rain.png";
+const TEXTURE_FILE_SNOW = "/static/assets/snow.png";
 
-    getWeatherData(callbackFun, game) {
+class Environment {
+    constructor(babInt, area_size) {
+        this.babInt = babInt;
+        this.area_size = area_size;
+
+        this.dialogue = new Dialogue();
+        this.audio = new Audio();
+    }
+
+    getWeatherData() {
+        const env = this;
+
         //start by fetching an approximate location
         $.getJSON("https://geolocation-db.com/json/")
             .done(function(location) {
@@ -10,6 +21,8 @@ class Environment {
                 //fetch semi-secure data from the server
                 $.getJSON("/secure/get/")
                     .done(function(secure) {
+
+                        //fetch openweathermap data for location
                         $.getJSON("https://api.openweathermap.org/" + 
                             "data/2.5/weather?q=" + location.city +
                             "&appid=" + secure.openWeather)
@@ -18,15 +31,47 @@ class Environment {
                                 console.log("Got weather data:");
                                 console.log(data);
 
-                                callbackFun(data, game);
+                                env.processWeatherData(data);
                             });
                     });
-
-                
             });
     }
 
-    addClouds(area_size, amount, speed) {
+    processWeatherData(data) {
+        //calculate % of time passed since sunrise
+        var current_time = new Date().getTime();
+        var sunrise_time = data.sys.sunrise;
+        var sunset_time = data.sys.sunset;
+
+        var day_period = sunset_time - sunrise_time;
+        var day_pct = (sunrise_time - current_time) / day_period;
+
+        //set sun based on day percent
+        this.setSunPercent(day_pct);
+
+        //set depth of field based on visibility
+        this.setDepthOfField(data.visibility.value);
+
+        //add clouds and rain/snow based on weather data
+        if(data.clouds) this.addClouds(data.clouds.all*2000, data.wind.speed / 2);
+        if(data.rain) this.addPrecipitation(data.rain["1h"] / 10, TEXTURE_FILE_RAIN);
+        if(data.snow) this.addPrecipitation(data.snow["1h"] / 10, TEXTURE_FILE_SNOW);
+
+        //set audio strength based on rain amount
+        if(data.rain) {
+            this.audio.playNoise();
+            this.audio.setNoiseStrength(data.rain["1h"] / 10);
+        }
+
+        //ask server for dialogue
+        this.dialogue.request(data.weather.main);
+    }
+
+    addClouds(amount, speed) {
+        //ignore if no clouds
+        if(amount == 0) { return; }
+
+        //create cloud emitter
         this.clouds = new BABYLON.ParticleSystem("clouds", amount);
 
         this.clouds.particleTexture = 
@@ -38,14 +83,14 @@ class Environment {
         this.clouds.emitter = new BABYLON.Vector3(0, 35, 0);
 
         this.clouds.minEmitBox =
-            new BABYLON.Vector3(-area_size/2, -5, -area_size/2);
+            new BABYLON.Vector3(-this.area_size/2, -5, -this.area_size/2);
         this.clouds.maxEmitBox =
-            new BABYLON.Vector3(area_size/2, 5, area_size/2);
+            new BABYLON.Vector3(this.area_size/2, 5, this.area_size/2);
 
         this.clouds.direction1 = 
-            new BABYLON.Vector3(-speed, -0.1, -speed);
+            new BABYLON.Vector3(-speed/2, -0.1, -speed/2);
         this.clouds.direction2 = 
-            new BABYLON.Vector3(speed, 0.1, speed);
+            new BABYLON.Vector3(speed/2, 0.1, speed/2);
 
         this.clouds.minSize = 15;
         this.clouds.maxSize = 30;
@@ -60,52 +105,100 @@ class Environment {
             new BABYLON.Color4(0, 0, 0, 0));
     }
 
-    addRain(area_size, row_length) { 
-        this.rainSystems = [];
-        for(var x = 0; x <= area_size; x += area_size / row_length) {
-            for(var z = 0; z <= area_size; z += area_size / row_length) {
-                var rain = new BABYLON.ParticleSystem("rain", 2);
+    addPrecipitation(row_length, precip_texture) { 
+        //ignore if row length is less than 1
+        if(row_length < 1) {
+            return;
+        }
 
-                rain.particleTexture = 
-                    new BABYLON.Texture("/static/assets/rain.png");
+        //keep row length above 1/30th of the area size
+        if(row_length < this.area_size / 30) {
+            row_length = this.area_size / 30;
+        }
 
-                rain.minLifeTime = 0.75;
-                rain.maxLifeTime = 0.75;
+        //cap row length at 1/10th of the area size
+        if(row_length > this.area_size / 10) {
+            row_length = this.area_size / 10;
+        }
 
-                rain.emitter = 
+        //add a grid of rain emitters
+        this.precipSystems = [];
+        for(var x = 0;
+            x <= this.area_size;
+            x += this.area_size / row_length) {
+
+            for(var z = 0;
+                z <= this.area_size;
+                z += this.area_size / row_length) {
+                
+                var precip = new BABYLON.ParticleSystem("precip", 2);
+
+                precip.particleTexture = 
+                    new BABYLON.Texture(precip_texture);
+
+                precip.minLifeTime = 0.75;
+                precip.maxLifeTime = 0.75;
+
+                precip.emitter = 
                     new BABYLON.Vector3(
-                        x - area_size/2,
+                        x - this.area_size/2,
                         30,
-                        z - area_size/2);
+                        z - this.area_size/2);
                 
-                rain.direction1 = new BABYLON.Vector3(0, -45, 0);
-                rain.direction2 = new BABYLON.Vector3(0, -45, 0);        
+                precip.direction1 = new BABYLON.Vector3(0, -45, 0);
+                precip.direction2 = new BABYLON.Vector3(0, -45, 0);        
 
-                rain.emitRate = 2;
+                precip.emitRate = 2;
 
-                rain.isBillboardBased = true;
-                rain.billboardMode = 2;
+                precip.isBillboardBased = true;
+                precip.billboardMode = 2;
 
-                rain.minSize = 70;
-                rain.maxSize = 75;
+                precip.minSize = 70;
+                precip.maxSize = 75;
                 
-                rain.start();
+                precip.start();
 
-                rain.addColorGradient(0.0, 
+                precip.addColorGradient(0.0, 
                     new BABYLON.Color4(0, 0, 0, 0));
-                rain.addColorGradient(0.2, 
+                precip.addColorGradient(0.2, 
                     new BABYLON.Color4(0.5, 0.5, 0.5, 1));
-                rain.addColorGradient(0.8, 
+                precip.addColorGradient(0.8, 
                     new BABYLON.Color4(0.5, 0.5, 0.5, 1));
-                rain.addColorGradient(1.0,
+                precip.addColorGradient(1.0,
                     new BABYLON.Color4(0, 0, 0, 0));
 
-                this.rainSystems[this.rainSystems.length] = rain;
+                this.precipSystems[this.precipSystems.length] = precip;
             }
         }
     }
 
-    setFog(amount) {
+    setDepthOfField(visibility) {
+        var params = {
+            chromatic_aberration: 0.1
+        };
 
+        this.lensEffect = 
+            new BABYLON.LensRenderingPipeline("lensEffect", 
+                params, this.babInt.scene, 1.0, this.babInt.camera);
+    }
+
+    setSunPercent(pct) {
+        if(!this.skyMaterial) {
+            this.skyMaterial = 
+                new BABYLON.SkyMaterial("sky", this.babInt.scene); 
+            this.skyMaterial.backFaceCulling = false;
+
+            this.skyBox = 
+                BABYLON.Mesh.CreateBox("skyBox", 1000.0, this.babInt.scene);
+            this.skyBox.material = this.skyMaterial;
+        }
+
+        var light_pct = Math.sin(Math.PI*pct);
+
+        this.skyMaterial.turbidity = Math.pow(light_pct, 1/3); 
+        this.skyMaterial.luminance = light_pct;
+
+        this.skyMaterial.inclination = light_pct;
+        this.skyMaterial.azimuth = 0.25;
     }
 }
