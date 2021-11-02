@@ -143,18 +143,18 @@ class BabylonInterface {
         this.engine.runRenderLoop(function() {
             scene.render();
         });
-		this.loadGUI(scene);
+		this.loadGUI();
     }
-	loadGUI(localScene) {
-		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", localScene);
+	loadGUI() {
+		//this line sucks and doesn't work: var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", localScene);
 		//	Code for GUI. Will allow the player to manipulate the scene.
 		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
-		//var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
+		var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
 		//this.var rakeButton =  BABYLON.GUI.Button.CreateSimpleButton("rakeBut", "Till Garden");//tentative text label in game
-		/* rockButton.width = "50px";
+		rockButton.width = "50px";
 		rockButton.height = "50px";
 		rockButton.top = "450px";
-		rockButton.left = "20px"; */
+		rockButton.left = "20px";
 		button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
@@ -167,8 +167,8 @@ class BabylonInterface {
 			alert("you did it!");
 		});//end function
 		
-		advancedTexture.addControl(button1);
-		advancedTexture.addControl(rockButton);
+		this.advancedTexture.addControl(button1);
+		this.advancedTexture.addControl(rockButton);
 		//rockButton.control.isPointerBlocker=true;
 		
 		
