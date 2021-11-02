@@ -146,7 +146,7 @@ class BabylonInterface {
 		this.loadGUI();
     }
 	loadGUI() {
-		//this line sucks and doesn't work: var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", localScene);
+		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 		//	Code for GUI. Will allow the player to manipulate the scene.
 		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
 		var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
