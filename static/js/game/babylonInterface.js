@@ -167,11 +167,19 @@ class BabylonInterface {
 			alert("you did it!");
 		});//end function
 		
-		//rockButton.onPointerUpObservable.add(function() {
-			//code here will fetch list of rocks that the player will choose from that they will place down.
-		//});
-		
 		advancedTexture.addControl(button1);
+		advancedTexture.addControl(rockButton);
+		//rockButton.control.isPointerBlocker=true;
+		
+		
+		
+		//*************Button Functions*************
+		//Misc. notes: Use game.js for model placements
+		//Cursor will highlight tiles now when hovered?
+		rockButton.onPointerUpObservable.add(function(){
+			alert("Rock selected. Please choose it's spot.");
+			
+		});//end function
 		
 		
 	}
