@@ -140,10 +140,10 @@ class BabylonInterface {
 
     startRendering() {
         const scene = this.scene;
-		this.loadGUI(scene);
         this.engine.runRenderLoop(function() {
             scene.render();
         });
+		this.loadGUI(scene);
     }
 	loadGUI(localScene) {
 		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", localScene);
@@ -158,7 +158,7 @@ class BabylonInterface {
 		button1.width = "150px"
 		button1.height = "40px";
 		button1.top = "450px";
-		button1.left = "20px";
+		button1.left = "450px";
 		button1.color = "white";
 		button1.cornerRadius = 20;
 		button1.background = "green";
@@ -176,8 +176,9 @@ class BabylonInterface {
 		//*************Button Functions*************
 		//Misc. notes: Use game.js for model placements
 		//Cursor will highlight tiles now when hovered?
-		rockButton.onPointerUpObservable.add(function(){
+		rockButton.onPointerClickObservable.add(function(){
 			alert("Rock selected. Please choose it's spot.");
+			//for now, I'm having it choose 1 rock. random will come later.
 			
 		});//end function
 		
