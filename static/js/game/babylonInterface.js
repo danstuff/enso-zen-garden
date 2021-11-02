@@ -103,9 +103,7 @@ class BabylonInterface {
                 meshCallback();
 
                 babInt.startRendering(); 
-            });
-		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", this.scene);
-		this.loadGUI();
+            })
         return this.scene;
     }
 
@@ -142,12 +140,13 @@ class BabylonInterface {
 
     startRendering() {
         const scene = this.scene;
-		
+		this.loadGUI(scene);
         this.engine.runRenderLoop(function() {
             scene.render();
         });
     }
-	loadGUI() {
+	loadGUI(localScene) {
+		var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", localScene);
 		//	Code for GUI. Will allow the player to manipulate the scene.
 		var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Place item");//button instantiation
 		//var rockButton = BABYLON.GUI.Button.CreateImageOnlyButton("rockBut", "static/assets/rockButton.png");
