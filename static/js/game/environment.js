@@ -1,5 +1,9 @@
 const TEXTURE_FILE_RAIN = "/static/assets/rain.png";
 const TEXTURE_FILE_SNOW = "/static/assets/snow.png";
+const TEXTURE_FILE_STARS = "/static/assets/stars.png";
+
+const SKYBOX_SIZE = 2000;
+const STARBOX_SIZE = 1990;
 
 class Environment {
     constructor(babInt, area_size) {
@@ -43,28 +47,20 @@ class Environment {
         var sunrise_time = data.sys.sunrise;
         var sunset_time = data.sys.sunset;
 
-        current_time = sunrise_time;
-
         var day_period = sunset_time - sunrise_time;
         var day_pct = (current_time - sunrise_time) / day_period;
 
         //set sun based on day percent
         this.setSunPercent(day_pct);
-
-        const env = this;
-        window.setInterval(function() {
-            day_pct += 0.01;
-
-            env.setSunPercent(day_pct);
-            console.log(day_pct);
-        }, 100);
-
-        this.setFog(800);
+        this.setFog(data.visibility/2);
 
         //add clouds and rain/snow based on weather data
-        if(data.clouds) this.addClouds(data.clouds.all*2000, data.wind.speed / 2);
-        if(data.rain) this.addPrecipitation(data.rain["1h"] / 10, TEXTURE_FILE_RAIN);
-        if(data.snow) this.addPrecipitation(data.snow["1h"] / 10, TEXTURE_FILE_SNOW);
+        if(data.clouds)
+            this.addClouds(data.clouds.all*2000, data.wind.speed / 2);
+        if(data.rain) 
+            this.addPrecipitation(data.rain["1h"] / 10, TEXTURE_FILE_RAIN);
+        if(data.snow)
+            this.addPrecipitation(data.snow["1h"] / 10, TEXTURE_FILE_SNOW);
 
         //set audio strength based on rain amount
         if(data.rain) {
@@ -182,14 +178,25 @@ class Environment {
     }
 
     setFog(visibility) {
-        var fmat = new BABYLON.StandardMaterial("fmat", this.babInt.scene);
-        fmat.alpha = 0.20;
+        var fmat = new BABYLON.BackgroundMaterial("fmat", this.babInt.scene);
+        fmat.backFaceCulling = false;
+        fmat.alphaMode = 2;
+        fmat.alpha = 0.01
 
-        for(var i = 0; i < 4; i++) {
-            var fbox = 
-                BABYLON.Mesh.CreateSphere("fogSphere", 32,
-                    visibility + i*10);
-            fbox.material = fmat;
+        for(var i = 0; i < 8; i++) {
+            if(visibility - i*100 < STARBOX_SIZE) {
+                var fbox = 
+                    BABYLON.Mesh.CreateSphere("fogSphere", 32,
+                        visibility - i*100);
+                fbox.material = fmat;
+                
+                const cfbox = fbox;
+                const camera = this.babInt.camera;
+
+                this.babInt.scene.registerBeforeRender(function() {
+                    cfbox.position = camera.position;
+                });
+            }
         }
     }
 
@@ -199,21 +206,45 @@ class Environment {
                 new BABYLON.SkyMaterial("sky", this.babInt.scene); 
             this.skyMaterial.backFaceCulling = false;
             this.skyMaterial.azimuth = 0.25;
+            this.skyMaterial.turbidity = 1;
 
             this.skyBox = 
-                BABYLON.Mesh.CreateBox("skyBox", 1000.0, this.babInt.scene);
+                BABYLON.Mesh.CreateBox("skyBox", SKYBOX_SIZE, 
+                    this.babInt.scene);
             this.skyBox.material = this.skyMaterial;
+
+
+            this.starMaterial =
+                new BABYLON.BackgroundMaterial("stars", this.babInt.scene);
+            this.starMaterial.diffuseTexture =
+                new BABYLON.Texture(TEXTURE_FILE_STARS);
+            this.starMaterial.backFaceCulling = false;
+            this.starMaterial.alphaMode = 10;
+            this.starMaterial.alpha = 0.1;
+
+            this.starBox = 
+                BABYLON.Mesh.CreateBox("starBox", STARBOX_SIZE,
+                    this.babInt.scene);
+            this.starBox.material = this.starMaterial;
+
+            const skyBox = this.skyBox;
+            const starBox = this.starBox;
+            const camera = this.babInt.camera;
+
+            this.babInt.scene.registerBeforeRender(function() {
+                skyBox.position = camera.position;
+                starBox.position = camera.position;
+            });
         }
 
 
-        this.skyMaterial.turbidity = Math.pow(pct, 1/3); 
-        this.skyMaterial.luminance = Math.sin(Math.PI*pct);
+        this.skyMaterial.luminance = Math.sin(Math.PI*pct)/2+.5;
 
         this.skyMaterial.inclination = pct-0.5;
         
         this.babInt.sun.direction.x = -this.skyMaterial.sunPosition.x;
         this.babInt.sun.direction.y = -this.skyMaterial.sunPosition.y;
         this.babInt.sun.direction.z = -this.skyMaterial.sunPosition.z;
-        this.babInt.sun.intensity = this.skyMaterial.luminance/2;
+        this.babInt.sun.intensity = this.skyMaterial.luminance*1.5;
     }
 }

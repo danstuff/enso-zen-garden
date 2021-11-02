@@ -39,11 +39,11 @@ class BabylonInterface {
 
         this.sun = new BABYLON.DirectionalLight(
             "sun", 
-            new BABYLON.Vector3(0, 0, 0), this.scene); // light direction
+            new BABYLON.Vector3(0, 0, 0), this.scene); 
 
         this.passiveLight = new BABYLON.HemisphericLight(
             "passive", 
-            new BABYLON.Vector3(0, 10, 0), this.scene);
+            new BABYLON.Vector3(10, 10, 10), this.scene);
         this.passiveLight.intensity = 0.25;
 
         //create easing animations for objects
