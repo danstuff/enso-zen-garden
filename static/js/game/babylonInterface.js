@@ -37,9 +37,14 @@ class BabylonInterface {
 
         this.camera.attachControl(canvas, true);
 
-        this.sun = new BABYLON.HemisphericLight(
-            "light", 
-            new BABYLON.Vector3(0.5, 1, 0.5)); // light direction
+        this.sun = new BABYLON.DirectionalLight(
+            "sun", 
+            new BABYLON.Vector3(0, 0, 0), this.scene); // light direction
+
+        this.passiveLight = new BABYLON.HemisphericLight(
+            "passive", 
+            new BABYLON.Vector3(0, 10, 0), this.scene);
+        this.passiveLight.intensity = 0.25;
 
         //create easing animations for objects
         //drop in from above
@@ -51,6 +56,16 @@ class BabylonInterface {
         this.riseUp = this.addTransition(
             "position.y", -20, 0,
             new BABYLON.CubicEase(1, 5));
+
+        //post processing
+        this.defaultPipeline = new BABYLON.DefaultRenderingPipeline(
+            "default", true, this.scene, [this.camera]);
+        this.defaultPipeline.bloomEnabled = true;
+        this.defaultPipeline.bloomWeight = 0.25;
+
+        this.defaultPipeline.imageProcessing.vignetteColor = 
+            new BABYLON.Color3(1,1,1);
+        this.defaultPipeline.imageProcessing.vignetteWeight = 0.1;
 
         const babInt = this;
 

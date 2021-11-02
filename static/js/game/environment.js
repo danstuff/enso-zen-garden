@@ -39,18 +39,27 @@ class Environment {
 
     processWeatherData(data) {
         //calculate % of time passed since sunrise
-        var current_time = new Date().getTime();
+        var current_time = new Date().getTime() / 1000;
         var sunrise_time = data.sys.sunrise;
         var sunset_time = data.sys.sunset;
 
+        current_time = sunrise_time;
+
         var day_period = sunset_time - sunrise_time;
-        var day_pct = (sunrise_time - current_time) / day_period;
+        var day_pct = (current_time - sunrise_time) / day_period;
 
         //set sun based on day percent
         this.setSunPercent(day_pct);
 
-        //set depth of field based on visibility
-        this.setDepthOfField(data.visibility.value);
+        const env = this;
+        window.setInterval(function() {
+            day_pct += 0.01;
+
+            env.setSunPercent(day_pct);
+            console.log(day_pct);
+        }, 100);
+
+        this.setFog(800);
 
         //add clouds and rain/snow based on weather data
         if(data.clouds) this.addClouds(data.clouds.all*2000, data.wind.speed / 2);
@@ -172,14 +181,16 @@ class Environment {
         }
     }
 
-    setDepthOfField(visibility) {
-        var params = {
-            chromatic_aberration: 0.1
-        };
+    setFog(visibility) {
+        var fmat = new BABYLON.StandardMaterial("fmat", this.babInt.scene);
+        fmat.alpha = 0.20;
 
-        this.lensEffect = 
-            new BABYLON.LensRenderingPipeline("lensEffect", 
-                params, this.babInt.scene, 1.0, this.babInt.camera);
+        for(var i = 0; i < 4; i++) {
+            var fbox = 
+                BABYLON.Mesh.CreateSphere("fogSphere", 32,
+                    visibility + i*10);
+            fbox.material = fmat;
+        }
     }
 
     setSunPercent(pct) {
@@ -187,18 +198,22 @@ class Environment {
             this.skyMaterial = 
                 new BABYLON.SkyMaterial("sky", this.babInt.scene); 
             this.skyMaterial.backFaceCulling = false;
+            this.skyMaterial.azimuth = 0.25;
 
             this.skyBox = 
                 BABYLON.Mesh.CreateBox("skyBox", 1000.0, this.babInt.scene);
             this.skyBox.material = this.skyMaterial;
         }
 
-        var light_pct = Math.sin(Math.PI*pct);
 
-        this.skyMaterial.turbidity = Math.pow(light_pct, 1/3); 
-        this.skyMaterial.luminance = light_pct;
+        this.skyMaterial.turbidity = Math.pow(pct, 1/3); 
+        this.skyMaterial.luminance = Math.sin(Math.PI*pct);
 
-        this.skyMaterial.inclination = light_pct;
-        this.skyMaterial.azimuth = 0.25;
+        this.skyMaterial.inclination = pct-0.5;
+        
+        this.babInt.sun.direction.x = -this.skyMaterial.sunPosition.x;
+        this.babInt.sun.direction.y = -this.skyMaterial.sunPosition.y;
+        this.babInt.sun.direction.z = -this.skyMaterial.sunPosition.z;
+        this.babInt.sun.intensity = this.skyMaterial.luminance/2;
     }
 }

@@ -31,7 +31,8 @@ class Game {
                 }
                 tiles.map(addTile);
 
-                game.garden.addEntity("succulent", 0, 0);
+                game.garden.addEntity("fruit_core", 0, 0);
+                game.garden.addEntity("fruit_leaves", 0, 0);
 				game.garden.addEntity("rock_sml_0", 4, 2);
 				game.garden.addEntity("rock_sml_1", -3, 4);
             }

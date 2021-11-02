@@ -8,6 +8,8 @@ from modules.databaseManager import DatabaseManager
 from modules.secure import APIKeys
 
 app = Flask(__name__)
+app.config["DEBUG"] = False
+app.config["TESTING"] = False
 
 dbMan = DatabaseManager()
 apiKeys = APIKeys()
