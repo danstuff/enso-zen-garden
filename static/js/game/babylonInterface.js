@@ -13,7 +13,7 @@ class BabylonInterface {
 
     createScene(canvas, meshCallback) {
         this.scene = new BABYLON.Scene(this.engine);
-        this.scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.4);
+        this.scene.clearColor = new BABYLON.Color3(0, 0, 0);
         
         this.camera = new BABYLON.ArcRotateCamera(
             "camera", 

@@ -16,7 +16,7 @@ class Game {
         //babylon setup: create a scene, camera, and sun
         this.babScene = this.babInterface.createScene(this.canvas,
             function() {
-                game.environment.setSunPercent(0);
+                game.environment.setSunPercent(1);
 
                 var gsize = 0;
                 game.garden.addTilesAndFrames(gsize, gsize);
@@ -24,7 +24,7 @@ class Game {
                 window.setInterval(function() {
                     gsize+=2;
                     game.garden.addTilesAndFrames(gsize, gsize);
-                }, 2000);
+                }, 5000);
 
                 game.garden.addEntity("fruit", 0, 0);
 

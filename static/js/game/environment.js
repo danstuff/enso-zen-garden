@@ -68,8 +68,18 @@ class Environment {
             this.audio.setNoiseStrength(data.rain["1h"] / 10);
         }
 
+        var time_phase_str = "";
+        if(day_pct > 0.00) time_phase_str = "dawn";
+        if(day_pct > 0.10) time_phase_str = "morning";
+        if(day_pct > 0.25) time_phase_str = "day";
+        if(day_pct > 0.75) time_phase_str = "evening";
+        if(day_pct > 0.90) time_phase_str = "night";
+
         //ask server for dialogue
-        this.dialogue.request(data.weather.main);
+        this.dialogue.request({ 
+            "weather" : data.weather.main,
+            "time" : time_phase_str
+        });
     }
 
     addClouds(amount, speed) {

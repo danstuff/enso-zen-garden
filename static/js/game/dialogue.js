@@ -6,9 +6,9 @@ class Dialogue {
         $("#"+dialogueID).fadeIn();
     }
 
-    request(weather_data) {
+    request(env_data) {
         //fetch dialogue from the server
-        $.post("/environment/post/", weather_data)
+        $.post("/environment/post/", env_data)
             .done(function(dialogue_str) {
 
                 //fade the dialogue out, replace it, and fade in
