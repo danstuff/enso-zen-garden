@@ -10,7 +10,7 @@ class UserInterface {
         this.garden = garden;
 
         this.userMode = UserMode.MOVING;
-        this.active_mesh_name = "";
+        this.active_entity = new Entity(this.babInt);
     }
 
     createButton(name, bx, by, action) {
@@ -27,7 +27,6 @@ class UserInterface {
         button.right = bx*134 + 10;
         button.top = by*74 + 10;
 
-
         button.onPointerUpObservable.add(action);
 
         return button;
@@ -39,13 +38,13 @@ class UserInterface {
                 this.babInt.scene.pointerX,
                 this.babInt.scene.pointerY);
 
-        if(!pickResult.hit) return;
+        if(!pickResult.hit || !this.active_entity.wasCreated()) return;
+
         var pickPt = pickResult.pickedPoint;
 
         switch(this.userMode) {
             case UserMode.PLACING:
-                this.garden.addEntity(
-                    this.active_mesh_name, pickPt.x, pickPt.z);
+                this.active_entity.copyTo(pickPt.x, pickPt.z);
                 break;
 
             case UserMode.RAKING:
@@ -59,32 +58,11 @@ class UserInterface {
                 this.babInt.scene.pointerX,
                 this.babInt.scene.pointerY);
 
-        if(!pickResult.hit || !this.active_mesh_name) return;
+        if(!pickResult.hit || !this.active_entity.wasCreated()) return;
 
         //if there's an active mesh, move it to the mouse pointer
         var pickPt = pickResult.pickedPoint;
-        
-        //create if you don't have one already
-        if(!this.mesh_insts) {
-            this.mesh_insts = this.garden.addEntity(
-                this.active_mesh_name, pickPt.x, pickPt.z);
-        }
-
-        for(var i in this.mesh_insts) {
-            var inst = this.mesh_insts[i];
-            inst.position.x = pickPt.x;
-            inst.position.z = pickPt.z;
-        }
-    }
-
-    changeActiveMesh(new_name) {
-        for(var i in this.mesh_insts) {
-            this.babInt.removeMeshInstance(
-                this.active_mesh_name, this.mesh_insts[i]);
-        }
-
-        this.active_mesh_name = new_name;
-        this.mesh_insts = null;
+        this.active_entity.setPos(pickPt.x, pickPt.z);
     }
 
     init() {
@@ -96,28 +74,28 @@ class UserInterface {
         advancedTexture.addControl(this.createButton("move", 0, 0,
             function() {
                 ui.userMode = UserMode.MOVING; 
-                ui.changeActiveMesh(null);
+                ui.active_entity.destroy();
             }
         ));  
 
         advancedTexture.addControl(this.createButton("rake", 0, 1,
             function() {
                 ui.userMode = UserMode.RAKING; 
-                ui.changeActiveMesh("rake");
+                ui.active_entity.create("rake", 0, 0);
             }
         ));  
 
         advancedTexture.addControl(this.createButton("pebbles", 0, 2,
             function() {
                 ui.userMode = UserMode.PLACING; 
-                ui.changeActiveMesh("rock_sml_0");
+                ui.active_entity.create("rock_sml_0", 0, 0);
             }
         ));
 
         advancedTexture.addControl(this.createButton("flower", 0, 3,
             function() {
                 ui.userMode = UserMode.PLACING; 
-                ui.changeActiveMesh("flower");
+                ui.active_entity.create("flower");
             }
         ));  
 

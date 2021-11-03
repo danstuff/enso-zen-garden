@@ -13,6 +13,7 @@ const FrameNames = [
 ];
 
 const EntityNames = {
+    "" : [],
     "flower" : [ "flower_core", "flower_leaves" ],
     "succulent" : [ "succulent" ]
 };
@@ -24,6 +25,67 @@ const Cardinal = {
     WEST : 270
 };
 
+class Entity {
+    constructor(babInt) {
+        this.babInt = babInt;
+
+        this.name = "";
+        this.instances = [];
+    }
+
+    create(entity_name, x, z) {
+        this.destroy();
+
+        this.name = entity_name;
+
+        var pos = new BABYLON.Vector3(x, 0, z);
+
+        var rot = new BABYLON.Vector3(0, Math.random()*Math.PI*2, 0);   
+        
+        //add all sub-meshes for the entity
+        var mesh_names = EntityNames[entity_name];
+        for(var i in mesh_names) {
+            var inst = this.babInt.createMeshInstance(
+                mesh_names[i], pos, rot, true);
+
+            this.instances.push(inst);
+        }
+    }
+
+    destroy() {
+        var mesh_names = EntityNames[this.name];
+        for(var i in mesh_names) {
+            this.babInt.removeMeshInstance(
+                mesh_names[i], this.instances[i]);
+        }
+
+        this.name = "";
+        this.instances = [];
+    }
+
+    copyTo(x, z) {
+        var e = new Entity(this.babInt);
+        e.create(this.name, x, z);
+        return e;
+    }
+
+    wasCreated() {
+        return this.name && this.instances.length > 0;
+    }
+
+    setPos(x, z) {
+        var mesh_names = EntityNames[this.name];
+        for(var i in mesh_names) {
+
+            var inst = this.babInt.getMeshInstance(
+                mesh_names[i], this.instances[i]);
+
+            inst.position.x = x;
+            inst.position.z = z;
+        }
+    }
+}
+
 class Garden {
     /**
      * @param {BabylonInterface} babInt
@@ -34,26 +96,6 @@ class Garden {
         
         /** @type {BabylonInterface} */
         this.babInt = babInt;
-    }
-
-    addEntity(entity_name, x, z) {
-        var pos = new BABYLON.Vector3(x, 0, z);
-        var rot = new BABYLON.Vector3(0, Math.random()*Math.PI*2, 0);   
-        
-        var instances = [];  
-        console.log(entity_name);
-    
-        //add all sub-meshes for the entity
-        for(var i in EntityNames[entity_name]) {
-            var mesh_name = EntityNames[entity_name][i];
-
-            var inst = this.babInt.createMeshInstance(
-                mesh_name, pos, rot, true);
-
-            instances.push(inst);
-        }
-
-        return instances;
     }
 
     addFrame(mesh_name, tx, tz, direction) {

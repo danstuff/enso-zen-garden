@@ -24,15 +24,13 @@ class Game {
                 var gsize = 0;
                 game.garden.addTilesAndFrames(gsize, gsize);
 
+                //for demo, gradually increase size
                 window.setInterval(function() {
+                    if(gsize > 10) return;
+
                     gsize+=2;
                     game.garden.addTilesAndFrames(gsize, gsize);
                 }, 10000);
-
-                game.garden.addEntity("fruit", 0, 0);
-
-				game.garden.addEntity("rock_sml_0", 4, 2);
-				game.garden.addEntity("rock_sml_1", -3, 4);
 
                 game.userInterface.init();
 

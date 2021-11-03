@@ -57,16 +57,6 @@ class BabylonInterface {
         this.scaleUpY = this.addTransition("scaling.y", 0, 1);
         this.scaleUpZ = this.addTransition("scaling.z", 0, 1);
 
-        //UI texture
-
-        //post processing
-        this.defaultPipeline = new BABYLON.DefaultRenderingPipeline(
-            "default", true, this.scene, [this.camera]);
-
-        this.defaultPipeline.imageProcessing.vignetteColor = 
-            new BABYLON.Color3(0,0,0);
-        this.defaultPipeline.imageProcessing.vignetteWeight = 0.25;
-
         const babInt = this;
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
@@ -142,7 +132,7 @@ class BabylonInterface {
         var mesh = this.getMesh(name);
         if(!mesh) return null;
 
-        var inst = mesh.createInstance(name);
+        var inst = mesh.createInstance(name+"_instance");
         inst.isVisible = true;
         inst.position = pos;
         inst.rotation = rot;
@@ -152,9 +142,16 @@ class BabylonInterface {
             inst, 
             [ fromTop ? this.dropIn : this.riseUp, 
               this.scaleUpX, this.scaleUpY, this.scaleUpZ ],
-            0, 1*ANIMATION_FRAMERATE);
+            0, 1*ANIMATION_FRAMERATE, true);
 
-        return inst;
+        return mesh.instances.indexOf(inst);
+    }
+
+    getMeshInstance(mesh_name, index) {
+        var mesh = this.getMesh(mesh_name);
+        if(!mesh) return;
+
+        return mesh.instances[index];
     }
 
     removeAllMeshInstances(mesh_name) {
