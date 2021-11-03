@@ -13,7 +13,7 @@ class UserInterface {
 
     createButton(name, bx, by) {
         var button = BABYLON.GUI.Button.CreateSimpleButton(name, name);
-        button.width = "64px";
+        button.width = "128px";
         button.height = "64px";
         button.margin = 20;
         button.thickness = 4;
@@ -22,7 +22,7 @@ class UserInterface {
         
         button.horizontalAlignment = 1;
         button.verticalAlignment = 0;
-        button.right = bx*74 + 10;
+        button.right = bx*134 + 10;
         button.top = by*74 + 10;
 
 
@@ -38,7 +38,7 @@ class UserInterface {
 
         advancedTexture.addControl(this.createButton("move", 0, 0));  
         advancedTexture.addControl(this.createButton("rake", 0, 1));  
-        advancedTexture.addControl(this.createButton("rock", 0, 2));  
-        advancedTexture.addControl(this.createButton("plant", 0, 3));  
+        advancedTexture.addControl(this.createButton("pebbles", 0, 2));  
+        advancedTexture.addControl(this.createButton("flower", 0, 3));  
     }
 }
