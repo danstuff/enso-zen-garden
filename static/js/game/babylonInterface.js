@@ -20,7 +20,7 @@ class BabylonInterface {
             -Math.PI/2,                     // starting horizontal rotation
             Math.PI/2.5,                    // starting vertical rotation
             15,                              // radius
-            new BABYLON.Vector3(0, 1.5, 0));    // camera point to look at
+            new BABYLON.Vector3(0, 2, 0));    // camera point to look at
 
         //zoom settings
         this.camera.lowerRadiusLimit = 6;
@@ -48,14 +48,14 @@ class BabylonInterface {
 
         //create easing animations for objects
         //drop in from above
-        this.dropIn = this.addTransition(
-            "position.y", 20, .6,
-            new BABYLON.BounceEase(1, 5));
+        this.dropIn = this.addTransition("position.y", 20, .6);
         
         //rise up from below
-        this.riseUp = this.addTransition(
-            "position.y", -20, 0,
-            new BABYLON.CubicEase(1, 5));
+        this.riseUp = this.addTransition("position.y", -20, 0);
+
+        this.scaleUpX = this.addTransition("scaling.x", 0, 1);
+        this.scaleUpY = this.addTransition("scaling.y", 0, 1);
+        this.scaleUpZ = this.addTransition("scaling.z", 0, 1);
 
         //post processing
         this.defaultPipeline = new BABYLON.DefaultRenderingPipeline(
@@ -64,8 +64,8 @@ class BabylonInterface {
         this.defaultPipeline.bloomWeight = 0.25;
 
         this.defaultPipeline.imageProcessing.vignetteColor = 
-            new BABYLON.Color3(1,1,1);
-        this.defaultPipeline.imageProcessing.vignetteWeight = 0.1;
+            new BABYLON.Color3(0,0,0);
+        this.defaultPipeline.imageProcessing.vignetteWeight = 0.25;
 
         const babInt = this;
 
@@ -95,8 +95,8 @@ class BabylonInterface {
         });
     }
 
-    addTransition(property, y0, y1, easeFun) {
-        const transition = new BABYLON.Animation(
+    addTransition(property, y0, y1) {
+        var transition = new BABYLON.Animation(
             "transition",
             property,
             ANIMATION_FRAMERATE,
@@ -117,6 +117,7 @@ class BabylonInterface {
 
         transition.setKeys(keys);
 
+        var easeFun = new BABYLON.CubicEase(1, 5);
         easeFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
         transition.setEasingFunction(easeFun);
 
@@ -130,13 +131,11 @@ class BabylonInterface {
             }
         }
 
-        if(!mesh) {
-            console.log(
-                "WARNING - Ignored attempt to access undefined mesh " +
-                name);
-            console.log(this.meshes);
-            return null;
-        }
+        console.log(
+            "WARNING - Ignored attempt to access undefined mesh " +
+            name);
+        console.log(this.meshes);
+        return null;
     }
 
     createMeshInstance(name, pos, rot, fromTop = true) {
@@ -150,19 +149,22 @@ class BabylonInterface {
 
         //animate the mesh into position
         this.scene.beginDirectAnimation(
-            inst,
-            [fromTop ? this.dropIn : this.riseUp],
+            inst, 
+            [ fromTop ? this.dropIn : this.riseUp, 
+              this.scaleUpX, this.scaleUpY, this.scaleUpZ ],
             0, 1*ANIMATION_FRAMERATE);
 
         return inst;
     }
 
-    removeMeshInstance(inst) {
-        var mesh = this.getMesh(inst.name);
-        if(!mesh) return null;
+    removeMeshInstances(mesh_name) {
+        var mesh = this.getMesh(mesh_name);
+        if(!mesh) return;
 
-        var index = mesh.instances.indexOf(inst);
-
-        if(index > -1) mesh.instances.splice(index, 1);
+        while(mesh.instances.length > 0) {
+            for(var i in mesh.instances) {
+                mesh.instances[i].dispose();
+            }
+        }
     }
 }

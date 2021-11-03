@@ -51,7 +51,7 @@ class Environment {
         var day_pct = (current_time - sunrise_time) / day_period;
 
         //set sun based on day percent
-        this.setSunPercent(0);
+        this.setSunPercent(day_pct);
         this.setFog(data.visibility/2);
 
         //add clouds and rain/snow based on weather data

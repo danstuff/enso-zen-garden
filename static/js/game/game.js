@@ -10,19 +10,28 @@ class Game {
         this.garden = new Garden(this.babInterface);
     }
 
-    init() {
+    init(callback) {
         const game = this;
 
         //babylon setup: create a scene, camera, and sun
         this.babScene = this.babInterface.createScene(this.canvas,
             function() {
-                game.garden.createTileArray(10);
+                game.environment.setSunPercent(0);
 
-                game.garden.addEntity("fruit_core", 0, 0);
-                game.garden.addEntity("fruit_leaves", 0, 0);
+                var gsize = 0;
+                game.garden.addTilesAndFrames(gsize, gsize);
+
+                window.setInterval(function() {
+                    gsize+=2;
+                    game.garden.addTilesAndFrames(gsize, gsize);
+                }, 2000);
+
+                game.garden.addEntity("fruit", 0, 0);
 
 				game.garden.addEntity("rock_sml_0", 4, 2);
-				game.garden.addObject("rock_sml_1", -3, 4);
+				game.garden.addEntity("rock_sml_1", -3, 4);
+
+                callback();
             }
         );
 
