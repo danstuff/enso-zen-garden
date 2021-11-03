@@ -57,11 +57,11 @@ class BabylonInterface {
         this.scaleUpY = this.addTransition("scaling.y", 0, 1);
         this.scaleUpZ = this.addTransition("scaling.z", 0, 1);
 
+        //UI texture
+
         //post processing
         this.defaultPipeline = new BABYLON.DefaultRenderingPipeline(
             "default", true, this.scene, [this.camera]);
-        this.defaultPipeline.bloomEnabled = true;
-        this.defaultPipeline.bloomWeight = 0.25;
 
         this.defaultPipeline.imageProcessing.vignetteColor = 
             new BABYLON.Color3(0,0,0);
