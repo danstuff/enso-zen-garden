@@ -10,6 +10,7 @@ from modules.secure import APIKeys
 app = Flask(__name__)
 app.config["DEBUG"] = False
 app.config["TESTING"] = False
+app.config["SERVER_NAME"] = "0.0.0.0:5000"
 
 dbMan = DatabaseManager()
 apiKeys = APIKeys()

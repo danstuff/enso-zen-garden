@@ -15,7 +15,8 @@ const FrameNames = [
 const EntityNames = {
     "" : [],
     "flower" : [ "flower_core", "flower_leaves" ],
-    "succulent" : [ "succulent" ]
+    "succulent" : [ "succulent" ],
+    "rake_straight" : [ "rake_straight", "rake_straight_caps" ]
 };
 
 const Cardinal = {
@@ -92,7 +93,7 @@ class Garden {
      */
     constructor(babInt) {
         // array to hold all current tile objects
-        this.sand = [];
+        this.sands = [];
         
         /** @type {BabylonInterface} */
         this.babInt = babInt;
@@ -111,14 +112,45 @@ class Garden {
         var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
         
         var inst = this.babInt.createMeshInstance(
-            mesh_name, pos, rot, false);
-        this.sand.push(inst);
+            mesh_name, pos, rot, false, true);
+        this.sands.push({ name : mesh_name, instance : inst });
+    }
+
+    changeSandAt(x, z, new_mesh_name, direction) {
+        for(var i in this.sands) {
+            var sand = this.sands[i];
+            var sand_inst = 
+                this.babInt.getMeshInstance(sand.name, sand.instance);
+
+            if(!sand_inst) {
+                console.log(sand);
+            }
+
+            var pos = sand_inst.position;
+            var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
+            
+            //if coordinates are within the tile's bounds
+            var half_tile = TILE_LEN/2;
+            if(pos.x - half_tile <= x && x < pos.x + half_tile &&
+                pos.z - half_tile <= z  && z < pos.z + half_tile) {
+
+                //swap the tile instance for a new one
+                this.babInt.removeMeshInstance(sand.name, sand.instance);
+                sand = [];
+
+                var inst = this.babInt.createMeshInstance(
+                    new_mesh_name, pos, rot, false, true);
+
+                this.sands[i] = { name : new_mesh_name, instance : inst };
+                break;
+            }
+        }
     }
 
     /**
      * add scene of tiles and frames according to the number of tiles
      */
-    addTilesAndFrames(min_row, max_row) {
+    addSandAndFrames(min_row, max_row) {
         var half_max = Math.floor(max_row/2);
         var half_min = Math.floor(min_row/2);
 

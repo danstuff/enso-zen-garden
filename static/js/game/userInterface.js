@@ -11,6 +11,8 @@ class UserInterface {
 
         this.userMode = UserMode.MOVING;
         this.active_entity = new Entity(this.babInt);
+        this.rake_sand_name = "";
+        this.rake_direction = Cardinal.NORTH;
     }
 
     createButton(name, bx, by, action) {
@@ -48,6 +50,9 @@ class UserInterface {
                 break;
 
             case UserMode.RAKING:
+                this.garden.changeSandAt(
+                    pickPt.x, pickPt.z,
+                    this.rake_sand_name, this.rake_direction);
                 break;
         }
     }
@@ -81,7 +86,8 @@ class UserInterface {
         advancedTexture.addControl(this.createButton("rake", 0, 1,
             function() {
                 ui.userMode = UserMode.RAKING; 
-                ui.active_entity.create("rake", 0, 0);
+                ui.active_entity.create("rake_straight", 0, 0);
+                ui.rake_sand_name = "sand_straight";
             }
         ));  
 
@@ -95,7 +101,7 @@ class UserInterface {
         advancedTexture.addControl(this.createButton("flower", 0, 3,
             function() {
                 ui.userMode = UserMode.PLACING; 
-                ui.active_entity.create("flower");
+                ui.active_entity.create("flower", 0, 0);
             }
         ));  
 

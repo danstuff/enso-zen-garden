@@ -22,14 +22,14 @@ class Game {
                 game.environment.vfx.setSunPercent(1);
 
                 var gsize = 0;
-                game.garden.addTilesAndFrames(gsize, gsize);
+                game.garden.addSandAndFrames(gsize, gsize);
 
                 //for demo, gradually increase size
                 window.setInterval(function() {
                     if(gsize > 10) return;
 
                     gsize+=2;
-                    game.garden.addTilesAndFrames(gsize, gsize);
+                    game.garden.addSandAndFrames(gsize, gsize);
                 }, 10000);
 
                 game.userInterface.init();

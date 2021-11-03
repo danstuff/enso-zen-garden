@@ -128,7 +128,7 @@ class BabylonInterface {
         return null;
     }
 
-    createMeshInstance(name, pos, rot, fromTop = true) {
+    createMeshInstance(name, pos, rot, fromTop = true, pickable = false) {
         var mesh = this.getMesh(name);
         if(!mesh) return null;
 
@@ -136,6 +136,7 @@ class BabylonInterface {
         inst.isVisible = true;
         inst.position = pos;
         inst.rotation = rot;
+        inst.isPickable = pickable;
 
         //animate the mesh into position
         this.scene.beginDirectAnimation(
@@ -149,7 +150,7 @@ class BabylonInterface {
 
     getMeshInstance(mesh_name, index) {
         var mesh = this.getMesh(mesh_name);
-        if(!mesh) return;
+        console.log(mesh.instances);
 
         return mesh.instances[index];
     }
@@ -172,7 +173,7 @@ class BabylonInterface {
         var length0 = mesh.instances.length;
 
         while(mesh.instances.length >= length0) {
-            inst.dispose();
+            mesh.instances[inst].dispose();
         }
     }
 }
