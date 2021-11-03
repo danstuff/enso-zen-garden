@@ -45,7 +45,7 @@ Now, we can activate our virtual environment like so:
 
 Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not for the entire system. Type this to install the required libraries:
 
-    pip install flask sqlalchemy scikit-learn
+    pip install flask sqlalchemy
 
 ## Running the Project
 
