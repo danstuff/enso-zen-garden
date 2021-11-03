@@ -5,15 +5,17 @@ from flask import send_file
 from flask import request
 
 from modules.databaseManager import DatabaseManager
-from modules.secure import APIKeys
+from modules.secure import APIKeys, ServerInfo
+
+dbMan = DatabaseManager()
+apiKeys = APIKeys()
+serverInfo = ServerInfo()
 
 app = Flask(__name__)
 app.config["DEBUG"] = False
 app.config["TESTING"] = False
-app.config["SERVER_NAME"] = "0.0.0.0:5000"
+app.config["SERVER_NAME"] = serverInfo.address;
 
-dbMan = DatabaseManager()
-apiKeys = APIKeys()
 
 #render the base template if you're on the index
 @app.route("/", methods=['GET'])
