@@ -129,20 +129,21 @@ class BabylonInterface {
                 return this.meshes[i];
             }
         }
-    }
-
-    createMeshInstance(name, pos, rot, fromTop = true) {
-        var mesh = this.getMesh(name);
 
         if(!mesh) {
             console.log(
                 "WARNING - Ignored attempt to access undefined mesh " +
                 name);
             console.log(this.meshes);
-            return;
+            return null;
         }
+    }
 
-        var inst = mesh.createInstance(name+"_instance");
+    createMeshInstance(name, pos, rot, fromTop = true) {
+        var mesh = this.getMesh(name);
+        if(!mesh) return null;
+
+        var inst = mesh.createInstance(name);
         inst.isVisible = true;
         inst.position = pos;
         inst.rotation = rot;
@@ -152,6 +153,16 @@ class BabylonInterface {
             inst,
             [fromTop ? this.dropIn : this.riseUp],
             0, 1*ANIMATION_FRAMERATE);
+
+        return inst;
     }
 
+    removeMeshInstance(inst) {
+        var mesh = this.getMesh(inst.name);
+        if(!mesh) return null;
+
+        var index = mesh.instances.indexOf(inst);
+
+        if(index > -1) mesh.instances.splice(index, 1);
+    }
 }
