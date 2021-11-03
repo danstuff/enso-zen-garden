@@ -9,11 +9,11 @@ class Game {
         this.environment = new Environment(this.babInterface);
         this.garden = new Garden(this.babInterface);
 
-        this.userInterface = new UserInterface(this.babInterface);
+        this.userInterface = new UserInterface(
+            this.babInterface, this.garden);
     }
 
     init(callback) {
-
         const game = this;
 
         //babylon setup: create a scene, camera, and sun
@@ -39,13 +39,8 @@ class Game {
                 callback();
             }
         );
-
-        //enable brownian noise (silent until wind speed is set)
-        const audio = this.audio;
-        const dialogue = this.dialogue;
-
+        
         //get environmental data from various APIs
         this.environment.getWeatherData();
-
     }
 }

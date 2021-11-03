@@ -157,7 +157,7 @@ class BabylonInterface {
         return inst;
     }
 
-    removeMeshInstances(mesh_name) {
+    removeAllMeshInstances(mesh_name) {
         var mesh = this.getMesh(mesh_name);
         if(!mesh) return;
 
@@ -165,6 +165,17 @@ class BabylonInterface {
             for(var i in mesh.instances) {
                 mesh.instances[i].dispose();
             }
+        }
+    }
+
+    removeMeshInstance(mesh_name, inst) {
+        var mesh = this.getMesh(mesh_name);
+        if(!mesh) return;
+
+        var length0 = mesh.instances.length;
+
+        while(mesh.instances.length >= length0) {
+            inst.dispose();
         }
     }
 }

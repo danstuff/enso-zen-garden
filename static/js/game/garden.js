@@ -13,7 +13,7 @@ const FrameNames = [
 ];
 
 const EntityNames = {
-    "fruit" : [ "fruit_core", "fruit_leaves" ],
+    "flower" : [ "flower_core", "flower_leaves" ],
     "succulent" : [ "succulent" ]
 };
 
@@ -31,25 +31,29 @@ class Garden {
     constructor(babInt) {
         // array to hold all current tile objects
         this.sand = [];
-        this.entities = [];
         
         /** @type {BabylonInterface} */
         this.babInt = babInt;
     }
 
-    addEntity(entity_name, x, z, yrot) {
+    addEntity(entity_name, x, z) {
         var pos = new BABYLON.Vector3(x, 0, z);
         var rot = new BABYLON.Vector3(0, Math.random()*Math.PI*2, 0);   
         
+        var instances = [];  
+        console.log(entity_name);
+    
         //add all sub-meshes for the entity
         for(var i in EntityNames[entity_name]) {
             var mesh_name = EntityNames[entity_name][i];
 
             var inst = this.babInt.createMeshInstance(
                 mesh_name, pos, rot, true);
-            
-            this.entities.push(inst);
+
+            instances.push(inst);
         }
+
+        return instances;
     }
 
     addFrame(mesh_name, tx, tz, direction) {
@@ -89,8 +93,8 @@ class Garden {
         }
 
         // remove any prev existing frames
-        this.babInt.removeMeshInstances("frame_edge");
-        this.babInt.removeMeshInstances("frame_corner");
+        this.babInt.removeAllMeshInstances("frame_edge");
+        this.babInt.removeAllMeshInstances("frame_corner");
         
         // add 4 corner frames
         this.addFrame("frame_corner", -half_max, -half_max, Cardinal.NORTH);
