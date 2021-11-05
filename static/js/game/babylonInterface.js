@@ -53,12 +53,12 @@ class BabylonInterface {
 
         //create easing animations for objects
         //drop in from above
-        this.dropIn = this.addTransition("position.y", 20, .6);
+        this.dropIn = this.makeTransition("position.y", 20, .6);
         
         //scale up from 0
-        this.scaleUpX = this.addTransition("scaling.x", 0, 1);
-        this.scaleUpY = this.addTransition("scaling.y", 0, 1);
-        this.scaleUpZ = this.addTransition("scaling.z", 0, 1);
+        this.scaleUpX = this.makeTransition("scaling.x", 0, 1);
+        this.scaleUpY = this.makeTransition("scaling.y", 0, 1);
+        this.scaleUpZ = this.makeTransition("scaling.z", 0, 1);
 
         const babInt = this;
 
@@ -88,7 +88,7 @@ class BabylonInterface {
         });
     }
 
-    addTransition(property, y0, y1) {
+    makeTransition(property, y0, y1, secs = 1) {
         var transition = new BABYLON.Animation(
             "transition",
             property,
@@ -104,17 +104,25 @@ class BabylonInterface {
         });
 
         keys.push({
-            frame: 1*ANIMATION_FRAMERATE,
+            frame: secs*ANIMATION_FRAMERATE,
             value: y1
         });
 
         transition.setKeys(keys);
+
+        transition.stored_duration = secs * ANIMATION_FRAMERATE;
 
         var easeFun = new BABYLON.CubicEase(1, 5);
         easeFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
         transition.setEasingFunction(easeFun);
 
         return transition;
+    }
+
+    runTransitions(instance, transitions) {
+        this.scene.beginDirectAnimation(
+            instance, transitions,
+            0, transitions[0].stored_duration, true);
     }
 
     getMesh(name) {
@@ -142,12 +150,10 @@ class BabylonInterface {
         inst.isPickable = pickable;
 
         //animate the mesh into position
-        this.scene.beginDirectAnimation(
-            inst, 
+        this.runTransitions(inst, 
             fromTop ? 
             [ this.dropIn, this.scaleUpX, this.scaleUpY, this.scaleUpZ ] : 
-            [ this.scaleUpX, this.scaleUpZ ],
-            0, 1*ANIMATION_FRAMERATE, true);
+            [ this.scaleUpX, this.scaleUpZ ]);
 
         return mesh.instances.indexOf(inst);
     }

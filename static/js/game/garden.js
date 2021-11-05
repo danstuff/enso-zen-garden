@@ -89,8 +89,12 @@ class Entity {
                 return;
             }
 
-            inst.position.x = x;
-            inst.position.z = z;
+            var easeX = this.babInt.makeTransition(
+                "position.x", inst.position.x, x, 0.25);
+            var easeZ = this.babInt.makeTransition(
+                "position.z", inst.position.z, z, 0.25);
+
+            this.babInt.runTransitions(inst, [ easeX, easeZ ]);
         }
     }
 
@@ -101,7 +105,12 @@ class Entity {
             var inst = this.babInt.getMeshInstance(
                 mesh_names[i], this.instances[i]);
 
-            inst.rotation.y = direction * Math.PI/180;
+            var y = direction * Math.PI/180;
+
+            var easeY = this.babInt.makeTransition(
+                "rotation.y", inst.rotation.y, y, 0.25);
+
+            this.babInt.runTransitions(inst, [ easeY ]);
         }
     }
 }

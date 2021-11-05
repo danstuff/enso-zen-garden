@@ -104,13 +104,13 @@ class UserInterface {
                 const ui = this;
                 this.processTap(
                     function() {
+                        ui.rake_direction += 90;
+                        ui.rake_entity.setDir(ui.rake_direction);
+                    },
+                    function() {
                         ui.garden.changeSandAt(
                             pickPt.x, pickPt.z,
                             ui.rake_sand_name, ui.rake_direction);
-                    },
-                    function() {
-                        ui.rake_direction += 90;
-                        ui.rake_entity.setDir(ui.rake_direction);
                     });
                 break;
             default:
