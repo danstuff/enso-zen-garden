@@ -1,15 +1,15 @@
-# Zen Garden
+# Enso - A Virtual Zen Garden
 
 ## Getting Started 
-
-As a prerequisite, you must obtain the 'secure.py' file from the "Capping Shared Folder" google drive.
 
 To use this project, you must first have a be in a terminal environment with python 3.0 or greater installed. 
 
 From the terminal, use `cd` to navigate to where you want to download the project. Enter the following into the terminal to download the GitHub repository and enter it:
 
     git clone https://github.com/ZenGardenCapping/Zen-Garden-Capping.git
-    cd REPO_NAME
+    cd Zen-Garden-Capping/
+
+As a prerequisite, you must obtain the 'secure.py' file from the "Capping Shared Folder" google drive and copy it to the `Zen-Garden-Capping/modules` folder.
 
 ## Installation (macOS/Linux)
 
