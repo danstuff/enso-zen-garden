@@ -1,75 +1,49 @@
 # Zen Garden
 
-## Getting Started (macOS/Linux)
+## Getting Started 
+
 As a prerequisite, you must obtain the 'secure.py' file from the "Capping Shared Folder" google drive.
 
 To use this project, you must first have a be in a terminal environment with python 3.0 or greater installed. 
 
 From the terminal, use `cd` to navigate to where you want to download the project. Enter the following into the terminal to download the GitHub repository and enter it:
 
-    git clone https://github.com/ORG_NAME/REPO_NAME
+    git clone https://github.com/ZenGardenCapping/Zen-Garden-Capping.git
     cd REPO_NAME
 
+## Installation (macOS/Linux)
 
 Next, you need to create a python virtual environment (venv) in order to install Flask. Enter the following into your command line to create the environment:
 
     python3 -m venv venv
 
-Now, we can activate our virtual environment like so:
+Now, we can activate our virtual environment like so. You will need to do this every time you open a new terminal window:
 
     . venv/bin/activate
 
-Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install the required libraries:
+Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install the required libraries. You only need to do this once per virtual environment:
 
-    pip install flask sqlalchemy pyglet
+    pip install flask sqlalchemy gunicorn
 
-## Getting Started (Windows)
-
-As a prerequisite, you must obtain the 'secure.py' file from the "Capping Shared Folder" google drive.
-
-To use this project, you must first have a be in the Command Prompt with python 3.0 or greater installed. 
-
-From the command line, use `cd` to navigate to where you want to download the project. Enter the following to download the GitHub repository and enter it:
-
-    git clone https://github.com/ORG_NAME/REPO_NAME
-    cd REPO_NAME
-
+## Installation (Windows)
 
 Next, you need to create a python virtual environment (venv) in order to install Flask. Enter the following into your command line to create the environment:
 
     py -3 -m venv venv
 
-Now, we can activate our virtual environment like so:
+Now, we can activate our virtual environment like so. You will need to do this every time you open a new terminal window:
 
     venv\Scripts\activate
 
-Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not for the entire system. Type this to install the required libraries:
+Now that the virtual environment is activated, any Python packages we install (like Flask) will be installed just for this project, and not on the entire system. Type this to install the required libraries. You only need to do this once per virtual environment:
 
-    pip install flask sqlalchemy
+    pip install flask sqlalchemy gunicorn
 
 ## Running the Project
 
-To run the project, you must first be in the command line with your python virtual environment activated. Every time you open a new command window, make sure to re-activate it like so:
+To run the project, first enter your virtual environment. Then start a Gunicorn server using the following command:
 
-On Linux/macOS:
+    gunicorn -b 0.0.0.0:5000 routes:app
 
-    . venv/bin/activate
-
-On Windows:
-
-    venv\Scripts\activate
-
-Now you can start the server:
-
-On Linux/macOS:
-
-    export FLASK_APP=routes
-    flask run
-
-On Windows:
-
-    set FLASK_APP=routes
-    flask run
-
-Flask should respond with an IP address that you can enter into your browser to view the app.
+Gunicorn should respond with an IP address that you can enter into your browser to view the app.
     
