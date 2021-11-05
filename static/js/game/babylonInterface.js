@@ -1,17 +1,21 @@
 const ANIMATION_FRAMERATE = 60;
 
+const PANNING_OFF = new BABYLON.Vector3(0,0,0);
+const PANNING_HOR = new BABYLON.Vector3(1,0,1);
+
 class BabylonInterface {
 
     constructor(canvas) {
         const engine = new BABYLON.Engine(canvas, true);
 
+        this.canvas = canvas;
         this.engine = engine;
         window.addEventListener("resize", function() {
             engine.resize();
         });
     }
 
-    createScene(canvas, meshCallback) {
+    createScene(meshCallback) {
         this.scene = new BABYLON.Scene(this.engine);
         this.scene.clearColor = new BABYLON.Color3(0, 0, 0);
         
@@ -30,12 +34,13 @@ class BabylonInterface {
         this.camera.lowerBetaLimit = 0.5;
         this.camera.upperBetaLimit = 1.6;
 
-        //panning settings
-        this.camera.panningAxis = new BABYLON.Vector3(1, 0, 1);
+        //start in movement mode
+        this.camera.panningAxis = PANNING_HOR;
+        this.camera.panningSensibility = 500;
 
         this.camera.wheelPrecision = 20;
 
-        this.camera.attachControl(canvas, true);
+        this.camera.attachControl(this.canvas, true);
 
         this.sun = new BABYLON.DirectionalLight(
             "sun", 
@@ -50,9 +55,7 @@ class BabylonInterface {
         //drop in from above
         this.dropIn = this.addTransition("position.y", 20, .6);
         
-        //rise up from below
-        this.riseUp = this.addTransition("position.y", -20, 0);
-
+        //scale up from 0
         this.scaleUpX = this.addTransition("scaling.x", 0, 1);
         this.scaleUpY = this.addTransition("scaling.y", 0, 1);
         this.scaleUpZ = this.addTransition("scaling.z", 0, 1);
@@ -141,8 +144,9 @@ class BabylonInterface {
         //animate the mesh into position
         this.scene.beginDirectAnimation(
             inst, 
-            [ fromTop ? this.dropIn : this.riseUp, 
-              this.scaleUpX, this.scaleUpY, this.scaleUpZ ],
+            fromTop ? 
+            [ this.dropIn, this.scaleUpX, this.scaleUpY, this.scaleUpZ ] : 
+            [ this.scaleUpX, this.scaleUpZ ],
             0, 1*ANIMATION_FRAMERATE, true);
 
         return mesh.instances.indexOf(inst);
@@ -150,8 +154,6 @@ class BabylonInterface {
 
     getMeshInstance(mesh_name, index) {
         var mesh = this.getMesh(mesh_name);
-        console.log(mesh.instances);
-
         return mesh.instances[index];
     }
 
@@ -175,5 +177,13 @@ class BabylonInterface {
         while(mesh.instances.length >= length0) {
             mesh.instances[inst].dispose();
         }
+    }
+
+    enableCamera() {
+        this.camera.attachControl(this.canvas, true);
+    }
+
+    disableCamera() {
+        this.camera.detachControl();
     }
 }

@@ -17,7 +17,7 @@ class Game {
         const game = this;
 
         //babylon setup: create a scene, camera, and sun
-        this.babScene = this.babInterface.createScene(this.canvas,
+        this.babScene = this.babInterface.createScene(
             function() {
                 game.environment.vfx.setSunPercent(1);
 

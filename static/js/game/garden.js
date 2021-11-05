@@ -1,5 +1,7 @@
 const TILE_LEN = 6;  // size of one tile is 6
 
+const GARDEN_MAX_SIZE = 200;
+
 const SandNames = [
     "sand_big_curve",
     "sand_sml_curve",
@@ -34,14 +36,15 @@ class Entity {
         this.instances = [];
     }
 
-    create(entity_name, x, z) {
+    create(entity_name, x, z, direction = -1) {
         this.destroy();
 
         this.name = entity_name;
 
         var pos = new BABYLON.Vector3(x, 0, z);
 
-        var rot = new BABYLON.Vector3(0, Math.random()*Math.PI*2, 0);   
+        if(direction == -1) direction = Math.random()*360;
+        var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
         
         //add all sub-meshes for the entity
         var mesh_names = EntityNames[entity_name];
@@ -80,9 +83,25 @@ class Entity {
 
             var inst = this.babInt.getMeshInstance(
                 mesh_names[i], this.instances[i]);
+            
+            if(Math.abs(x) > GARDEN_MAX_SIZE/2 ||
+               Math.abs(z) > GARDEN_MAX_SIZE/2) {
+                return;
+            }
 
             inst.position.x = x;
             inst.position.z = z;
+        }
+    }
+
+    setDir(direction) {
+        var mesh_names = EntityNames[this.name];
+        for(var i in mesh_names) {
+
+            var inst = this.babInt.getMeshInstance(
+                mesh_names[i], this.instances[i]);
+
+            inst.rotation.y = direction * Math.PI/180;
         }
     }
 }
@@ -122,17 +141,13 @@ class Garden {
             var sand_inst = 
                 this.babInt.getMeshInstance(sand.name, sand.instance);
 
-            if(!sand_inst) {
-                console.log(sand);
-            }
-
             var pos = sand_inst.position;
             var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
             
             //if coordinates are within the tile's bounds
             var half_tile = TILE_LEN/2;
             if(pos.x - half_tile <= x && x < pos.x + half_tile &&
-                pos.z - half_tile <= z  && z < pos.z + half_tile) {
+               pos.z - half_tile <= z && z < pos.z + half_tile) {
 
                 //swap the tile instance for a new one
                 this.babInt.removeMeshInstance(sand.name, sand.instance);
