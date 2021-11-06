@@ -4,7 +4,7 @@ const TEXTURE_FILE_STARS = "/static/assets/stars.png";
 
 const DEMO_CONDITIONS = {
     "rainy-morning" : {
-        main : "thunderstorm",
+        main : "drizzle",
         description : "",
         wind_speed : 10,
         day_pct : 0.05,
@@ -114,6 +114,7 @@ class Environment {
     processWeatherData(data) {
         //disable any previous conditions
         this.vfx.stopFX();
+        this.audio.stopNoise();
 
         //set sun based on day percent
         this.vfx.setSunPercent(data.day_pct);
@@ -142,14 +143,14 @@ class Environment {
             case "drizzle":
                 this.audio.playNoise();
                 this.audio.setNoiseStrength(1);
-                this.vfx.addPrecipitation(2, TEXTURE_FILE_RAIN);
+                this.vfx.addPrecipitation(1, TEXTURE_FILE_RAIN);
                 cloud_amount = 2;
                 break;
 
             case "rain":
                 this.audio.playNoise();
                 this.audio.setNoiseStrength(5);
-                this.vfx.addPrecipitation(3, TEXTURE_FILE_RAIN);
+                this.vfx.addPrecipitation(2, TEXTURE_FILE_RAIN);
                 cloud_amount = 4;
                 break;
 

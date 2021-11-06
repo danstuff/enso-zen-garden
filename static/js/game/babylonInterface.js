@@ -188,4 +188,10 @@ class BabylonInterface {
     disableCamera() {
         this.camera.detachControl();
     }
+
+    startFPSLogging() {
+        window.setInterval(function() {
+            console.log("FPS - " + this.engine.getFps().toFixed());
+        }, 1000);
+    }
 }
