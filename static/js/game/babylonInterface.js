@@ -190,8 +190,9 @@ class BabylonInterface {
     }
 
     startFPSLogging() {
+        const babInt = this;
         window.setInterval(function() {
-            console.log("FPS - " + this.engine.getFps().toFixed());
+            console.log("FPS - " + babInt.engine.getFps().toFixed());
         }, 1000);
     }
 }

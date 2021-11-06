@@ -55,6 +55,6 @@ class Audio {
     }
 
     stopNoise() {
-        audioContext.close();
+        audioContext.suspend();
     }
 }

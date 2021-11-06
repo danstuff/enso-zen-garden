@@ -10,6 +10,7 @@ const FOG_STEP = 10;
 class VisualFX {
     constructor(babInt) {
         this.babInt = babInt;
+        this.cloudSystems = [];
     }
 
     stopFX() {
@@ -19,15 +20,11 @@ class VisualFX {
             }
         }
         
-        this.cloudSystems = [];
-
-        if(this.precipSystems) {
-            for(var i in this.precipSystems) {
-                this.precipSystems[i].stop();
+        if(this.precipitation) {
+            for(var i in this.precipitation) {
+                this.precipitation[i].stop();
             }
         }
-
-        this.precipSystems = [];
 
         this.babInt.removeAllMeshes("fogSphere");
     }
@@ -76,70 +73,57 @@ class VisualFX {
         }
     }
 
-    addPrecipitation(row_length, precip_texture) { 
+    addPrecipitation(amount, precip_texture) { 
         //ignore if row length is less than 1
-        if(row_length < 1) {
-            return;
+        if(amount == 0) return;
+
+        this.precipitation = [];
+        for(var i = 0; i < 4; i++) {
+            var precip = new BABYLON.ParticleSystem("precip", amount);
+
+            precip.particleTexture = 
+                new BABYLON.Texture(precip_texture);
+
+            precip.minLifeTime = 0.75;
+            precip.maxLifeTime = 0.75;
+
+            precip.emitter = new BABYLON.Vector3(0, 30, 0);
+            
+            precip.direction1 = new BABYLON.Vector3(0, -45, 0);
+            precip.direction2 = new BABYLON.Vector3(0, -45, 0);        
+
+            precip.isBillboardBased = true;
+            precip.billboardMode = 2;
+
+            precip.minSize = 10;
+            precip.maxSize = 20;
+            
+            precip.start();
+
+            precip.addColorGradient(0.0, 
+                new BABYLON.Color4(0, 0, 0, 0));
+            precip.addColorGradient(0.2, 
+                new BABYLON.Color4(0.5, 0.5, 0.5, 1));
+            precip.addColorGradient(0.8, 
+                new BABYLON.Color4(1, 1, 1, 1));
+            precip.addColorGradient(1.0,
+                new BABYLON.Color4(0, 0, 0, 0));
+            this.precipitation[i] = precip;
         }
 
-        //keep row length above 1/30th of the area size
-        if(row_length < RAIN_AREA / 30) {
-            row_length = RAIN_AREA / 30;
-        }
-
-        //cap row length at 1/10th of the area size
-        if(row_length > RAIN_AREA / 10) {
-            row_length = RAIN_AREA / 10;
-        }
-
-        //add a grid of rain emitters
-        for(var x = 0;
-            x <= RAIN_AREA;
-            x += RAIN_AREA / row_length) {
-
-            for(var z = 0;
-                z <= RAIN_AREA;
-                z += RAIN_AREA / row_length) {
-                
-                var precip = new BABYLON.ParticleSystem("precip", 2);
-
-                precip.particleTexture = 
-                    new BABYLON.Texture(precip_texture);
-
-                precip.minLifeTime = 0.75;
-                precip.maxLifeTime = 0.75;
-
-                precip.emitter = 
-                    new BABYLON.Vector3(
-                        x - RAIN_AREA/2,
-                        30,
-                        z - RAIN_AREA/2);
-                
-                precip.direction1 = new BABYLON.Vector3(0, -45, 0);
-                precip.direction2 = new BABYLON.Vector3(0, -45, 0);        
-
-                precip.emitRate = 2;
-
-                precip.isBillboardBased = true;
-                precip.billboardMode = 2;
-
-                precip.minSize = 70;
-                precip.maxSize = 75;
-                
-                precip.start();
-
-                precip.addColorGradient(0.0, 
-                    new BABYLON.Color4(0, 0, 0, 0));
-                precip.addColorGradient(0.2, 
-                    new BABYLON.Color4(0.5, 0.5, 0.5, 1));
-                precip.addColorGradient(0.8, 
-                    new BABYLON.Color4(0.5, 0.5, 0.5, 1));
-                precip.addColorGradient(1.0,
-                    new BABYLON.Color4(0, 0, 0, 0));
-
-                this.precipSystems[this.precipSystems.length] = precip;
-            }
-        }
+        const camera = this.babInt.camera;
+        const p = this.precipitation;
+        this.babInt.scene.registerBeforeRender(function() {
+            p[0].worldOffset.x = camera.position.x + 5;
+            p[0].worldOffset.z = camera.position.z + 5;
+            p[1].worldOffset.x = camera.position.x - 5;
+            p[1].worldOffset.z = camera.position.z + 5;
+            p[2].worldOffset.x = camera.position.x - 5;
+            p[2].worldOffset.z = camera.position.z - 5;
+            p[3].worldOffset.x = camera.position.x + 5;
+            p[3].worldOffset.z = camera.position.z - 5;
+        });
+        
     }
 
     setFog(layers) {

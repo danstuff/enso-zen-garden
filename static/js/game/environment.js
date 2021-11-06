@@ -143,26 +143,26 @@ class Environment {
             case "drizzle":
                 this.audio.playNoise();
                 this.audio.setNoiseStrength(1);
-                this.vfx.addPrecipitation(1, TEXTURE_FILE_RAIN);
+                this.vfx.addPrecipitation(10, TEXTURE_FILE_RAIN);
                 cloud_amount = 2;
                 break;
 
             case "rain":
                 this.audio.playNoise();
                 this.audio.setNoiseStrength(5);
-                this.vfx.addPrecipitation(2, TEXTURE_FILE_RAIN);
+                this.vfx.addPrecipitation(15, TEXTURE_FILE_RAIN);
                 cloud_amount = 4;
                 break;
 
             case "thunderstorm":
                 this.audio.playNoise();
                 this.audio.setNoiseStrength(10);
-                this.vfx.addPrecipitation(4, TEXTURE_FILE_RAIN);
+                this.vfx.addPrecipitation(20, TEXTURE_FILE_RAIN);
                 cloud_amount = 6;
                 break;
 
             case "snow":
-                this.vfx.addPrecipitation(5, TEXTURE_FILE_SNOW);
+                this.vfx.addPrecipitation(25, TEXTURE_FILE_SNOW);
                 cloud_amount = 4;
                 break;
         }

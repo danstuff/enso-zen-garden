@@ -39,6 +39,7 @@ class Game {
                 //get environmental data from various APIs
                 if(DEMO_MODE) {
                     game.environment.nextDemo();
+                    game.babInterface.startFPSLogging();
                 } else {
                     game.environment.getWeatherData();
                 }
