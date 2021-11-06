@@ -24,19 +24,31 @@ class UserInterface {
         this.taps = 0;
     }
 
-    createButton(name, bx, by, action) {
+    calculateButton(button, bx) {
+        var shortside = (window.innerWidth < window.innerHeight) ? 
+            window.innerWidth : window.innerHeight;
+        var bsize = shortside/5;
+
+        if(bsize > 256) bsize = 256;
+        else if(bsize < 64) bsize = 64;
+
+        button.width = bsize+"px";
+        button.height = bsize+"px";
+        button.cornerRadius = bsize;
+        button.left = window.innerWidth/2 + bx*(bsize+10) - bsize/2;
+    }
+
+    createButton(name, bx, action) {
         var button = BABYLON.GUI.Button.CreateSimpleButton(name, name);
-        button.width = "128px";
-        button.height = "64px";
+
         button.margin = 20;
         button.thickness = 4;
-        button.cornerRadius = 32;
         button.color = "white";
         
-        button.horizontalAlignment = 1;
-        button.verticalAlignment = 0;
-        button.right = bx*134 + 10;
-        button.top = by*74 + 10;
+        button.horizontalAlignment = 0;
+        button.verticalAlignment = 1;
+
+        this.calculateButton(button, bx);
 
         if(name == "move") { 
             button.thickness = 8;
@@ -53,6 +65,11 @@ class UserInterface {
             ui.selected_button = button;
 
             action();
+        });
+
+        this.babInt.engine.onResizeObservable.add(function() {
+            ui.calculateButton(button, bx);
+
         });
 
         return button;
@@ -124,7 +141,7 @@ class UserInterface {
 
         const ui = this;
 
-        advancedTexture.addControl(this.createButton("move", 0, 0,
+        advancedTexture.addControl(this.createButton("move", 0,
             function() {
                 ui.userMode = UserMode.MOVING; 
                 ui.babInt.camera.panningAxis = PANNING_HOR;
@@ -135,7 +152,7 @@ class UserInterface {
             }
         ));  
 
-        advancedTexture.addControl(this.createButton("rake", 0, 1,
+        advancedTexture.addControl(this.createButton("rake", -1, 
             function() {
                 ui.userMode = UserMode.RAKING; 
                 ui.babInt.disableCamera();
@@ -147,7 +164,7 @@ class UserInterface {
             }
         ));  
 
-        advancedTexture.addControl(this.createButton("flower", 0, 2,
+        advancedTexture.addControl(this.createButton("flower", 1,
             function() {
                 ui.userMode = UserMode.PLACING; 
                 ui.babInt.camera.panningAxis = PANNING_OFF;

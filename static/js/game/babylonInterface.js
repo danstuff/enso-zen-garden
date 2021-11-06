@@ -32,7 +32,7 @@ class BabylonInterface {
 
         //rotation bounds
         this.camera.lowerBetaLimit = 0.5;
-        this.camera.upperBetaLimit = 1.6;
+        this.camera.upperBetaLimit = Math.PI/2;
 
         //start in movement mode
         this.camera.panningAxis = PANNING_HOR;

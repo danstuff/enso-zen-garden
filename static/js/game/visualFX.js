@@ -4,7 +4,7 @@ const STARBOX_SIZE = 1990;
 const CLOUD_AREA = 200;
 const RAIN_AREA = 100;
 
-const FOG_START = 100;
+const FOG_START = 300;
 const FOG_STEP = 10;
 
 class VisualFX {
@@ -133,10 +133,10 @@ class VisualFX {
         fmat.alpha = 0.05;
 
         for(var i = 0; i < layers; i++) {
-            if(FOG_START + FOG_STEP*i < STARBOX_SIZE) {
+            if(FOG_START - FOG_STEP*i < STARBOX_SIZE) {
                 var fbox = 
                     BABYLON.Mesh.CreateSphere("fogSphere", 32,
-                        FOG_START + FOG_STEP*i);
+                        FOG_START - FOG_STEP*i);
                 fbox.material = fmat;
                 
                 const cfbox = fbox;
