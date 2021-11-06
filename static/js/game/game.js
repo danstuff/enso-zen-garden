@@ -1,5 +1,7 @@
 const UPDATE_MS = 100;  //10 updates per second
 
+const DEMO_MODE = true;
+
 class Game {
     constructor(canvas_id) {
         this.canvas = document.getElementById(canvas_id);
@@ -19,26 +21,30 @@ class Game {
         //babylon setup: create a scene, camera, and sun
         this.babScene = this.babInterface.createScene(
             function() {
-                game.environment.vfx.setSunPercent(1);
-
                 var gsize = 0;
                 game.garden.addSandAndFrames(gsize, gsize);
 
                 //for demo, gradually increase size
                 window.setInterval(function() {
+                    game.environment.nextDemo();
+
                     if(gsize > 10) return;
 
                     gsize+=2;
                     game.garden.addSandAndFrames(gsize, gsize);
-                }, 10000);
+                }, 20000);
 
                 game.userInterface.init();
 
-                callback();
+                //get environmental data from various APIs
+                if(DEMO_MODE) {
+                    game.environment.nextDemo();
+                } else {
+                    game.environment.getWeatherData();
+                }
+
+                callback();        
             }
         );
-        
-        //get environmental data from various APIs
-        this.environment.getWeatherData();
     }
 }

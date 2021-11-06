@@ -53,4 +53,8 @@ class Audio {
             audio.tweenStrength();
         }, UPDATE_MS);
     }
+
+    stopNoise() {
+        audioContext.close();
+    }
 }

@@ -81,8 +81,7 @@ class Entity {
         var mesh_names = EntityNames[this.name];
         for(var i in mesh_names) {
 
-            var inst = this.babInt.getMeshInstance(
-                mesh_names[i], this.instances[i]);
+            var inst = this.instances[i];
             
             if(Math.abs(x) > GARDEN_MAX_SIZE/2 ||
                Math.abs(z) > GARDEN_MAX_SIZE/2) {
@@ -102,8 +101,7 @@ class Entity {
         var mesh_names = EntityNames[this.name];
         for(var i in mesh_names) {
 
-            var inst = this.babInt.getMeshInstance(
-                mesh_names[i], this.instances[i]);
+            var inst = this.instances[i];
 
             var y = direction * Math.PI/180;
 
@@ -147,10 +145,8 @@ class Garden {
     changeSandAt(x, z, new_mesh_name, direction) {
         for(var i in this.sands) {
             var sand = this.sands[i];
-            var sand_inst = 
-                this.babInt.getMeshInstance(sand.name, sand.instance);
 
-            var pos = sand_inst.position;
+            var pos = sand.instance.position;
             var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
             
             //if coordinates are within the tile's bounds

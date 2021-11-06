@@ -1,47 +1,79 @@
 const SKYBOX_SIZE = 2000;
 const STARBOX_SIZE = 1990;
 
+const CLOUD_AREA = 200;
+const RAIN_AREA = 100;
+
+const FOG_START = 100;
+const FOG_STEP = 10;
+
 class VisualFX {
     constructor(babInt) {
         this.babInt = babInt;
+    }
+
+    stopFX() {
+        if(this.cloudSystems) {
+            for(var i in this.cloudSystems) {
+                this.cloudSystems[i].stop();
+            }
+        }
+        
+        this.cloudSystems = [];
+
+        if(this.precipSystems) {
+            for(var i in this.precipSystems) {
+                this.precipSystems[i].stop();
+            }
+        }
+
+        this.precipSystems = [];
+
+        this.babInt.removeAllMeshes("fogSphere");
     }
 
     addClouds(amount, speed) {
         //ignore if no clouds
         if(amount == 0) { return; }
 
-        //create cloud emitter
-        this.clouds = new BABYLON.ParticleSystem("clouds", amount);
+        for(var i = 0; i < amount; i++) {
+            //create cloud emitter
+            var cloud = new BABYLON.ParticleSystem("clouds", 1000);
 
-        this.clouds.particleTexture = 
-            new BABYLON.Texture("/static/assets/cloud.png");
+            cloud.particleTexture = 
+                new BABYLON.Texture("/static/assets/cloud.png");
 
-        this.clouds.minLifeTime = 5;
-        this.clouds.maxLifeTime = 10;
+            cloud.minLifeTime = 5;
+            cloud.maxLifeTime = 10;
 
-        this.clouds.emitter = new BABYLON.Vector3(0, 35, 0);
+            cloud.emitter = new BABYLON.Vector3(0, 35, 0);
 
-        this.clouds.minEmitBox =
-            new BABYLON.Vector3(-this.area_size/2, -5, -this.area_size/2);
-        this.clouds.maxEmitBox =
-            new BABYLON.Vector3(this.area_size/2, 5, this.area_size/2);
+            cloud.minEmitBox =
+                new BABYLON.Vector3(-CLOUD_AREA/2, -5, -CLOUD_AREA/2);
+            cloud.maxEmitBox =
+                new BABYLON.Vector3(CLOUD_AREA/2, 5, CLOUD_AREA/2);
 
-        this.clouds.direction1 = 
-            new BABYLON.Vector3(-speed/2, -0.1, -speed/2);
-        this.clouds.direction2 = 
-            new BABYLON.Vector3(speed/2, 0.1, speed/2);
+            cloud.direction1 = 
+                new BABYLON.Vector3(-speed/2, -0.1, -speed/2);
+            cloud.direction2 = 
+                new BABYLON.Vector3(speed/2, 0.1, speed/2);
 
-        this.clouds.minSize = 15;
-        this.clouds.maxSize = 30;
+            cloud.minSize = 15;
+            cloud.maxSize = 30;
 
-        this.clouds.start();
+            cloud.preWarmCycles = 1000;
 
-        this.clouds.addColorGradient(0.0, 
-            new BABYLON.Color4(0, 0, 0, 0));
-        this.clouds.addColorGradient(0.5, 
-            new BABYLON.Color4(0.5, 0.5, 0.5, 1));
-        this.clouds.addColorGradient(1.0,
-            new BABYLON.Color4(0, 0, 0, 0));
+            cloud.start();
+
+            cloud.addColorGradient(0.0, 
+                new BABYLON.Color4(0, 0, 0, 0));
+            cloud.addColorGradient(0.5, 
+                new BABYLON.Color4(0.1, 0.1, 0.1, 1));
+            cloud.addColorGradient(1.0,
+                new BABYLON.Color4(0, 0, 0, 0));
+
+            this.cloudSystems[this.cloudSystems.length] = cloud;
+        }
     }
 
     addPrecipitation(row_length, precip_texture) { 
@@ -51,24 +83,23 @@ class VisualFX {
         }
 
         //keep row length above 1/30th of the area size
-        if(row_length < this.area_size / 30) {
-            row_length = this.area_size / 30;
+        if(row_length < RAIN_AREA / 30) {
+            row_length = RAIN_AREA / 30;
         }
 
         //cap row length at 1/10th of the area size
-        if(row_length > this.area_size / 10) {
-            row_length = this.area_size / 10;
+        if(row_length > RAIN_AREA / 10) {
+            row_length = RAIN_AREA / 10;
         }
 
         //add a grid of rain emitters
-        this.precipSystems = [];
         for(var x = 0;
-            x <= this.area_size;
-            x += this.area_size / row_length) {
+            x <= RAIN_AREA;
+            x += RAIN_AREA / row_length) {
 
             for(var z = 0;
-                z <= this.area_size;
-                z += this.area_size / row_length) {
+                z <= RAIN_AREA;
+                z += RAIN_AREA / row_length) {
                 
                 var precip = new BABYLON.ParticleSystem("precip", 2);
 
@@ -80,9 +111,9 @@ class VisualFX {
 
                 precip.emitter = 
                     new BABYLON.Vector3(
-                        x - this.area_size/2,
+                        x - RAIN_AREA/2,
                         30,
-                        z - this.area_size/2);
+                        z - RAIN_AREA/2);
                 
                 precip.direction1 = new BABYLON.Vector3(0, -45, 0);
                 precip.direction2 = new BABYLON.Vector3(0, -45, 0);        
@@ -111,17 +142,17 @@ class VisualFX {
         }
     }
 
-    setFog(visibility) {
+    setFog(layers) {
         var fmat = new BABYLON.BackgroundMaterial("fmat", this.babInt.scene);
         fmat.backFaceCulling = false;
         fmat.alphaMode = 2;
-        fmat.alpha = 0.01
+        fmat.alpha = 0.05;
 
-        for(var i = 0; i < 8; i++) {
-            if(visibility - i*100 < STARBOX_SIZE) {
+        for(var i = 0; i < layers; i++) {
+            if(FOG_START + FOG_STEP*i < STARBOX_SIZE) {
                 var fbox = 
                     BABYLON.Mesh.CreateSphere("fogSphere", 32,
-                        visibility - i*100);
+                        FOG_START + FOG_STEP*i);
                 fbox.material = fmat;
                 
                 const cfbox = fbox;
@@ -130,6 +161,8 @@ class VisualFX {
                 this.babInt.scene.registerBeforeRender(function() {
                     cfbox.position = camera.position;
                 });
+            } else {
+                break;
             }
         }
     }

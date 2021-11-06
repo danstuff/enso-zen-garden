@@ -71,7 +71,7 @@ class BabylonInterface {
                     result.meshes[i].isVisible = false;
                 }
 
-                babInt.meshes = result.meshes;
+                babInt.scene.meshes = result.meshes;
 
                 meshCallback();
 
@@ -126,16 +126,11 @@ class BabylonInterface {
     }
 
     getMesh(name) {
-        for(var i in this.meshes) {
-            if(this.meshes[i].name == name) {
-                return this.meshes[i];
+        for(var i in this.scene.meshes) {
+            if(this.scene.meshes[i].name == name) {
+                return this.scene.meshes[i];
             }
         }
-
-        console.log(
-            "WARNING - Ignored attempt to access undefined mesh " +
-            name);
-        console.log(this.meshes);
         return null;
     }
 
@@ -155,12 +150,7 @@ class BabylonInterface {
             [ this.dropIn, this.scaleUpX, this.scaleUpY, this.scaleUpZ ] : 
             [ this.scaleUpX, this.scaleUpZ ]);
 
-        return mesh.instances.indexOf(inst);
-    }
-
-    getMeshInstance(mesh_name, index) {
-        var mesh = this.getMesh(mesh_name);
-        return mesh.instances[index];
+        return inst;
     }
 
     removeAllMeshInstances(mesh_name) {
@@ -176,12 +166,18 @@ class BabylonInterface {
 
     removeMeshInstance(mesh_name, inst) {
         var mesh = this.getMesh(mesh_name);
-        if(!mesh) return;
-
         var length0 = mesh.instances.length;
 
         while(mesh.instances.length >= length0) {
-            mesh.instances[inst].dispose();
+            inst.dispose();
+        }
+    }
+
+    removeAllMeshes(mesh_name) {
+        var mesh = this.getMesh(mesh_name);
+        while(mesh != null) {
+            mesh.dispose();
+            mesh = this.getMesh(mesh_name);
         }
     }
 
