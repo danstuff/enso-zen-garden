@@ -38,8 +38,6 @@ class BabylonInterface {
         this.camera.panningAxis = PANNING_HOR;
         this.camera.panningSensibility = 500;
 
-        this.camera.wheelPrecision = 20;
-
         this.camera.attachControl(this.canvas, true);
 
         this.sun = new BABYLON.DirectionalLight(
@@ -69,6 +67,9 @@ class BabylonInterface {
                 //hide all meshes
                 for(var i in result.meshes) {
                     result.meshes[i].isVisible = false;
+
+                    result.meshes[i].renderOutline = true;
+                    result.meshes[i].outlineColor = BABYLON.Color3.Black;
                 }
 
                 babInt.scene.meshes = result.meshes;
