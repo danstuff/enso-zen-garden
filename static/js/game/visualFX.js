@@ -136,6 +136,7 @@ class VisualFX {
                     BABYLON.Mesh.CreateSphere("fogSphere", 32,
                         FOG_START - FOG_STEP*i);
                 fbox.material = fmat;
+                fbox.isPickable = false;
                 
                 const cfbox = fbox;
                 const camera = this.babInt.camera;
@@ -161,6 +162,7 @@ class VisualFX {
                 BABYLON.Mesh.CreateBox("skyBox", SKYBOX_SIZE, 
                     this.babInt.scene);
             this.skyBox.material = this.skyMaterial;
+            this.skyBox.isPickable = false;
 
 
             this.starMaterial =
@@ -175,6 +177,7 @@ class VisualFX {
                 BABYLON.Mesh.CreateBox("starBox", STARBOX_SIZE,
                     this.babInt.scene);
             this.starBox.material = this.starMaterial;
+            this.starBox.isPickable = false;
 
             const skyBox = this.skyBox;
             const starBox = this.starBox;

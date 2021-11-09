@@ -61,13 +61,13 @@ const RakeTypes = [
     {
         name: "circle rake",
         entity: "rake_circle_big",
-        sand: "sand_circle_big"
+        sand: "sand_big_curve"
     },
 
     {
         name: "small circle rake",
         entity: "rake_circle_sml",
-        sand: "sand_circle_sml"
+        sand: "sand_sml_curve"
     }
 ];
 
@@ -262,7 +262,7 @@ class UserInterface {
                 //if already raking, change rake type
                 if(ui.userMode == UserMode.RAKING) {
                     var i = RakeTypes.indexOf(ui.rake_type)+1;
-                    if(i < RakeTypes.length) i = 0;
+                    if(i >= RakeTypes.length) i = 0;
                     ui.rake_type = RakeTypes[i];
                 }
 
@@ -280,11 +280,10 @@ class UserInterface {
             function() {
                 //if already planting, change plant type
                 if(ui.userMode == UserMode.PLANTING) {
-                    var i = RakeTypes.indexOf(ui.rake_type)+1;
-                    if(i < RakeTypes.length) i = 0;
-                    ui.rake_type = RakeTypes[i];
+                    var i = PlantTypes.indexOf(ui.plant_type)+1;
+                    if(i >= PlantTypes.length) i = 0;
+                    ui.plant_type = PlantTypes[i];
                 }
-
 
                 ui.setUserMode(UserMode.PLANTING);
             }
@@ -294,9 +293,9 @@ class UserInterface {
             function() {
                 //if already placing, change stone type
                 if(ui.userMode == UserMode.PLACING) {
-                    var i = RakeTypes.indexOf(ui.rake_type)+1;
-                    if(i < RakeTypes.length) i = 0;
-                    ui.rake_type = RakeTypes[i];
+                    var i = RockTypes.indexOf(ui.rock_type)+1;
+                    if(i >= RockTypes.length) i = 0;
+                    ui.rock_type = RockTypes[i];
                 }
 
 

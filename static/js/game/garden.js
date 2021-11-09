@@ -2,24 +2,27 @@ const TILE_LEN = 6;  // size of one tile is 6
 
 const GARDEN_MAX_SIZE = 200;
 
-const SandNames = [
-    "sand_big_curve",
-    "sand_sml_curve",
-    "sand_straight",
-];
-
-const FrameNames = [
-    "frame_inside",
-    "frame_corner",
-    "frame_edge" 
-];
-
 const EntityNames = {
     "" : [],
 
     //plants
     "flower" : [ "flower_core", "flower_leaves" ],
-    "succulent" : [ "succulent" ],
+    "cactus" : [ "cactus_body", "cactus_spikes" ],
+    "tree" : [ "tree_branches", "tree_leaves" ],
+    "bush" : [ "bush" ],
+
+    //rocks
+    "rock_sml_0" : [ "rock_sml_0" ],
+    "rock_sml_1" : [ "rock_sml_1" ],
+    "rock_sml_2" : [ "rock_sml_2" ],
+
+    "rock_med_0" : [ "rock_med_0" ],
+    "rock_med_1" : [ "rock_med_1" ],
+    "rock_med_2" : [ "rock_med_2" ],
+
+    "rock_big_0" : [ "rock_big_0" ],
+    "rock_big_1" : [ "rock_big_1" ],
+    "rock_big_2" : [ "rock_big_2" ],
 
     //rakes
     "rake_straight" : [ "rake_straight", "rake_straight_caps" ],
@@ -44,7 +47,12 @@ class Entity {
     }
 
     create(entity_name, x, z, direction = -1) {
-        this.destroy();
+        this.destroy();            
+
+        if(Math.abs(x) > GARDEN_MAX_SIZE/2 ||
+           Math.abs(z) > GARDEN_MAX_SIZE/2) {
+            return;
+        }
 
         this.name = entity_name;
 
