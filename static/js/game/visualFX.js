@@ -43,7 +43,7 @@ class VisualFX {
             cloud.minLifeTime = 5;
             cloud.maxLifeTime = 10;
 
-            cloud.emitter = new BABYLON.Vector3(0, 35, 0);
+            cloud.emitter = new BABYLON.Vector3(0, 40, 0);
 
             cloud.minEmitBox =
                 new BABYLON.Vector3(-CLOUD_AREA/2, -5, -CLOUD_AREA/2);
@@ -82,10 +82,10 @@ class VisualFX {
             precip.particleTexture = 
                 new BABYLON.Texture(precip_texture);
 
-            precip.minLifeTime = 0.75;
-            precip.maxLifeTime = 0.75;
+            precip.minLifeTime = 1;
+            precip.maxLifeTime = 1;
 
-            precip.emitter = new BABYLON.Vector3(0, 30, 0);
+            precip.emitter = new BABYLON.Vector3(0, 45, 0);
             
             precip.direction1 = new BABYLON.Vector3(0, -45, 0);
             precip.direction2 = new BABYLON.Vector3(0, -45, 0);        

@@ -65,7 +65,7 @@ class UserInterface {
     calculateButton(button, bx) {
         var shortside = (window.innerWidth < window.innerHeight) ? 
             window.innerWidth : window.innerHeight;
-        var bsize = shortside/5;
+        var bsize = shortside/7;
 
         if(bsize > 256) bsize = 256;
         else if(bsize < 64) bsize = 64;

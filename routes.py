@@ -32,3 +32,8 @@ def dialogueGetRoute():
 @app.route("/secure/get/", methods=['GET'])
 def secureGetRoute():
     return apiKeys.asJSON()
+
+#GET for rerouting to a google feedback form
+@app.route("/feedback/", methods=['GET'])
+def feedbackGetRoute():
+    return redirect("https://forms.gle/LDbzCCEXvjq6rncm8");
