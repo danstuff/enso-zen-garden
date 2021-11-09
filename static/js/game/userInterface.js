@@ -8,69 +8,6 @@ const UserMode = {
     PLACING : 3
 };
 
-const PlantTypes = [
-    {
-        name: "flowers",
-        entity: "flower"
-    },
-
-    {
-        name: "cacti",
-        entity: "cactus"
-    },
-
-    {
-        name: "trees",
-        entity: "tree"
-    },
-
-    {
-        name: "bushes",
-        entity: "bush"
-    }
-];
-
-const RockTypes = [
-    {
-        name: "pebbles",
-        entities: ["rock_sml_0", "rock_sml_1", "rock_sml_2"]
-    },
-    {
-        name: "stones",
-        entities: ["rock_med_0", "rock_med_1", "rock_med_2"]
-    },
-    {
-        name: "boulders",
-        entities: ["rock_big_0", "rock_big_1", "rock_big_2"]
-    },
-];
-
-const RakeTypes = [
-    {
-        name: "straight rake",
-        entity: "rake_straight",
-        sand: "sand_straight"
-    },
-
-    {
-        name: "flat rake",
-        entity: "rake_flat",
-        sand: "sand_flat"
-    },
-
-    {
-        name: "circle rake",
-        entity: "rake_circle_big",
-        sand: "sand_big_curve"
-    },
-
-    {
-        name: "small circle rake",
-        entity: "rake_circle_sml",
-        sand: "sand_sml_curve"
-    }
-];
-
 class UserInterface {
 
     constructor(babInt, garden) {
