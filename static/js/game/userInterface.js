@@ -9,43 +9,67 @@ const UserMode = {
 };
 
 const PlantTypes = [
-    "flower",
-    "cactus",
-    "tree",
-    "bush"
+    {
+        name: "flowers",
+        entity: "flower"
+    },
+
+    {
+        name: "cacti",
+        entity: "cactus"
+    },
+
+    {
+        name: "trees",
+        entity: "tree"
+    },
+
+    {
+        name: "bushes",
+        entity: "bush"
+    }
 ];
 
-const RockTypes = {
-    "sml" : ["rock_sml_0", "rock_sml_1", "rock_sml_2"],
-    "med" : ["rock_med_0", "rock_med_1", "rock_med_2"],
-    "big" : ["rock_big_0", "rock_big_1", "rock_big_2"]
-};
+const RockTypes = [
+    {
+        name: "pebbles",
+        entities: ["rock_sml_0", "rock_sml_1", "rock_sml_2"]
+    },
+    {
+        name: "stones",
+        entities: ["rock_med_0", "rock_med_1", "rock_med_2"]
+    },
+    {
+        name: "boulders",
+        entities: ["rock_big_0", "rock_big_1", "rock_big_2"]
+    },
+];
 
-const RakeTypes = {
-    "straight" : {
-        name: "Straight Rake",
+const RakeTypes = [
+    {
+        name: "straight rake",
         entity: "rake_straight",
         sand: "sand_straight"
     },
 
-    "flat" : {
-        name: "Flat Rake",
+    {
+        name: "flat rake",
         entity: "rake_flat",
         sand: "sand_flat"
     },
 
-    "circle_big" : {
-        name: "Circle Rake",
+    {
+        name: "circle rake",
         entity: "rake_circle_big",
         sand: "sand_circle_big"
     },
 
-    "circle_sml" : {
-        name: "Small Circle Rake",
+    {
+        name: "small circle rake",
         entity: "rake_circle_sml",
         sand: "sand_circle_sml"
     }
-};
+];
 
 class UserInterface {
 
@@ -58,9 +82,9 @@ class UserInterface {
         this.rake_entity = new Entity(this.babInt);
         this.rake_direction = Cardinal.NORTH;
 
-        this.rake_type = RakeTypes["straight"];
+        this.rake_type = RakeTypes[0];
         this.plant_type = PlantTypes[0];
-        this.rock_type = RockTypes["sml"];
+        this.rock_type = RockTypes[0];
 
         this.taps = 0;
     }
@@ -75,17 +99,28 @@ class UserInterface {
                 this.rake_entity.create(
                     this.rake_type.entity, 0, 0, 
                     this.rake_direction);
+
+                this.setHelpText("Currently using the " + this.rake_type.name + "." +
+                    "<br>Tap the button again to change the current rake.");
                 break;
 
             case UserMode.MOVING:
                 this.babInt.enableCamera();
                 this.rake_entity.destroy();
+                this.setHelpText("Tap and drag to move around.");
                 break;
 
             case UserMode.PLANTING:
+                this.babInt.disableCamera();
+                this.rake_entity.destroy();
+                this.setHelpText("Currently planting " + this.plant_type.name + "." +
+                    "<br>Tap the button again to change what you are planting.");
+                break;
             case UserMode.PLACING:
                 this.babInt.disableCamera();
                 this.rake_entity.destroy();
+                this.setHelpText("Currently placing " + this.rock_type.name + "." +
+                    "<br>Tap the button again to change what you are placing.");
                 break;
         };
     }
@@ -140,6 +175,14 @@ class UserInterface {
         return button;
     }
 
+    setHelpText(text) {
+        //fade the help text out, replace it, and fade in
+        $("#main_help_text").fadeOut(function() {
+            $("#main_help_text").html(text);
+            $("#main_help_text").fadeIn();
+        });  
+    }
+
     processTap(onSingle, onDouble) {
         this.taps++;
 
@@ -189,15 +232,15 @@ class UserInterface {
 
             case UserMode.PLANTING:
                 var e = new Entity(this.babInt);
-                e.create(this.plant_type, pickPt.x, pickPt.z);
+                e.create(this.plant_type.entity, pickPt.x, pickPt.z);
                 break;
 
             case UserMode.PLACING:
                 var index = Math.floor(
-                    Math.random()*this.rock_type.length);
+                    Math.random()*this.rock_type.entities.length);
 
                 var e = new Entity(this.babInt);
-                e.create(this.rock_type[index], pickPt.x, pickPt.z);
+                e.create(this.rock_type.entities[index], pickPt.x, pickPt.z);
                 break;
         }
     }
@@ -216,18 +259,47 @@ class UserInterface {
 
         advancedTexture.addControl(this.createButton("Rake", -1, 
             function() {
+                //if already raking, change rake type
+                if(ui.userMode == UserMode.RAKING) {
+                    var i = RakeTypes.indexOf(ui.rake_type)+1;
+                    if(i < RakeTypes.length) i = 0;
+                    ui.rake_type = RakeTypes[i];
+                }
+
                 ui.setUserMode(UserMode.RAKING);
+            }
+        ));  
+
+        advancedTexture.addControl(this.createButton("Pets", -2, 
+            function() {
+                window.alert("Pets coming soon!");
             }
         ));  
 
         advancedTexture.addControl(this.createButton("Plants", 1,
             function() {
+                //if already planting, change plant type
+                if(ui.userMode == UserMode.PLANTING) {
+                    var i = RakeTypes.indexOf(ui.rake_type)+1;
+                    if(i < RakeTypes.length) i = 0;
+                    ui.rake_type = RakeTypes[i];
+                }
+
+
                 ui.setUserMode(UserMode.PLANTING);
             }
         ));  
 
-        advancedTexture.addControl(this.createButton("Pebbles", 2,
+        advancedTexture.addControl(this.createButton("Stones", 2,
             function() {
+                //if already placing, change stone type
+                if(ui.userMode == UserMode.PLACING) {
+                    var i = RakeTypes.indexOf(ui.rake_type)+1;
+                    if(i < RakeTypes.length) i = 0;
+                    ui.rake_type = RakeTypes[i];
+                }
+
+
                 ui.setUserMode(UserMode.PLACING);
             }
         ));  

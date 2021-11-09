@@ -30,11 +30,20 @@
             }
 
             #main_dialogue {
+                top: 0px;
+                left: 20px;
+            }
+
+            #main_help_text {
+                top: 0px;
+                right: 20px;
+                text-align: end;
+            }
+
+            #main_dialogue, #main_help_text {
                 z-index: 100;
                 position: absolute;
                 font-size: 1em;
-                top: 0px;
-                left: 20px;
                 display: none;
                 text-shadow: 1px 0px 5px white,
                              0px 1px 5px white,
@@ -47,6 +56,7 @@
         <canvas id="main_canvas"></canvas>
 
         <p id="main_dialogue"></p>
+        <p id="main_help_text"></p>
 
         <script type="text/javascript" 
                 src="{{ jsdir }}/vendor/babylon.js"></script>
