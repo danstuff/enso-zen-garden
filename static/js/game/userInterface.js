@@ -4,8 +4,24 @@ const UserMode = {
     MOVING : 0,
     ROTATING : 0,
     RAKING : 1,
-    PLACING : 2
-}
+    PLANTING : 2
+};
+
+const PlantNames = [
+    "flower",
+    "succulent"
+];
+
+const RockNames = [
+    "small"
+];
+
+const RakeNames = [
+    "rake_straight",
+    "rake_flat",
+    "rake_circle_big",
+    "rake_circle_sml"
+];
 
 class UserInterface {
 

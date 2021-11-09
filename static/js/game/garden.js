@@ -16,9 +16,16 @@ const FrameNames = [
 
 const EntityNames = {
     "" : [],
+
+    //plants
     "flower" : [ "flower_core", "flower_leaves" ],
     "succulent" : [ "succulent" ],
-    "rake_straight" : [ "rake_straight", "rake_straight_caps" ]
+
+    //rakes
+    "rake_straight" : [ "rake_straight", "rake_straight_caps" ],
+    "rake_flat" : [ "rake_flat", "rake_flat_caps" ],
+    "rake_circle_big" : [ "rake_circle_big", "rake_circle_big_caps" ],
+    "rake_circle_sml" : [ "rake_circle_sml", "rake_circle_sml_caps" ]
 };
 
 const Cardinal = {
@@ -154,9 +161,17 @@ class Garden {
             if(pos.x - half_tile <= x && x < pos.x + half_tile &&
                pos.z - half_tile <= z && z < pos.z + half_tile) {
 
+
                 //swap the tile instance for a new one
                 this.babInt.removeMeshInstance(sand.name, sand.instance);
                 sand = [];
+
+                //remove any instances that are on the tile
+                this.babInt.removeInstancesInside(
+                    pos.x - half_tile,
+                    pos.z - half_tile,
+                    pos.x + half_tile,
+                    pos.z + half_tile);
 
                 var inst = this.babInt.createMeshInstance(
                     new_mesh_name, pos, rot, false, true);

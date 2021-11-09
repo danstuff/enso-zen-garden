@@ -58,8 +58,6 @@ class VisualFX {
             cloud.minSize = 15;
             cloud.maxSize = 30;
 
-            cloud.preWarmCycles = 1000;
-
             cloud.start();
 
             cloud.addColorGradient(0.0, 
@@ -187,7 +185,6 @@ class VisualFX {
                 starBox.position = camera.position;
             });
         }
-
 
         this.skyMaterial.luminance = Math.sin(Math.PI*pct)/2+.5;
 
