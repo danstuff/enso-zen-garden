@@ -63,13 +63,14 @@ class BabylonInterface {
 
                 //hide all meshes
                 for(var i in result.meshes) {
-                    result.meshes[i].isVisible = false;
-                    
+                    var mesh = result.meshes[i];
+                    mesh.isVisible = false;
+                     
+                    //give a cartoony outline if not a frame or sand
                     if(mesh.name.search("frame") == -1 &&
                        mesh.name.search("sand") == -1) {
-                        result.meshes[i].renderOutline = true;
-                        result.meshes[i].outlineColor = 
-                            BABYLON.Color3.Black;
+                        mesh.renderOutline = true;
+                        mesh.outlineColor = BABYLON.Color3.Black;
                     }
                 }
 
