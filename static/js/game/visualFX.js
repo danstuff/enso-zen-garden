@@ -82,13 +82,13 @@ class VisualFX {
             precip.particleTexture = 
                 new BABYLON.Texture(precip_texture);
 
-            precip.minLifeTime = 1;
-            precip.maxLifeTime = 1;
+            precip.minLifeTime = 1.6;
+            precip.maxLifeTime = 1.6;
 
             precip.emitter = new BABYLON.Vector3(0, 45, 0);
-            
-            precip.direction1 = new BABYLON.Vector3(0, -45, 0);
-            precip.direction2 = new BABYLON.Vector3(0, -45, 0);        
+
+            precip.direction1 = new BABYLON.Vector3(0, -25, 0);
+            precip.direction2 = new BABYLON.Vector3(0, -25, 0);        
 
             precip.isBillboardBased = true;
             precip.billboardMode = 2;
