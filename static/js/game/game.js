@@ -36,6 +36,7 @@ class Game {
 
                 game.userInterface.init();
                 game.userInterface.setHelpText("Welcome to Enso! Tap and drag to move around.");
+                game.userInterface.randomRing();
 
                 //get environmental data from various APIs
                 if(DEMO_MODE) {

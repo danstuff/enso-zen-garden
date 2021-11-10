@@ -100,6 +100,21 @@ class UserInterface {
         }
     }
 
+    randomRing() {
+        var pitch = Math.floor(Math.random()*3);
+        switch(pitch) {
+            case 0:
+                this.soundMan.playSound(this.sounds["ring"]);
+                break;
+            case 1:
+                this.soundMan.playSound(this.sounds["ring_low"]);
+                break;
+            case 2:
+                this.soundMan.playSound(this.sounds["ring_high"]);
+                break;
+        }
+    }
+
     calculateButton(button, bx) {
         var shortside = (window.innerWidth < window.innerHeight) ? 
             window.innerWidth : window.innerHeight;
@@ -261,7 +276,7 @@ class UserInterface {
             function() {
                 window.setTimeout(function() {
                     ui.soundMan.playSound(ui.sounds["two_plucks"]);
-                }, 100);
+                }, 250);
             }
         ));  
 
