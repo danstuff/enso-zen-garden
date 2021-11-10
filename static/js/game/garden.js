@@ -27,7 +27,7 @@ class Entity {
 
         this.name = entity_name;
 
-        var pos = new BABYLON.Vector3(x, 0, z);
+        var pos = new BABYLON.Vector3(x, .7, z);
 
         if(direction == -1) direction = Math.random()*360;
         var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   

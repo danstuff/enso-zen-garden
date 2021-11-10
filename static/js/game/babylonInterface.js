@@ -50,9 +50,6 @@ class BabylonInterface {
         this.passiveLight.intensity = 0.25;
 
         //create easing animations for objects
-        //drop in from above
-        this.dropIn = this.makeTransition("position.y", 20, .6);
-        
         //scale up from 0
         this.scaleUpX = this.makeTransition("scaling.x", 0, 1);
         this.scaleUpY = this.makeTransition("scaling.y", 0, 1);
@@ -148,7 +145,7 @@ class BabylonInterface {
         //animate the mesh into position
         this.runTransitions(inst, 
             fromTop ? 
-            [ this.dropIn, this.scaleUpX, this.scaleUpY, this.scaleUpZ ] : 
+            [ this.scaleUpX, this.scaleUpY, this.scaleUpZ ] : 
             [ this.scaleUpX, this.scaleUpZ ]);
 
         return inst;

@@ -22,7 +22,8 @@ app.config["SERVER_NAME"] = serverInfo.address;
 @app.route("/", methods=['GET'])
 def mainRoute():
     return render_template("base.html",
-            jsdir=url_for("static", filename="js"))
+            jsdir=url_for("static", filename="js"),
+            assetdir=url_for("static", filename="assets"))
 
 #GET for reading dialogue data from the server
 @app.route("/environment/post/", methods=['POST'])

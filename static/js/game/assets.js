@@ -89,3 +89,18 @@ const RakeTypes = [
         sand: "sand_sml_curve"
     }
 ];
+
+const SoundEffects = [
+    "one_pluck",
+    "one_pluck_low",
+    "one_pluck_high",
+    "two_plucks",
+    "riff",
+    "strum",
+    "ring",
+    "ring_low",
+    "ring_high",
+    "sand_a",
+    "sand_b",
+    "sand_c"
+];

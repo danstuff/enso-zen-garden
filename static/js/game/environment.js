@@ -35,14 +35,26 @@ const DEMO_CONDITIONS = {
         day_pct : 1.5,
         day_phase_str : "night"
 
+    },
+
+    "stormy-night" : {
+        main : "thunderstorm",
+        description : "",
+        wind_speed : 20,
+        day_pct : 1.5,
+        day_phase_str : "night"
+
     }
 }
 
 class Environment {
     constructor(babInt) {
         this.dialogue = new Dialogue();
-        this.audio = new Audio();
+        this.soundMan = new SoundManager();
         this.vfx = new VisualFX(babInt);
+
+        this.thunder_sound = this.soundMan.addSound("thunder");
+        this.rain_sound = this.soundMan.addSound("rain");
     }
 
     getWeatherData() {
@@ -114,7 +126,9 @@ class Environment {
     processWeatherData(data) {
         //disable any previous conditions
         this.vfx.stopFX();
-        this.audio.stopNoise();
+
+        this.soundMan.stopSound(this.thunder_sound);
+        this.soundMan.stopSound(this.rain_sound);
 
         //set sun based on day percent
         this.vfx.setSunPercent(data.day_pct);
@@ -141,23 +155,21 @@ class Environment {
                 break;
 
             case "drizzle":
-                this.audio.playNoise();
-                this.audio.setNoiseStrength(5);
-                this.vfx.addPrecipitation(10, TEXTURE_FILE_RAIN);
+                this.soundMan.playSound(this.rain_sound);
+                this.vfx.addPrecipitation(15, TEXTURE_FILE_RAIN);
                 cloud_amount = 2;
                 break;
 
             case "rain":
-                this.audio.playNoise();
-                this.audio.setNoiseStrength(10);
-                this.vfx.addPrecipitation(15, TEXTURE_FILE_RAIN);
+                this.soundMan.playSound(this.rain_sound);
+                this.vfx.addPrecipitation(20, TEXTURE_FILE_RAIN);
                 cloud_amount = 4;
                 break;
 
             case "thunderstorm":
-                this.audio.playNoise();
-                this.audio.setNoiseStrength(15);
-                this.vfx.addPrecipitation(20, TEXTURE_FILE_RAIN);
+                this.soundMan.playSound(this.rain_sound);
+                this.soundMan.playSound(this.thunder_sound);
+                this.vfx.addPrecipitation(25, TEXTURE_FILE_RAIN);
                 cloud_amount = 6;
                 break;
 
@@ -166,6 +178,9 @@ class Environment {
                 cloud_amount = 4;
                 break;
         }
+
+        this.soundMan.setNoiseStrength(data.wind_speed/10);
+        this.soundMan.playNoise();
 
         this.vfx.addClouds(cloud_amount, data.wind_speed / 2);
         this.vfx.setFog(cloud_amount);

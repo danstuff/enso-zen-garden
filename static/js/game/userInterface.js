@@ -14,6 +14,14 @@ class UserInterface {
         this.babInt = babInt;
         this.garden = garden;
 
+        this.soundMan = new SoundManager();
+
+        this.sounds = [];
+        for(var i in SoundEffects) {
+            var sound_file = SoundEffects[i];
+            this.sounds[sound_file] = this.soundMan.addSound(sound_file);
+        }
+
         this.userMode = UserMode.MOVING;
 
         this.rake_entity = new Entity(this.babInt);
@@ -62,6 +70,36 @@ class UserInterface {
         };
     }
 
+    randomPluck() {
+        var pitch = Math.floor(Math.random()*3);
+        switch(pitch) {
+            case 0:
+                this.soundMan.playSound(this.sounds["one_pluck"]);
+                break;
+            case 1:
+                this.soundMan.playSound(this.sounds["one_pluck_low"]);
+                break;
+            case 2:
+                this.soundMan.playSound(this.sounds["one_pluck_high"]);
+                break;
+        }
+    }
+
+    randomSand() {
+        var num = Math.floor(Math.random()*3);
+        switch(num) {
+            case 0:
+                this.soundMan.playSound(this.sounds["sand_a"]);
+                break;
+            case 1:
+                this.soundMan.playSound(this.sounds["sand_b"]);
+                break;
+            case 2:
+                this.soundMan.playSound(this.sounds["sand_c"]);
+                break;
+        }
+    }
+
     calculateButton(button, bx) {
         var shortside = (window.innerWidth < window.innerHeight) ? 
             window.innerWidth : window.innerHeight;
@@ -74,12 +112,14 @@ class UserInterface {
         button.height = bsize+"px";
         button.cornerRadius = bsize;
         button.left = window.innerWidth/2 + bx*(bsize+10) - bsize/2;
+
+        $("#main_help_text").css("bottom", button.height);
     }
 
     createButton(name, bx, action) {
         var button = BABYLON.GUI.Button.CreateSimpleButton(name, name);
 
-        button.margin = 20;
+        button.padding = 20;
         button.thickness = 4;
         button.color = "white";
         
@@ -99,8 +139,11 @@ class UserInterface {
             if(ui.selected_button) {
                 ui.selected_button.thickness = 4;
             }
+
             button.thickness = 8; 
             ui.selected_button = button;
+
+            ui.randomPluck();
 
             action();
         });
@@ -147,20 +190,25 @@ class UserInterface {
 
         var pickPt = pickResult.pickedPoint;
 
+        const ui = this;
         switch(this.userMode) {
             case UserMode.MOVING:
+                //do nothing
                 break;
 
             case UserMode.RAKING:
                 this.rake_entity.setPos(pickPt.x, pickPt.z);
 
-                const ui = this;
                 this.processTap(
                     function() {
+                        ui.randomSand();
+
                         ui.rake_direction += 90;
                         ui.rake_entity.setDir(ui.rake_direction);
                     },
                     function() {
+                        ui.randomSand();
+
                         ui.garden.changeSandAt(
                             pickPt.x, pickPt.z,
                             ui.rake_type.sand, ui.rake_direction);
@@ -170,6 +218,7 @@ class UserInterface {
             case UserMode.PLANTING:
                 var e = new Entity(this.babInt);
                 e.create(this.plant_type.entity, pickPt.x, pickPt.z);
+                ui.randomSand();
                 break;
 
             case UserMode.PLACING:
@@ -178,6 +227,7 @@ class UserInterface {
 
                 var e = new Entity(this.babInt);
                 e.create(this.rock_type.entities[index], pickPt.x, pickPt.z);
+                ui.randomSand();
                 break;
         }
     }
@@ -209,7 +259,9 @@ class UserInterface {
 
         advancedTexture.addControl(this.createButton("Pets", -2, 
             function() {
-                window.alert("Pets coming soon!");
+                window.setTimeout(function() {
+                    ui.soundMan.playSound(ui.sounds["two_plucks"]);
+                }, 100);
             }
         ));  
 

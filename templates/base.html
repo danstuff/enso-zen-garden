@@ -35,12 +35,13 @@
             }
 
             #main_help_text {
-                top: 0px;
-                right: 20px;
-                text-align: end;
+                bottom: 100px;
+                text-align: center;
+                width: 100%;
             }
 
             #main_dialogue, #main_help_text {
+                pointer-events: none;
                 font-family: serif;
                 color: white;
                 z-index: 100;
@@ -70,7 +71,7 @@
         <script type="text/javascript" 
                 src="{{ jsdir }}/game/dialogue.js"></script>
         <script type="text/javascript" 
-                src="{{ jsdir }}/game/audio.js"></script>
+                src="{{ jsdir }}/game/soundManager.js"></script>
         <script type="text/javascript" 
                 src="{{ jsdir }}/game/assets.js"></script>
         <script type="text/javascript" 
