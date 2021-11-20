@@ -1,6 +1,6 @@
-const TEXTURE_FILE_RAIN = "/static/assets/rain.png";
-const TEXTURE_FILE_SNOW = "/static/assets/snow.png";
-const TEXTURE_FILE_STARS = "/static/assets/stars.png";
+const TEXTURE_FILE_RAIN = "/static/assets/textures/rain.png";
+const TEXTURE_FILE_SNOW = "/static/assets/textures/snow.png";
+const TEXTURE_FILE_STARS = "/static/assets/textures/stars.png";
 
 const DEMO_CONDITIONS = {
     "rainy-morning" : {
