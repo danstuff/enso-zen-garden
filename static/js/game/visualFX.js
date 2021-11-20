@@ -38,7 +38,7 @@ class VisualFX {
             var cloud = new BABYLON.ParticleSystem("clouds", 1000);
 
             cloud.particleTexture = 
-                new BABYLON.Texture("/static/assets/cloud.png");
+                new BABYLON.Texture("/static/assets/textures/cloud.png");
 
             cloud.minLifeTime = 5;
             cloud.maxLifeTime = 10;

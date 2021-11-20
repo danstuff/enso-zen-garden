@@ -45,7 +45,8 @@ class UserInterface {
                     this.rake_type.entity, 0, 0, 
                     this.rake_direction);
 
-                this.setHelpText("Currently using the " + this.rake_type.name + "." +
+                this.setHelpText(
+                    "Currently using the " + this.rake_type.name + "." +
                     "<br>Tap the button again to change the current rake.");
                 break;
 
@@ -58,61 +59,38 @@ class UserInterface {
             case UserMode.PLANTING:
                 this.babInt.disableCamera();
                 this.rake_entity.destroy();
-                this.setHelpText("Currently planting " + this.plant_type.name + "." +
-                    "<br>Tap the button again to change what you are planting.");
+                this.setHelpText(
+                    "Currently planting " + this.plant_type.name + "." +
+                    "<br>Tap the button again to change what " + 
+                    "you are planting.");
                 break;
+
             case UserMode.PLACING:
                 this.babInt.disableCamera();
                 this.rake_entity.destroy();
-                this.setHelpText("Currently placing " + this.rock_type.name + "." +
-                    "<br>Tap the button again to change what you are placing.");
+                this.setHelpText(
+                    "Currently placing " + this.rock_type.name + "." +
+                    "<br>Tap the button again to change what " + 
+                    "you are placing.");
                 break;
         };
     }
 
+    randomSound(str_list) {
+        var pitch = Math.floor(Math.random()*str_list.length());
+        this.soundMan.playSound(this.sounds[str_list[pitch]);
+    }
+
     randomPluck() {
-        var pitch = Math.floor(Math.random()*3);
-        switch(pitch) {
-            case 0:
-                this.soundMan.playSound(this.sounds["one_pluck"]);
-                break;
-            case 1:
-                this.soundMan.playSound(this.sounds["one_pluck_low"]);
-                break;
-            case 2:
-                this.soundMan.playSound(this.sounds["one_pluck_high"]);
-                break;
-        }
+        this.randomSound(["one_pluck_low", "one_pluck", "one_pluck_high"]);
     }
 
     randomSand() {
-        var num = Math.floor(Math.random()*3);
-        switch(num) {
-            case 0:
-                this.soundMan.playSound(this.sounds["sand_a"]);
-                break;
-            case 1:
-                this.soundMan.playSound(this.sounds["sand_b"]);
-                break;
-            case 2:
-                this.soundMan.playSound(this.sounds["sand_c"]);
-                break;
-        }
+        this.randomSound(["sand_a", "sand_b", "sand_c"]);
     }
 
     randomRing() {
-        var pitch = Math.floor(Math.random()*3);
-        switch(pitch) {
-            case 0:
-                this.soundMan.playSound(this.sounds["ring"]);
-                break;
-            case 1:
-                this.soundMan.playSound(this.sounds["ring_low"]);
-                break;
-            case 2:
-                this.soundMan.playSound(this.sounds["ring_high"]);
-                break;
-        }
+        this.randomSound(["ring_low", "ring", "ring_high"]);
     }
 
     calculateButton(button, bx) {
