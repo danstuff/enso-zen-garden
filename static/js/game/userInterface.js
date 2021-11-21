@@ -9,7 +9,6 @@ const UserMode = {
 };
 
 class UserInterface {
-
     constructor(babInt, garden) {
         this.babInt = babInt;
         this.garden = garden;
@@ -77,8 +76,8 @@ class UserInterface {
     }
 
     randomSound(str_list) {
-        var pitch = Math.floor(Math.random()*str_list.length());
-        this.soundMan.playSound(this.sounds[str_list[pitch]);
+        var pitch = Math.floor(Math.random()*str_list.length);
+        this.soundMan.playSound(this.sounds[str_list[pitch]]);
     }
 
     randomPluck() {
@@ -93,6 +92,27 @@ class UserInterface {
         this.randomSound(["ring_low", "ring", "ring_high"]);
     }
 
+    spinSelectedButton(spin_button) {
+        if(!spin_button) {
+            if(!this.selected_button) return;
+            spin_button = this.selected_button;
+        }
+
+        spin_button.rotation = 
+            spin_button.rotation +
+            (-2*Math.PI - spin_button.rotation)*0.05;
+
+        if(spin_button.rotation < -2*Math.PI + 0.01) {
+            spin_button.rotation = 0;
+            return;
+        }
+
+        const ui = this;
+        window.setTimeout(function() {
+            ui.spinSelectedButton(spin_button);
+        }, 10);
+    }
+
     calculateButton(button, bx) {
         var shortside = (window.innerWidth < window.innerHeight) ? 
             window.innerWidth : window.innerHeight;
@@ -103,38 +123,33 @@ class UserInterface {
 
         button.width = bsize+"px";
         button.height = bsize+"px";
-        button.cornerRadius = bsize;
         button.left = window.innerWidth/2 + bx*(bsize+10) - bsize/2;
 
         $("#main_help_text").css("bottom", button.height);
     }
 
     createButton(name, bx, action) {
-        var button = BABYLON.GUI.Button.CreateSimpleButton(name, name);
+        var button = BABYLON.GUI.Button.CreateImageOnlyButton(name, 
+            "/static/assets/textures/enso-button.png");
 
-        button.padding = 20;
-        button.thickness = 4;
-        button.color = "white";
+        button.margin = 20;
+        button.thickness = 0;
         
         button.horizontalAlignment = 0;
         button.verticalAlignment = 1;
 
         this.calculateButton(button, bx);
 
+        const ui = this;
         if(name == "move") { 
-            button.thickness = 8;
             this.selected_button = button;
+
         }
 
-        const ui = this;
         button.onPointerUpObservable.add(function() {
             //make buttons thicker when selected
-            if(ui.selected_button) {
-                ui.selected_button.thickness = 4;
-            }
-
-            button.thickness = 8; 
             ui.selected_button = button;
+            ui.spinSelectedButton();
 
             ui.randomPluck();
 

@@ -7,6 +7,6 @@ $(document).ready(function() {
             $("#"+CANVAS_ID).animate({
                 opacity: 1
             }, 1000);
-        }, 500);
+        }, 1500);
     });
 });

@@ -15,7 +15,7 @@
 
                 font-size: 16px;
 
-                background-color: black;
+                background-color: #f7f2ebff;
             }
 
             canvas {
@@ -24,11 +24,81 @@
 
                 padding: 0;
                 margin: 0;
-
+                
                 overflow: unset;
                 opacity: 0;
 
                 background-color: rgb(.2, .2, .4);
+            }
+
+            @keyframes title_transition_text {
+                0% {
+                    transform: 
+                        translate(-50%, -50%) scale(0, 0) rotate(0deg);
+                    opacity: 0;
+                }
+
+                50% {
+                    opacity: 100%;
+                }
+
+                90% {
+                    transform: 
+                        translate(-50%, -50%) scale(1, 1) rotate(360deg);
+                    opacity: 100%;
+                }
+
+                100% {
+                    opacity: 0%;
+                }
+            }
+
+            @keyframes title_transition_enso {
+                0% {
+                    transform: 
+                        translate(-50%, -50%) rotate(0deg);
+                    opacity: 0;
+                }
+
+                90% {
+                    opacity: 50%;
+                }
+
+                100% {
+                    transform: 
+                        translate(-50%, -50%) rotate(-360deg);
+                    opacity: 0%;
+                }
+            }
+
+            .title {
+                height: 90%;
+
+                animation-duration: 2.5s;
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+                pointer-events: none;
+            }
+
+            .title_text {
+                transform: 
+                    translate(-50%, -50%) scale(1, 1) rotate(360deg);
+                animation-name: title_transition_text;
+                opacity: 0%;
+            }
+
+            .title_enso {
+                transform: 
+                    translate(-50%, -50%) rotate(-360deg);
+                animation-name: title_transition_enso;
+                opacity: 0%;
+            }
+
+            .fade_text {
+                display: none;
             }
 
             #main_dialogue {
@@ -48,7 +118,6 @@
                 top: 0;
                 right: 0;
                 padding: 0 !important;
-                display: block !important;
                 pointer-events: all !important;
             }
 
@@ -56,9 +125,7 @@
                 pointer-events: none;
                 font-family: serif;
                 color: white;
-                z-index: 100;
                 position: absolute;
-                display: none;
                 padding: 32px;
                 margin: 0;
             }
@@ -78,12 +145,20 @@
         </style>
     </head>
     <body>
+        <img class="title title_text"
+        src="{{ assetdir }}/textures/enso-text.png">
+        </img>
+        <img class="title title_enso"
+        src="{{ assetdir }}/textures/enso-painted.png">
+        </img>
+
         <canvas id="main_canvas"></canvas>
 
-        <p id="main_dialogue"></p>
-        <p id="main_help_text"></p>
+        <p id="main_dialogue" class="fade_text"></p>
+        <p id="main_help_text" class="fade_text"></p>
 
-        <a id="feedback_link" href="/feedback/">Post feedback here!</a>
+        <a id="feedback_link" class="fade_text" href="/feedback/">
+            Post feedback here!</a>
 
         <script type="text/javascript" 
                 src="{{ jsdir }}/vendor/babylon.js"></script>

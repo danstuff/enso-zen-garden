@@ -12,9 +12,11 @@ class Dialogue {
             .done(function(dialogue_str) {
 
                 //fade the dialogue out, replace it, and fade in
-                $("#"+dialogueID).fadeOut(function() {
+                $(".fade_text").fadeOut(function() {
                     $("#"+dialogueID).html(dialogue_str);
-                    $("#"+dialogueID).fadeIn();
+                    window.setTimeout(function() {
+                        $(".fade_text").fadeIn();
+                    }, 2000);
                 }); 
             });
     }
