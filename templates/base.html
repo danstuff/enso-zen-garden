@@ -71,6 +71,16 @@
                 }
             }
 
+            @keyframes spin {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+
+                100% {
+                    transform: translate(-50%, -50%) rotate(-360deg);
+                }
+            }
+
             .title {
                 height: 90%;
 
@@ -81,6 +91,10 @@
                 left: 50%;
 
                 pointer-events: none;
+            }
+
+            .fadeIn {
+                opacity: 0;
             }
 
             .title_text {
@@ -97,17 +111,40 @@
                 opacity: 0%;
             }
 
-            .fade_text {
-                display: none;
+            .ensoButtonBar {
+                position: absolute;
+                bottom: 0px;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
-            #main_dialogue {
-                top: 0px;
-                left: 0px;
+            .ensoButtonBar button {
+                border: none;
+                background: none; 
+                display: inline-block;
+                width: 5rem;
+                height: 5rem;
+                margin: 10px;
             }
+
+            .ensoButtonThumb, .ensoButtonEnso {
+                width: 5rem;
+                height: 5rem;
+                position: absolute;
+                transform: translate(-50%, -50%);
+            }
+
+            .ensoButtonEnso {
+                z-index: 100;
+            }
+
+            .ensoButtonEnso:hover {
+                animation-name: spin;
+                animation-duration: .5s;
+            }   
 
             #main_help_text {
-                bottom: 0px;
+                bottom: 4rem;
                 text-align: center;
                 width: 100%;
                 padding-left: 0px !important;
@@ -152,18 +189,43 @@
         src="{{ assetdir }}/textures/enso-painted.png">
         </img>
 
-        <canvas id="main_canvas"></canvas>
+        <canvas id="main_canvas" class="fadeIn"></canvas>
 
-        <p id="main_dialogue" class="fade_text"></p>
-        <p id="main_help_text" class="fade_text"></p>
+        <p id="main_dialogue" class="fadeIn"></p>
+        <p id="main_help_text" class="fadeIn"></p>
 
-        <a id="feedback_link" class="fade_text" href="/feedback/">
+        <div class="ensoButtonBar">
+            <button id="btn_move" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/arrows.svg"></img>
+            </button>
+            <button id="btn_rake" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/rake.png"></img>
+            </button>
+            <button id="btn_plants" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/plants.png"></img>
+            </button>
+            <button id="btn_rocks" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/rocks.png"></img>
+            </button>
+        </div>
+
+        <a id="feedback_link" class="fadeIn" href="/feedback/">
             Post feedback here!</a>
 
         <script type="text/javascript" 
                 src="{{ jsdir }}/vendor/babylon.js"></script>
-        <script type="text/javascript" 
-                src="{{ jsdir }}/vendor/babylon.gui.min.js"></script>
         <script type="text/javascript" 
                 src="{{ jsdir }}/vendor/babylon.skyMaterial.min.js"></script>
         <script type="text/javascript" 

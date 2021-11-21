@@ -92,75 +92,12 @@ class UserInterface {
         this.randomSound(["ring_low", "ring", "ring_high"]);
     }
 
-    spinSelectedButton(spin_button) {
-        if(!spin_button) {
-            if(!this.selected_button) return;
-            spin_button = this.selected_button;
-        }
-
-        spin_button.rotation = 
-            spin_button.rotation +
-            (-2*Math.PI - spin_button.rotation)*0.05;
-
-        if(spin_button.rotation < -2*Math.PI + 0.01) {
-            spin_button.rotation = 0;
-            return;
-        }
-
+    createButton(id, action) {
         const ui = this;
-        window.setTimeout(function() {
-            ui.spinSelectedButton(spin_button);
-        }, 10);
-    }
-
-    calculateButton(button, bx) {
-        var shortside = (window.innerWidth < window.innerHeight) ? 
-            window.innerWidth : window.innerHeight;
-        var bsize = shortside/7;
-
-        if(bsize > 256) bsize = 256;
-        else if(bsize < 64) bsize = 64;
-
-        button.width = bsize+"px";
-        button.height = bsize+"px";
-        button.left = window.innerWidth/2 + bx*(bsize+10) - bsize/2;
-
-        $("#main_help_text").css("bottom", button.height);
-    }
-
-    createButton(name, bx, action) {
-        var button = BABYLON.GUI.Button.CreateImageOnlyButton(name, 
-            "/static/assets/textures/enso-button.png");
-
-        button.margin = 20;
-        button.thickness = 0;
-        
-        button.horizontalAlignment = 0;
-        button.verticalAlignment = 1;
-
-        this.calculateButton(button, bx);
-
-        const ui = this;
-        if(name == "move") { 
-            this.selected_button = button;
-
-        }
-
-        button.onPointerUpObservable.add(function() {
-            //make buttons thicker when selected
-            ui.selected_button = button;
-            ui.spinSelectedButton();
-
+        $("#"+id).click(function() {
             ui.randomPluck();
-
             action();
         });
-
-        this.babInt.engine.onResizeObservable.add(function() {
-            ui.calculateButton(button, bx);
-        });
-
-        return button;
     }
 
     setHelpText(text) {
@@ -241,18 +178,14 @@ class UserInterface {
     }
 
     init() {
-        var advancedTexture = 
-            BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-
         const ui = this;
 
-        advancedTexture.addControl(this.createButton("Move", 0,
+        this.createButton("btn_move",
             function() {
                 ui.setUserMode(UserMode.MOVING);
-            }
-        ));  
+            });  
 
-        advancedTexture.addControl(this.createButton("Rake", -1, 
+        this.createButton("btn_rake",
             function() {
                 //if already raking, change rake type
                 if(ui.userMode == UserMode.RAKING) {
@@ -262,18 +195,9 @@ class UserInterface {
                 }
 
                 ui.setUserMode(UserMode.RAKING);
-            }
-        ));  
+            });  
 
-        advancedTexture.addControl(this.createButton("Pets", -2, 
-            function() {
-                window.setTimeout(function() {
-                    ui.soundMan.playSound(ui.sounds["two_plucks"]);
-                }, 250);
-            }
-        ));  
-
-        advancedTexture.addControl(this.createButton("Plants", 1,
+        this.createButton("btn_plants",
             function() {
                 //if already planting, change plant type
                 if(ui.userMode == UserMode.PLANTING) {
@@ -283,10 +207,9 @@ class UserInterface {
                 }
 
                 ui.setUserMode(UserMode.PLANTING);
-            }
-        ));  
+            });  
 
-        advancedTexture.addControl(this.createButton("Stones", 2,
+        this.createButton("btn_rocks",
             function() {
                 //if already placing, change stone type
                 if(ui.userMode == UserMode.PLACING) {
@@ -295,12 +218,9 @@ class UserInterface {
                     ui.rock_type = RockTypes[i];
                 }
 
-
                 ui.setUserMode(UserMode.PLACING);
-            }
-        ));  
+            });  
 
-        //bind to pointer events
         this.babInt.scene.onPointerDown = 
             function() { ui.onPointerDown(); }
     }
