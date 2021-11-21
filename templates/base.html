@@ -114,8 +114,8 @@
             .ensoButtonBar {
                 position: absolute;
                 bottom: 0px;
-                left: 50%;
-                transform: translateX(-50%);
+                width: 100%;
+                text-align: center;
             }
 
             .ensoButtonBar button {
@@ -141,7 +141,14 @@
             .ensoButtonEnso:hover {
                 animation-name: spin;
                 animation-duration: .5s;
+                cursor: pointer;
             }   
+
+            #main_dialogue {
+                display: none;
+                top: 0;
+                left: 0;
+            }
 
             #main_help_text {
                 bottom: 4rem;
@@ -191,7 +198,7 @@
 
         <canvas id="main_canvas" class="fadeIn"></canvas>
 
-        <p id="main_dialogue" class="fadeIn"></p>
+        <p id="main_dialogue"></p>
         <p id="main_help_text" class="fadeIn"></p>
 
         <div class="ensoButtonBar">
