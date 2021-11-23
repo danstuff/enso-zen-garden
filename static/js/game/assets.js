@@ -29,8 +29,8 @@ const EntityNames = {
 
 const PlantTypes = [
     {
-        name: "flowers",
-        entity: "flower"
+        name: "succulents",
+        entity: "succulent"
     },
 
     {
@@ -62,6 +62,10 @@ const RockTypes = [
         name: "boulders",
         entities: ["rock_big_0", "rock_big_1", "rock_big_2"]
     },
+    {
+        name: "statues",
+        entities: [ ]
+    }
 ];
 
 const RakeTypes = [

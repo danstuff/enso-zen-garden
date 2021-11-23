@@ -31,7 +31,8 @@ class Game {
         const game = this;
         window.setTimeout(function() {
             game.nextPhase();
-        }, (1 + this.phaseCount) * FIVE_MINUTES);
+            game.userInterface.nextUnlockLevel();
+        }, (1 + this.phaseCount) * 5000);
     }
 
     init(callback) {

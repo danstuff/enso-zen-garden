@@ -15,7 +15,6 @@ class Dialogue {
                 $("#"+dialogueID).fadeOut(function() {
                     $("#"+dialogueID).html(dialogue_str);
                     window.setTimeout(function() {
-                        console.log(dialogue_str);
                         $("#"+dialogueID).fadeIn();
                     }, 1000);
                 }); 

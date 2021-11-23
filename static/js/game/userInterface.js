@@ -31,6 +31,10 @@ class UserInterface {
         this.rock_type = RockTypes[0];
 
         this.taps = 0;
+
+        // TODO unlockLevel should be loaded from storage here
+        this.unlockLevel = 0; 
+        this.setUnlockLevel(this.unlockLevel);
     }
 
     setUserMode(new_mode) {
@@ -92,6 +96,10 @@ class UserInterface {
         this.randomSound(["ring_low", "ring", "ring_high"]);
     }
 
+    randomUnlockSound() {
+        this.randomSound(["riff", "strum"]);
+    }
+
     createButton(id, action) {
         const ui = this;
         $("#"+id).click(function() {
@@ -106,6 +114,8 @@ class UserInterface {
             $("#main_help_text").html(text);
             $("#main_help_text").fadeIn();
         });  
+
+        return $("#main_help_text").html();
     }
 
     processTap(onSingle, onDouble) {
@@ -124,6 +134,8 @@ class UserInterface {
             }, TAP_COOLDOWN_MS);
         }
     }
+
+    //TODO Also process pointer move events for rake dragging
 
     onPointerDown() {
         var pickResult = 
@@ -145,18 +157,23 @@ class UserInterface {
                 this.rake_entity.setPos(pickPt.x, pickPt.z);
 
                 this.processTap(
+                    //single tap: place sand
                     function() {
-                        ui.randomSand();
-
-                        ui.rake_direction += 90;
-                        ui.rake_entity.setDir(ui.rake_direction);
-                    },
-                    function() {
+                        //TODO this is the code we should move to
+                        //the pointer move / drag function
                         ui.randomSand();
 
                         ui.garden.changeSandAt(
                             pickPt.x, pickPt.z,
                             ui.rake_type.sand, ui.rake_direction);
+                    },
+
+                    //double tap: rotate rake
+                    function() {
+                        ui.randomSand();
+                        
+                        ui.rake_direction += 90;
+                        ui.rake_entity.setDir(ui.rake_direction);
                     });
                 break;
 
@@ -177,6 +194,56 @@ class UserInterface {
         }
     }
 
+    setUnlockLevel(level, notify) {
+        if(notify) this.randomUnlockSound();
+
+        var prevRocks = this.unlockedRocks || 0;
+        var prevPlants = this.unlockedPlants || 0;
+        var prevRakes = this.unlockedRakes || 0;
+
+        var cap = function(v, c) { return (v < c) ? v : c; } 
+
+        // on odd levels, you unlock plants and rocks
+        var count = Math.floor((level + 1)/2);
+        this.unlockedRocks = cap(count, RockTypes.length);
+        this.unlockedPlants = cap(count, PlantTypes.length);
+
+        // on even levels, you unlock rakes
+        this.unlockedRakes = 
+            cap(Math.floor(level/2) + 1, RakeTypes.length);
+
+        if(notify) {
+            const ui = this;
+            var tempMsg = function(msg) {
+                var oldText = this.setHelpText(msg);
+
+                window.setTimeout(function() {
+                    ui.setHelpText(oldText);
+                }, 5000);
+            }
+
+            //if you reached a new, even unlock level, notify of new plants
+            if(this.level % 2 == 0 &&
+               this.unlockedRocks != prevRocks &&
+               this.unlockedPlants != prevPlants) {
+                tempMsg("You unlocked " +
+                    PlantTypes[this.unlockedPlants-1].name + " and " + 
+                    RockTypes[this.unlockedRocks-1].name + ".");
+
+            //otherwise, if the rake is new, notify of it
+            } else if(this.unlockedRakes != prevRakes) {
+                tempMsg("You unlocked " + 
+                    RakeTypes[this.unlockedRakes-1].name + ".");
+            }
+        }
+    }
+
+    nextUnlockLevel() {
+        this.setUnlockLevel(++this.unlockLevel, true);
+
+        //TODO unlock level should be saved here
+    }
+
     init() {
         const ui = this;
 
@@ -190,7 +257,7 @@ class UserInterface {
                 //if already raking, change rake type
                 if(ui.userMode == UserMode.RAKING) {
                     var i = RakeTypes.indexOf(ui.rake_type)+1;
-                    if(i >= RakeTypes.length) i = 0;
+                    if(i >= ui.unlockedRakes) i = 0;
                     ui.rake_type = RakeTypes[i];
                 }
 
@@ -202,7 +269,7 @@ class UserInterface {
                 //if already planting, change plant type
                 if(ui.userMode == UserMode.PLANTING) {
                     var i = PlantTypes.indexOf(ui.plant_type)+1;
-                    if(i >= PlantTypes.length) i = 0;
+                    if(i >= ui.unlockedPlants) i = 0;
                     ui.plant_type = PlantTypes[i];
                 }
 
@@ -214,7 +281,7 @@ class UserInterface {
                 //if already placing, change stone type
                 if(ui.userMode == UserMode.PLACING) {
                     var i = RockTypes.indexOf(ui.rock_type)+1;
-                    if(i >= RockTypes.length) i = 0;
+                    if(i >= ui.unlockedRocks) i = 0;
                     ui.rock_type = RockTypes[i];
                 }
 
