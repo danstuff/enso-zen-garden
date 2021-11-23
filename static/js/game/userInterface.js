@@ -32,8 +32,9 @@ class UserInterface {
 
         this.taps = 0;
 
-        // TODO unlockLevel should be loaded from storage here
-        this.unlockLevel = 0; 
+        // TODO unlockLevel should be loaded from storage here,
+        // or default to 1
+        this.unlockLevel = 1; 
         this.setUnlockLevel(this.unlockLevel);
     }
 
@@ -195,8 +196,6 @@ class UserInterface {
     }
 
     setUnlockLevel(level, notify) {
-        if(notify) this.randomUnlockSound();
-
         var prevRocks = this.unlockedRocks || 0;
         var prevPlants = this.unlockedPlants || 0;
         var prevRakes = this.unlockedRakes || 0;
@@ -213,26 +212,18 @@ class UserInterface {
             cap(Math.floor(level/2) + 1, RakeTypes.length);
 
         if(notify) {
-            const ui = this;
-            var tempMsg = function(msg) {
-                var oldText = this.setHelpText(msg);
-
-                window.setTimeout(function() {
-                    ui.setHelpText(oldText);
-                }, 5000);
-            }
-
-            //if you reached a new, even unlock level, notify of new plants
-            if(this.level % 2 == 0 &&
-               this.unlockedRocks != prevRocks &&
+            this.randomRing();
+            
+            //if you reached a new unlock level, notify of new plants
+            if(this.unlockedRocks != prevRocks &&
                this.unlockedPlants != prevPlants) {
-                tempMsg("You unlocked " +
+                this.setHelpText("You unlocked " +
                     PlantTypes[this.unlockedPlants-1].name + " and " + 
                     RockTypes[this.unlockedRocks-1].name + ".");
 
             //otherwise, if the rake is new, notify of it
             } else if(this.unlockedRakes != prevRakes) {
-                tempMsg("You unlocked " + 
+                this.setHelpText("You unlocked " + 
                     RakeTypes[this.unlockedRakes-1].name + ".");
             }
         }
