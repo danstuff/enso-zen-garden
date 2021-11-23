@@ -2,7 +2,7 @@ const EntityNames = {
     "" : [],
 
     //plants
-    "flower" : [ "flower_core", "flower_leaves" ],
+    "succulent" : [ "succulent" ],
     "cactus" : [ "cactus_body", "cactus_spikes" ],
     "tree" : [ "tree_branches", "tree_leaves" ],
     "bush" : [ "bush" ],
@@ -25,6 +25,51 @@ const EntityNames = {
     "rake_flat" : [ "rake_flat", "rake_flat_caps" ],
     "rake_circle_big" : [ "rake_circle_big", "rake_circle_big_caps" ],
     "rake_circle_sml" : [ "rake_circle_sml", "rake_circle_sml_caps" ]
+};
+
+const MeshColors = {
+    //plants
+    "succulent" : "#96E7A4",
+    "cactus_body" : "#85E771", 
+    "cactus_spikes" : "#FFFFFF",
+    "tree_branches" : "#E7AB6E",
+    "tree_leaves" : "#629E62" ,
+    "bush" : "#7DB371",
+
+    //rocks
+    "rock_sml_0" : "#6F6C72",
+    "rock_sml_1" : "#5E4C53",
+    "rock_sml_2" : "#756A5A",
+
+    "rock_med_0" : "#756A5A",
+    "rock_med_1" : "#6F6C72",
+    "rock_med_2" : "#5E4C53",
+
+    "rock_big_0" : "#5E4C53",
+    "rock_big_1" : "#756A5A",
+    "rock_big_2" : "#6F6C72",
+
+    //rakes
+    "rake_straight" : "#D1B2A1", 
+    "rake_straight_caps" : "#E7D4B5",
+    "rake_flat" : "#D1B2A1",
+    "rake_flat_caps" : "#E7D4B5",
+    "rake_circle_big" : "#D1B2A1",
+    "rake_circle_big_caps" : "#E7D4B5",
+    "rake_circle_sml" : "#D1B2A1",
+    "rake_circle_sml_caps" : "#E7D4B5",
+
+    //sand
+    "sand_flat" : "#FFFFFF",
+    "sand_big_curve" : "#FFFFFF",
+    "sand_sml_curve" : "#FFFFFF",
+    "sand_straight" : "#FFFFFF",
+    "sand_flat" : "#FFFFFF",
+
+    //frames
+    "frame_corner" : "#000000",
+    "frame_inside" : "#000000",
+    "frame_edge" : "#000000"
 };
 
 const PlantTypes = [

@@ -66,9 +66,13 @@ class BabylonInterface {
                     var mesh = result.meshes[i];
                     mesh.isVisible = false;
                      
+                    mesh.material = 
+                        babInt.makeCelMaterial(MeshColors[mesh.name]);
+
                     //give a cartoony outline if not a frame or sand
                     if(mesh.name.search("frame") == -1 &&
                        mesh.name.search("sand") == -1) {
+
                         mesh.renderOutline = true;
                         mesh.outlineColor = BABYLON.Color3.Black;
                     }
@@ -221,5 +225,86 @@ class BabylonInterface {
         window.setInterval(function() {
             console.log("FPS - " + babInt.engine.getFps().toFixed());
         }, 1000);
+    }
+
+    makeCelMaterial(cstr) {
+        BABYLON.Effect.ShadersStore["celVertexShader"] = `
+            precision highp float;
+
+            // Attributes
+            attribute vec3 position;
+            attribute vec3 normal;
+
+            // Varying
+            varying vec4 vPosition;
+            varying vec3 vNormal;
+
+            // Uniform
+            uniform mat4 worldViewProjection;
+
+            void main() {
+                vPosition = vec4(position, 1.);
+                vNormal = normal;
+
+                gl_Position = worldViewProjection * vPosition;
+            }
+        `;
+
+        BABYLON.Effect.ShadersStore["celFragmentShader"] = `
+            precision highp float;
+
+            uniform vec3 uColor;
+            uniform vec3 uLightPos;
+
+            varying vec4 vPosition;
+            varying vec3 vNormal;
+
+            void main()
+            {
+              vec3 nn = normalize(vec4(vNormal, 0.)).xyz;
+
+              vec3 eye_dir = normalize(vec3(-vPosition));
+              vec3 reflect_dir = normalize(reflect(uLightPos, nn));
+                
+              float spec = max(dot(reflect_dir, eye_dir), 0.0);
+                float diffuse = max(dot(-uLightPos, nn), 0.0);
+
+              float intensity = 0.6 * diffuse + 0.4 * spec;
+
+                if (intensity > 0.9) {
+                    intensity = 1.1;
+                }
+                else if (intensity > 0.5) {
+                    intensity = 0.7;
+                }
+                else {
+                    intensity = 0.5;
+              }
+
+                gl_FragColor = vec4(uColor, 1.) * intensity;
+            }
+        `;
+
+        var col = new BABYLON.Color3.FromHexString(cstr);
+        var shader = new BABYLON.ShaderMaterial(
+            "cel", this.scene, {
+                vertex : "cel",
+                fragment : "cel"
+            }, {
+                attributes: [ "position", "normal" ],
+                uniforms: [
+                    "uColor", "uLightPos",
+                    "worldViewProjection", "worldView", "world",
+                    "view", "projection" ]
+            }
+        );
+
+        shader.setVector3("uColor", new BABYLON.Vector3(
+            col.r, col.g, col.b));
+
+        shader.setVector3("uLightPos", new BABYLON.Vector3(
+            10, 10, 10));
+
+        return shader;
     }
 }
