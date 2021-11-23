@@ -194,6 +194,14 @@ class UserInterface {
                 break;
         }
     }
+	
+	onPointerMove(){
+		ui.randomSand();
+        ui.garden.changeSandAt(
+			pickPt.x, pickPt.z,
+			ui.rake_type.sand, ui.rake_direction);
+        },
+	}
 
     setUnlockLevel(level, notify) {
         var prevRocks = this.unlockedRocks || 0;
