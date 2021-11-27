@@ -196,6 +196,7 @@ class UserInterface {
     }
 	
 	onPointerMove(){
+		if //user is raking
 		ui.randomSand();
         ui.garden.changeSandAt(
 			pickPt.x, pickPt.z,
@@ -289,5 +290,8 @@ class UserInterface {
 
         this.babInt.scene.onPointerDown = 
             function() { ui.onPointerDown(); }
+			
+		this.babInt.scene.onPointerMove =
+			function() { ui.onPointerMove(); }
     }
 }
