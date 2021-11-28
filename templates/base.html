@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Zen Garden</title>
+
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+
+                overflow: hidden;
+
+                width: 100%;
+                height: 100%;
+
+                font-size: 16px;
+
+                background-color: #f7f2ebff;
+            }
+
+            canvas {
+                width: 100%;
+                height: 100%;
+
+                padding: 0;
+                margin: 0;
+                
+                overflow: unset;
+                opacity: 0;
+
+                background-color: rgb(.2, .2, .4);
+            }
+
+            @keyframes title_transition_text {
+                0% {
+                    transform: 
+                        translate(-50%, -50%) scale(0, 0) rotate(0deg);
+                    opacity: 0;
+                }
+
+                50% {
+                    opacity: 100%;
+                }
+
+                90% {
+                    transform: 
+                        translate(-50%, -50%) scale(1, 1) rotate(360deg);
+                    opacity: 100%;
+                }
+
+                100% {
+                    opacity: 0%;
+                }
+            }
+
+            @keyframes title_transition_enso {
+                0% {
+                    transform: 
+                        translate(-50%, -50%) rotate(0deg);
+                    opacity: 0;
+                }
+
+                90% {
+                    opacity: 50%;
+                }
+
+                100% {
+                    transform: 
+                        translate(-50%, -50%) rotate(-360deg);
+                    opacity: 0%;
+                }
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+
+                100% {
+                    transform: translate(-50%, -50%) rotate(-360deg);
+                }
+            }
+
+            .title {
+                height: 90%;
+
+                animation-duration: 2.5s;
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+                pointer-events: none;
+            }
+
+            .fadeIn {
+                opacity: 0;
+            }
+
+            .titleText {
+                transform: 
+                    translate(-50%, -50%) scale(1, 1) rotate(360deg);
+                animation-name: title_transition_text;
+                opacity: 0%;
+            }
+
+            .titleEnso {
+                transform: 
+                    translate(-50%, -50%) rotate(-360deg);
+                animation-name: title_transition_enso;
+                opacity: 0%;
+            }
+
+            .ensoButtonBar {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .ensoButtonBar button {
+                border: none;
+                background: none; 
+                display: inline-block;
+                width: 5rem;
+                height: 5rem;
+                margin: 10px;
+            }
+
+            .ensoButtonThumb, .ensoButtonEnso {
+                width: 5rem;
+                height: 5rem;
+                position: absolute;
+                transform: translate(-50%, -50%);
+            }
+
+            .ensoButtonEnso {
+                z-index: 100;
+            }
+
+            .ensoButtonEnso:hover {
+                animation-name: spin;
+                animation-duration: .5s;
+                cursor: pointer;
+            }   
+
+            #main_dialogue {
+                display: none;
+                top: 0;
+                left: 0;
+            }
+
+            #main_help_text {
+                bottom: 4rem;
+                text-align: center;
+                width: 100%;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            #feedback_link {
+                top: 0;
+                right: 0;
+                padding: 0 !important;
+                pointer-events: all !important;
+            }
+
+            #main_dialogue, #main_help_text, #feedback_link {
+                pointer-events: none;
+                font-family: serif;
+                color: white;
+                position: absolute;
+                padding: 32px;
+                margin: 0;
+            }
+
+            @media (orientation: portrait) {
+                body {
+                    font-size: 32px;
+                }
+
+                #main_dialogue {
+                    padding: 0px;
+                    padding-top: 48px;
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <img class="title titleText"
+        src="{{ assetdir }}/textures/enso-text.png">
+        </img>
+        <img class="title titleEnso"
+        src="{{ assetdir }}/textures/enso-painted.png">
+        </img>
+
+        <canvas id="main_canvas" class="fadeIn"></canvas>
+
+        <p id="main_dialogue"></p>
+        <p id="main_help_text" class="fadeIn"></p>
+
+        <div class="ensoButtonBar">
+            <button id="btn_move" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/arrows.svg"></img>
+            </button>
+            <button id="btn_rake" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/rake.png"></img>
+            </button>
+            <button id="btn_plants" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/plants.png"></img>
+            </button>
+            <button id="btn_rocks" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="{{ assetdir }}/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="{{ assetdir }}/textures/rocks.png"></img>
+            </button>
+        </div>
+
+        <a id="feedback_link" class="fadeIn" href="/feedback/">
+            Post feedback here!</a>
+
+        <script type="text/javascript" 
+                src="{{ jsdir }}/vendor/babylon.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/vendor/babylon.skyMaterial.min.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/vendor/pep.min.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/vendor/jquery-3.6.0.min.js"></script>
+
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/dialogue.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/soundManager.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/assets.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/visualFX.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/environment.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/garden.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/babylonInterface.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/userInterface.js"></script>
+        <script type="text/javascript" 
+                src="{{ jsdir }}/game/game.js"></script>
+
+        <script type="text/javascript" 
+                src="{{ jsdir }}/start.js"></script>
+    </body>
+</html>
