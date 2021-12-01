@@ -32,9 +32,9 @@ class UserInterface {
 
         this.taps = 0;
 
-        // TODO unlockLevel should be loaded from storage here,
-        // or default to 1
-        this.unlockLevel = 1; 
+        // load unlockLevel from storage or default to 1
+        this.unlockLevel = Number(localStorage.unlockLevel) || 1; 
+        console.log("Your current unlock level is " + this.unlockLevel);
         this.setUnlockLevel(this.unlockLevel);
     }
 
@@ -94,7 +94,7 @@ class UserInterface {
     }
 
     randomRing() {
-        this.randomSound(["ring_low", "ring", "ring_high"]);
+        this.randomSound(["ring_low"]);
     }
 
     randomUnlockSound() {
@@ -136,9 +136,9 @@ class UserInterface {
         }
     }
 
-    //TODO Also process pointer move events for rake dragging
-
     onPointerDown() {
+        this.isPointerDown = true;
+
         var pickResult = 
             this.babInt.scene.pick(
                 this.babInt.scene.pointerX,
@@ -155,24 +155,19 @@ class UserInterface {
                 break;
 
             case UserMode.RAKING:
-                this.rake_entity.setPos(pickPt.x, pickPt.z);
-
+                this.rake_entity.setPosFixed(pickPt.x, pickPt.z);
                 this.processTap(
-                    //single tap: place sand
+                    //single tap: place a sand
                     function() {
-                        //TODO this is the code we should move to
-                        //the pointer move / drag function
-                        ui.randomSand();
-
-                        ui.garden.changeSandAt(
+                        if(ui.garden.changeSandAt(
                             pickPt.x, pickPt.z,
-                            ui.rake_type.sand, ui.rake_direction);
+                            ui.rake_type.sand, ui.rake_direction)) {
+                            ui.randomSand();
+                        }
                     },
 
                     //double tap: rotate rake
                     function() {
-                        ui.randomSand();
-                        
                         ui.rake_direction += 90;
                         ui.rake_entity.setDir(ui.rake_direction);
                     });
@@ -192,6 +187,32 @@ class UserInterface {
                 e.create(this.rock_type.entities[index], pickPt.x, pickPt.z);
                 ui.randomSand();
                 break;
+        }
+    }
+
+    onPointerUp() {
+        this.isPointerDown = false;
+    }
+
+    onPointerMove() {
+        if(this.userMode != UserMode.RAKING || !this.isPointerDown)
+            return;
+
+        var pickResult = 
+            this.babInt.scene.pick(
+                this.babInt.scene.pointerX,
+                this.babInt.scene.pointerY);
+
+        if(!pickResult.hit) return;
+
+        var pickPt = pickResult.pickedPoint;
+
+        this.rake_entity.setPosFixed(pickPt.x, pickPt.z);
+
+        if(this.garden.changeSandAt(
+            pickPt.x, pickPt.z,
+            this.rake_type.sand, this.rake_direction)) {
+            this.randomSand();
         }
     }
 
@@ -232,7 +253,8 @@ class UserInterface {
     nextUnlockLevel() {
         this.setUnlockLevel(++this.unlockLevel, true);
 
-        //TODO unlock level should be saved here
+        //save unlock level
+        localStorage.unlockLevel = this.unlockLevel;
     }
 
     init() {
@@ -281,5 +303,9 @@ class UserInterface {
 
         this.babInt.scene.onPointerDown = 
             function() { ui.onPointerDown(); }
+        this.babInt.scene.onPointerUp = 
+            function() { ui.onPointerUp(); }
+        this.babInt.scene.onPointerMove = 
+            function() { ui.onPointerMove(); }
     }
 }

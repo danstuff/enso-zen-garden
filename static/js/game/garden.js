@@ -83,6 +83,16 @@ class Entity {
         }
     }
 
+    setPosFixed(x, z) {
+        var mesh_names = EntityNames[this.name];
+        for(var i in mesh_names) {
+
+            var inst = this.instances[i];
+            inst.position.x = x;
+            inst.position.z = z;
+        }
+    }
+
     setDir(direction) {
         var mesh_names = EntityNames[this.name];
         for(var i in mesh_names) {
@@ -140,6 +150,8 @@ class Garden {
             if(pos.x - half_tile <= x && x < pos.x + half_tile &&
                pos.z - half_tile <= z && z < pos.z + half_tile) {
 
+                //ignore if you'd be changing it to the same thing
+                if(sand.name == new_mesh_name) return false;
 
                 //swap the tile instance for a new one
                 this.babInt.removeMeshInstance(sand.name, sand.instance);
@@ -156,9 +168,11 @@ class Garden {
                     new_mesh_name, pos, rot, false, true);
 
                 this.sands[i] = { name : new_mesh_name, instance : inst };
-                break;
+                return true;
             }
         }
+
+        return false;
     }
 
     /**
