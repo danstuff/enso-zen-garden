@@ -8,6 +8,17 @@ const UserMode = {
     PLACING : 3
 };
 
+const LevelTitles = [
+    "Beginner",
+    "Fledgling",
+    "Up-And-Coming",
+    "Active",
+    "Hard-Working",
+    "Professional",
+    "Expert",
+    "Veteran"
+];
+
 class UserInterface {
     constructor(babInt, garden) {
         this.babInt = babInt;
@@ -46,7 +57,7 @@ class UserInterface {
                 this.babInt.disableCamera();
 
                 this.rake_entity.create(
-                    this.rake_type.entity, 0, 0, 
+                    this.rake_type.entity, 0, 0, 0,
                     this.rake_direction);
 
                 this.setHelpText(
@@ -85,38 +96,39 @@ class UserInterface {
         this.soundMan.playSound(this.sounds[str_list[pitch]]);
     }
 
-    randomPluck() {
-        this.randomSound(["one_pluck_low", "one_pluck", "one_pluck_high"]);
-    }
-
-    randomSand() {
-        this.randomSound(["sand_a", "sand_b", "sand_c"]);
-    }
-
-    randomRing() {
-        this.randomSound(["ring_low"]);
-    }
-
-    randomUnlockSound() {
-        this.randomSound(["riff", "strum"]);
-    }
-
     createButton(id, action) {
         const ui = this;
         $("#"+id).click(function() {
-            ui.randomPluck();
+            this.randomSound(
+                ["one_pluck_low", "one_pluck", "one_pluck_high"]);
             action();
         });
     }
 
-    setHelpText(text) {
+    setText(id, text) {
         //fade the help text out, replace it, and fade in
-        $("#main_help_text").fadeOut(function() {
-            $("#main_help_text").html(text);
-            $("#main_help_text").fadeIn();
+        $(id).fadeOut(function() {
+            $(id).html(text);
+            $(id).fadeIn();
         });  
 
-        return $("#main_help_text").html();
+        return $(id).html();
+    }
+
+    setHelpText(text) {
+        this.setText("#main_help_text", text);
+    }
+
+    setLevelText() {
+        var title_index = Math.round(Math.pow(this.unlockLevel, 0.75))-1;
+
+        //cap level titles
+        if(title_index >= LevelTitles.length)
+            title_index = LevelTitles.length-1;
+
+        this.setText("#main_level_text", 
+            "Level " + this.unlockLevel +  " - " +
+            LevelTitles[title_index] + " Gardener");
     }
 
     processTap(onSingle, onDouble) {
@@ -136,18 +148,42 @@ class UserInterface {
         }
     }
 
-    onPointerDown() {
-        this.isPointerDown = true;
-
-        var pickResult = 
+    getPickPoint() {
+       var pickResult = 
             this.babInt.scene.pick(
                 this.babInt.scene.pointerX,
                 this.babInt.scene.pointerY);
 
-        if(!pickResult.hit) return;
+        if(!pickResult.hit) return null;
 
-        var pickPt = pickResult.pickedPoint;
+        return pickResult.pickedPoint;
+    }
 
+    moveRake(x, z) {
+        this.rake_entity.setPos(x, 0, z);
+
+        //remove any instances that are in the area
+        this.babInt.removeInstancesInside(
+            x - 7, z - 7, x + 7, z + 7);
+
+        if(this.garden.changeSandAt(
+            x, z, this.rake_type.sand, this.rake_direction)) {
+            this.randomSound(["sand_a", "sand_b", "sand_c"]);
+        }
+    }
+
+    placeEntity(entity_name, x, y, z) {
+        var e = new Entity(this.babInt);
+        e.create(entity_name, pickPt.x, pickPt.y, pickPt.z);
+        this.randomSound(["sand_a", "sand_b", "sand_c"]);
+    }
+
+    onPointerDown() {
+        this.isPointerDown = true;
+        
+        var pickPt = this.getPickPoint();
+        if(!pickPt) return;
+     
         const ui = this;
         switch(this.userMode) {
             case UserMode.MOVING:
@@ -155,39 +191,32 @@ class UserInterface {
                 break;
 
             case UserMode.RAKING:
-                this.rake_entity.setPosFixed(pickPt.x, pickPt.z);
                 this.processTap(
-                    //single tap: place a sand
+                    //single tap: move the rake
                     function() {
-                        if(ui.garden.changeSandAt(
-                            pickPt.x, pickPt.z,
-                            ui.rake_type.sand, ui.rake_direction)) {
-                            ui.randomSand();
-                        }
+                        moveRake(pickPt.x, pickPt.z);
                     },
 
                     //double tap: rotate rake
                     function() {
                         ui.rake_direction += 90;
+                        ui.rake_entity.setPos(pickPt.x, 0, pickPt.z);
                         ui.rake_entity.setDir(ui.rake_direction);
                     });
                 break;
 
             case UserMode.PLANTING:
-                var e = new Entity(this.babInt);
-                e.create(this.plant_type.entity, pickPt.x, pickPt.z);
-                ui.randomSand();
+                this.placeEntity(this.plant_type.entity,
+                    pickPt.x, pickPt.y, pickPt.z);
                 break;
 
             case UserMode.PLACING:
                 var index = Math.floor(
                     Math.random()*this.rock_type.entities.length);
-
-                var e = new Entity(this.babInt);
-                e.create(this.rock_type.entities[index], pickPt.x, pickPt.z);
-                ui.randomSand();
+                this.placeEntity(this.rock_type.entities[index],
+                    pickPt.x, pickPt.y, pickPt.z);
                 break;
-        }
+    }
     }
 
     onPointerUp() {
@@ -198,23 +227,11 @@ class UserInterface {
         if(this.userMode != UserMode.RAKING || !this.isPointerDown)
             return;
 
-        var pickResult = 
-            this.babInt.scene.pick(
-                this.babInt.scene.pointerX,
-                this.babInt.scene.pointerY);
+        var pickPt = this.getPickPoint();
+        if(!pickPt) return;
 
-        if(!pickResult.hit) return;
-
-        var pickPt = pickResult.pickedPoint;
-
-        this.rake_entity.setPosFixed(pickPt.x, pickPt.z);
-
-        if(this.garden.changeSandAt(
-            pickPt.x, pickPt.z,
-            this.rake_type.sand, this.rake_direction)) {
-            this.randomSand();
-        }
-    }
+        moveRake(pickPt.x, pickPt.z);
+     }
 
     setUnlockLevel(level, notify) {
         var prevRocks = this.unlockedRocks || 0;
@@ -233,7 +250,7 @@ class UserInterface {
             cap(Math.floor(level/2) + 1, RakeTypes.length);
 
         if(notify) {
-            this.randomRing();
+            this.randomSound(["ring_low"]);
             
             //if you reached a new unlock level, notify of new plants
             if(this.unlockedRocks != prevRocks &&
@@ -248,6 +265,9 @@ class UserInterface {
                     RakeTypes[this.unlockedRakes-1].name + ".");
             }
         }
+
+        //update level text to match
+        this.setLevelText();
     }
 
     nextUnlockLevel() {

@@ -167,7 +167,12 @@
                 pointer-events: all !important;
             }
 
-            #main_dialogue, #main_help_text, #feedback_link {
+            #main_level_text {
+                top: 0;
+                right: 0;
+            }
+
+            .mainText {
                 pointer-events: none;
                 font-family: serif;
                 color: white;
@@ -200,8 +205,11 @@
 
         <canvas id="main_canvas" class="fadeIn"></canvas>
 
-        <p id="main_dialogue"></p>
-        <p id="main_help_text" class="fadeIn"></p>
+        <p id="main_dialogue" class="mainText"></p>
+        <p id="main_help_text" class="mainText fadeIn"></p>
+        <p id="main_level_text" class="mainText fadeIn"></p>
+        <a id="feedback_link" class="mainText fadeIn" href="/feedback/">
+            Post feedback here!</a>
 
         <div class="ensoButtonBar">
             <button id="btn_move" class="fadeIn">
@@ -230,8 +238,6 @@
             </button>
         </div>
 
-        <a id="feedback_link" class="fadeIn" href="/feedback/">
-            Post feedback here!</a>
 
         <script type="text/javascript" 
                 src="{{ jsdir }}/vendor/babylon.js"></script>

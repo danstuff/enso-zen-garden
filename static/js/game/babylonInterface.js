@@ -138,7 +138,8 @@ class BabylonInterface {
         return null;
     }
 
-    createMeshInstance(name, pos, rot, fromTop = true, pickable = false) {
+    createMeshInstance(name, pos, rot, size,
+        fromTop = true, pickable = false) {
         var mesh = this.getMesh(name);
         if(!mesh) return null;
 
@@ -146,6 +147,7 @@ class BabylonInterface {
         inst.isVisible = true;
         inst.position = pos;
         inst.rotation = rot;
+        inst.scalingDeterminant = size;
         inst.isPickable = pickable;
 
         //animate the mesh into position

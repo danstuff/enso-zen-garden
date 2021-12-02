@@ -17,7 +17,7 @@ class Entity {
         this.instances = [];
     }
 
-    create(entity_name, x, z, direction = -1) {
+    create(entity_name, x, y, z, direction = -1) {
         this.destroy();            
 
         if(Math.abs(x) > GARDEN_MAX_SIZE/2 ||
@@ -27,16 +27,26 @@ class Entity {
 
         this.name = entity_name;
 
-        var pos = new BABYLON.Vector3(x, .7, z);
+        var pos = new BABYLON.Vector3(x, y, z);
 
-        if(direction == -1) direction = Math.random()*360;
-        var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
+        var rotx = 0;
+        var rotz = 0;
+        var size = 1;
+        if(direction == -1) {
+            direction = Math.random()*360;
+            rotx = Math.random()*0.25 - 0.125;
+            rotz = Math.random()*0.25 - 0.125;
+            size = 0.5 + Math.random()*0.5;
+        }
+
+        var rot = 
+            new BABYLON.Vector3(rotx, direction*Math.PI/180, rotz);   
         
         //add all sub-meshes for the entity
         var mesh_names = EntityNames[entity_name];
         for(var i in mesh_names) {
             var inst = this.babInt.createMeshInstance(
-                mesh_names[i], pos, rot, true);
+                mesh_names[i], pos, rot, size, true);
 
             this.instances.push(inst);
         }
@@ -53,9 +63,9 @@ class Entity {
         this.instances = [];
     }
 
-    copyTo(x, z) {
+    copyTo(x, y, z) {
         var e = new Entity(this.babInt);
-        e.create(this.name, x, z);
+        e.create(this.name, x, y, z);
         return e;
     }
 
@@ -63,32 +73,13 @@ class Entity {
         return this.name && this.instances.length > 0;
     }
 
-    setPos(x, z) {
-        var mesh_names = EntityNames[this.name];
-        for(var i in mesh_names) {
-
-            var inst = this.instances[i];
-            
-            if(Math.abs(x) > GARDEN_MAX_SIZE/2 ||
-               Math.abs(z) > GARDEN_MAX_SIZE/2) {
-                return;
-            }
-
-            var easeX = this.babInt.makeTransition(
-                "position.x", inst.position.x, x, 0.25);
-            var easeZ = this.babInt.makeTransition(
-                "position.z", inst.position.z, z, 0.25);
-
-            this.babInt.runTransitions(inst, [ easeX, easeZ ]);
-        }
-    }
-
-    setPosFixed(x, z) {
+    setPos(x, y, z) {
         var mesh_names = EntityNames[this.name];
         for(var i in mesh_names) {
 
             var inst = this.instances[i];
             inst.position.x = x;
+            inst.position.y = y;
             inst.position.z = z;
         }
     }
@@ -126,7 +117,7 @@ class Garden {
         var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
         
         this.babInt.createMeshInstance(
-            mesh_name, pos, rot, false);
+            mesh_name, pos, rot, 1, false);
     }
 
     addSand(mesh_name, tx, tz, direction) {
@@ -134,7 +125,7 @@ class Garden {
         var rot = new BABYLON.Vector3(0, direction*Math.PI/180, 0);   
         
         var inst = this.babInt.createMeshInstance(
-            mesh_name, pos, rot, false, true);
+            mesh_name, pos, rot, 1, false, true);
         this.sands.push({ name : mesh_name, instance : inst });
     }
 
@@ -157,15 +148,10 @@ class Garden {
                 this.babInt.removeMeshInstance(sand.name, sand.instance);
                 sand = [];
 
-                //remove any instances that are on the tile
-                this.babInt.removeInstancesInside(
-                    pos.x - half_tile,
-                    pos.z - half_tile,
-                    pos.x + half_tile,
-                    pos.z + half_tile);
+
 
                 var inst = this.babInt.createMeshInstance(
-                    new_mesh_name, pos, rot, false, true);
+                    new_mesh_name, pos, rot, 1, false, true);
 
                 this.sands[i] = { name : new_mesh_name, instance : inst };
                 return true;
