@@ -34,8 +34,8 @@ class UserInterface {
 
         // TODO unlockLevel should be loaded from storage here,
         // or default to 1
-        this.unlockLevel = 1; 
-        this.setUnlockLevel(this.unlockLevel);
+        this.unlockLevel=1
+        this.setUnlockLevel(localStorage.getItem("Level").toString());
     }
 
     setUserMode(new_mode) {
@@ -228,11 +228,13 @@ class UserInterface {
             }
         }
     }
-
+//TODO unlock level should be saved here
     nextUnlockLevel() {
-        this.setUnlockLevel(++this.unlockLevel, true);
-
-        //TODO unlock level should be saved here
+        const Level=++this.unlockLevel
+        localStorage.setItem("Level", Level);
+      
+        this.setUnlockLevel(Level, true);
+        
     }
 
     init() {
