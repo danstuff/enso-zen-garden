@@ -216,7 +216,7 @@ class UserInterface {
                 this.placeEntity(this.rock_type.entities[index],
                     pickPt.x, pickPt.y, pickPt.z);
                 break;
-    }
+        }
     }
 
     onPointerUp() {
@@ -233,7 +233,7 @@ class UserInterface {
         moveRake(pickPt.x, pickPt.z);
      }
 
-    setUnlockLevel(level, notify) {
+    setUnlockLevel(level) {
         var prevRocks = this.unlockedRocks || 0;
         var prevPlants = this.unlockedPlants || 0;
         var prevRakes = this.unlockedRakes || 0;
