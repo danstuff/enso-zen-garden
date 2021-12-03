@@ -62,7 +62,8 @@ class UserInterface {
 
                 this.setHelpText(
                     "Currently using the " + this.rake_type.name + "." +
-                    "<br>Tap the button again to change the current rake.");
+                    "<br>Tap the button again to change the current rake." + 
+                    "<br>Double tap anywhere to rotate the rake.");
                 break;
 
             case UserMode.MOVING:
@@ -164,7 +165,7 @@ class UserInterface {
 
         //remove any instances that are in the area
         this.babInt.removeInstancesInside(
-            x - 7, z - 7, x + 7, z + 7);
+            x - 2, z - 2, x + 2, z + 2);
 
         if(this.garden.changeSandAt(
             x, z, this.rake_type.sand, this.rake_direction)) {

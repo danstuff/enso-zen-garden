@@ -31,7 +31,7 @@ class BabylonInterface {
         this.camera.upperRadiusLimit = 100;
 
         //rotation bounds
-        this.camera.lowerBetaLimit = 0.5;
+        this.camera.lowerBetaLimit = 0.25;
         this.camera.upperBetaLimit = Math.PI/2;
 
         //start in movement mode
@@ -194,13 +194,17 @@ class BabylonInterface {
 
     removeMeshInstance(mesh_name, inst) {
         var mesh = this.getMesh(mesh_name);
-        var length0 = mesh.instances.length;
-        inst.dispose();
+
+        for(var i in mesh.instances) {
+            if(mesh.instances[i] == inst)
+                mesh.instances[i].dispose();
+        }
     }
 
     removeAllMeshes(mesh_name) {
         var mesh = this.getMesh(mesh_name);
-        while(mesh != null) {
+        var tries = 0;
+        while(mesh != null ) {
             mesh.dispose();
             mesh = this.getMesh(mesh_name);
         }
