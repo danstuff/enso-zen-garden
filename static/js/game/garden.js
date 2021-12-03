@@ -142,13 +142,12 @@ class Garden {
                pos.z - half_tile <= z && z < pos.z + half_tile) {
 
                 //ignore if you'd be changing it to the same thing
-                if(sand.name == new_mesh_name) return false;
+                if(sand.name == new_mesh_name && 
+                    sand.instance.rotation.y == rot.y) return false;
 
                 //swap the tile instance for a new one
                 this.babInt.removeMeshInstance(sand.name, sand.instance);
                 sand = [];
-
-
 
                 var inst = this.babInt.createMeshInstance(
                     new_mesh_name, pos, rot, 1, false, true);

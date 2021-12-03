@@ -99,7 +99,7 @@ class UserInterface {
     createButton(id, action) {
         const ui = this;
         $("#"+id).click(function() {
-            this.randomSound(
+            ui.randomSound(
                 ["one_pluck_low", "one_pluck", "one_pluck_high"]);
             action();
         });
@@ -174,7 +174,7 @@ class UserInterface {
 
     placeEntity(entity_name, x, y, z) {
         var e = new Entity(this.babInt);
-        e.create(entity_name, pickPt.x, pickPt.y, pickPt.z);
+        e.create(entity_name, x, y, z);
         this.randomSound(["sand_a", "sand_b", "sand_c"]);
     }
 
@@ -194,7 +194,7 @@ class UserInterface {
                 this.processTap(
                     //single tap: move the rake
                     function() {
-                        moveRake(pickPt.x, pickPt.z);
+                        ui.moveRake(pickPt.x, pickPt.z);
                     },
 
                     //double tap: rotate rake
@@ -230,10 +230,10 @@ class UserInterface {
         var pickPt = this.getPickPoint();
         if(!pickPt) return;
 
-        moveRake(pickPt.x, pickPt.z);
+        this.moveRake(pickPt.x, pickPt.z);
      }
 
-    setUnlockLevel(level) {
+    setUnlockLevel(level, notify) {
         var prevRocks = this.unlockedRocks || 0;
         var prevPlants = this.unlockedPlants || 0;
         var prevRakes = this.unlockedRakes || 0;
@@ -250,7 +250,7 @@ class UserInterface {
             cap(Math.floor(level/2) + 1, RakeTypes.length);
 
         if(notify) {
-            this.randomSound(["ring_low"]);
+            this.randomSound(["ring"]);
             
             //if you reached a new unlock level, notify of new plants
             if(this.unlockedRocks != prevRocks &&

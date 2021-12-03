@@ -33,7 +33,7 @@ class Game {
         window.setTimeout(function() {
             game.nextPhase();
             game.userInterface.nextUnlockLevel();
-        }, (1 + this.phaseCount) * 5000);
+        }, (1 + this.phaseCount) * FIVE_MINUTES);
     }
 
     init(callback) {
