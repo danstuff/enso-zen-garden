@@ -139,7 +139,7 @@ class BabylonInterface {
     }
 
     createMeshInstance(name, pos, rot, size,
-        fromTop = true, pickable = false) {
+        fromTop = true, pickable = true) {
         var mesh = this.getMesh(name);
         if(!mesh) return null;
 
@@ -180,12 +180,10 @@ class BabylonInterface {
                mesh.name.search("rake") == -1)  {
                 for(var j in mesh.instances) {
                     var inx = mesh.instances[j].position.x;
-                    var iny = mesh.instances[j].position.y;
                     var inz = mesh.instances[j].position.z;
 
                     if(x0 < inx && inx <= x1 &&
-                       z0 < inz && inz <= z1 &&
-                       -1 < iny && iny <=  1) {
+                       z0 < inz && inz <= z1) {
                         this.removeMeshInstance(
                             mesh.name, mesh.instances[j]);
                     }
@@ -197,10 +195,7 @@ class BabylonInterface {
     removeMeshInstance(mesh_name, inst) {
         var mesh = this.getMesh(mesh_name);
         var length0 = mesh.instances.length;
-
-        while(mesh.instances.length >= length0) {
-            inst.dispose();
-        }
+        inst.dispose();
     }
 
     removeAllMeshes(mesh_name) {

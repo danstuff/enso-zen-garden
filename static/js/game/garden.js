@@ -27,6 +27,8 @@ class Entity {
 
         this.name = entity_name;
 
+        var pickable = direction == -1;
+
         var pos = new BABYLON.Vector3(x, y, z);
 
         var rotx = 0;
@@ -46,7 +48,7 @@ class Entity {
         var mesh_names = EntityNames[entity_name];
         for(var i in mesh_names) {
             var inst = this.babInt.createMeshInstance(
-                mesh_names[i], pos, rot, size, true);
+                mesh_names[i], pos, rot, size, true, pickable);
 
             this.instances.push(inst);
         }
