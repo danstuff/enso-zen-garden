@@ -106,10 +106,6 @@ const RockTypes = [
     {
         name: "boulders",
         entities: ["rock_big_0", "rock_big_1", "rock_big_2"]
-    },
-    {
-        name: "statues",
-        entities: [ ]
     }
 ];
 

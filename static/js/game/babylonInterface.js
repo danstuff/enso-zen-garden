@@ -171,6 +171,7 @@ class BabylonInterface {
     }
 
     removeInstancesInside(x0, z0, x1, z1) {
+        var removed = false;
         for(var i in this.scene.meshes) {
             var mesh = this.scene.meshes[i];
 
@@ -186,10 +187,13 @@ class BabylonInterface {
                        z0 < inz && inz <= z1) {
                         this.removeMeshInstance(
                             mesh.name, mesh.instances[j]);
+                        removed = true;
                     }
                 }
             }
         }
+
+        return removed;
     }
 
     removeMeshInstance(mesh_name, inst) {

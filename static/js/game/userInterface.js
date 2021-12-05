@@ -163,12 +163,11 @@ class UserInterface {
     moveRake(x, z) {
         this.rake_entity.setPos(x, 0, z);
 
-        //remove any instances that are in the area
-        this.babInt.removeInstancesInside(
-            x - 2, z - 2, x + 2, z + 2);
-
+        //remove any instances that are in the area and change sand
         if(this.garden.changeSandAt(
-            x, z, this.rake_type.sand, this.rake_direction)) {
+            x, z, this.rake_type.sand, this.rake_direction) || 
+           this.babInt.removeInstancesInside(
+            x - 2, z - 2, x + 2, z + 2)) { 
             this.randomSound(["sand_a", "sand_b", "sand_c"]);
         }
     }
