@@ -138,17 +138,18 @@ class Environment {
         //add clouds and rain/snow based on weather data
         switch(data.main) {
             case "clouds":
-                switch(data.description) {
-                    case "few clouds: 11-25%":
+                var worda = data.description.split(" ")[0];
+                switch(worda) {
+                    case "few":
                         cloud_amount = 1;
                         break;
-                    case "scattered clouds: 25-50%":
+                    case "scattered":
                         cloud_amount = 3;
                         break;
-                    case "broken clouds: 51-84%":
+                    case "broken":
                         cloud_amount = 4;
                         break;
-                    case "overcast clouds: 85-100%":
+                    case "overcast":
                         cloud_amount = 6;
                         break;
                 }
@@ -179,14 +180,14 @@ class Environment {
                 break;
         }
 
-        this.soundMan.setNoiseStrength(data.wind_speed/10);
+        this.soundMan.setNoiseStrength(data.wind_speed/100);
         this.soundMan.playNoise();
 
         this.vfx.addClouds(cloud_amount, data.wind_speed / 2);
         this.vfx.setFog(cloud_amount);
 
         //ask server for dialogue
-        this.dialogue.request(data);
+        this.dialogue.update(data);
     }
 
     nextDemo() {

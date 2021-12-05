@@ -1,6 +1,5 @@
-const NOISE_GAIN = 0.03;    //how loud the noise is at maximum
-const NOISE_TWEEN = 0.05;   //how quickly noise strength transitions
-const NOISE_FLOOR = 0.5;    //minimum volume for noise
+const NOISE_GAIN = 0.05;    //noise multiplier
+const NOISE_FLOOR = 0.1;    //minimum volume for noise
 const NOISE_CURVE = 1.05;   //closer to 1 = flatter curve
 
 //create an audio context

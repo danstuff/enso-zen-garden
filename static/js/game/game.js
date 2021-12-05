@@ -23,6 +23,8 @@ class Game {
     }
 
     nextPhase() {
+        this.userInterface.randomSound(["ring"]);
+
         var gsize = (1 + this.phaseCount + this.sizeShift) * 2;
         this.garden.addSandAndFrames(gsize, gsize);
 
@@ -45,7 +47,6 @@ class Game {
                 game.userInterface.init();
                 game.userInterface.setHelpText(
                     "Welcome to Enso! Tap and drag to move around.");
-                game.userInterface.randomSound(["ring_low"]);
 
                 game.garden.addSandAndFrames(0, game.sizeShift*2);
 

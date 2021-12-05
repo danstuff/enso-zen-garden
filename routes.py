@@ -5,10 +5,8 @@ from flask import send_file
 from flask import request
 from flask import redirect
 
-from modules.databaseManager import DatabaseManager
 from modules.secure import APIKeys, ServerInfo
 
-dbMan = DatabaseManager()
 apiKeys = APIKeys()
 serverInfo = ServerInfo()
 
@@ -24,11 +22,6 @@ def mainRoute():
     return render_template("base.html",
             jsdir=url_for("static", filename="js"),
             assetdir=url_for("static", filename="assets"))
-
-#GET for reading dialogue data from the server
-@app.route("/environment/post/", methods=['POST'])
-def dialogueGetRoute():
-    return dbMan.getDialogueString(request)
 
 #GET for reading secure data from the server
 @app.route("/secure/get/", methods=['GET'])

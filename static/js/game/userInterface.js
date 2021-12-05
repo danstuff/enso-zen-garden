@@ -101,7 +101,7 @@ class UserInterface {
         const ui = this;
         $("#"+id).click(function() {
             ui.randomSound(
-                ["one_pluck_low", "one_pluck", "one_pluck_high"]);
+                ["snap_a", "snap_b"]);
             action();
         });
     }
@@ -235,36 +235,50 @@ class UserInterface {
      }
 
     setUnlockLevel(level, notify) {
-        var prevRocks = this.unlockedRocks || 0;
-        var prevPlants = this.unlockedPlants || 0;
-        var prevRakes = this.unlockedRakes || 0;
+        this.unlockedRocks = 1;
+        this.unlockedPlants = 1;
+        this.unlockedRakes = 1;
+
+
+        for(var i = 1; i < level; i++) {
+            switch(i % 3) {
+                case 0: this.unlockedPlants++; break;
+                case 1: this.unlockedRocks++; break;
+                case 2: this.unlockedRakes++; break;
+            }
+        }
 
         var cap = function(v, c) { return (v < c) ? v : c; } 
-
-        // on odd levels, you unlock plants and rocks
-        var count = Math.floor((level + 1)/2);
-        this.unlockedRocks = cap(count, RockTypes.length);
-        this.unlockedPlants = cap(count, PlantTypes.length);
-
-        // on even levels, you unlock rakes
-        this.unlockedRakes = 
-            cap(Math.floor(level/2) + 1, RakeTypes.length);
+        this.unlockedRocks = cap(this.unlockedRocks, RockTypes.length);
+        this.unlockedPlants = cap(this.unlockedPlants, PlantTypes.length);
+        this.unlockedRakes = cap(this.unlockedRakes, RakeTypes.length);
 
         if(notify) {
-            this.randomSound(["ring"]);
+            //if you reached a new unlock level, notify of new items
+            this.randomSound(["riff", "strum"]);
             
-            //if you reached a new unlock level, notify of new plants
-            if(this.unlockedRocks != prevRocks &&
-               this.unlockedPlants != prevPlants) {
-                this.setHelpText("You unlocked " +
-                    PlantTypes[this.unlockedPlants-1].name + " and " + 
-                    RockTypes[this.unlockedRocks-1].name + ".");
+            var unlockItemName = "";
 
-            //otherwise, if the rake is new, notify of it
-            } else if(this.unlockedRakes != prevRakes) {
-                this.setHelpText("You unlocked " + 
-                    RakeTypes[this.unlockedRakes-1].name + ".");
+            var category = level % 3;
+
+            switch(category) {
+                case 0:
+                    unlockItemName =
+                        PlantTypes[this.unlockedPlants-1].name;
+                    break;
+
+                case 1:
+                    unlockItemName =
+                        RockTypes[this.unlockedRocks-1].name;
+                    break;
+
+                case 2:
+                    unlockItemName =
+                        RakeTypes[this.unlockedRakes-1].name;
+                    break;
             }
+
+            this.setHelpText("You unlocked " + unlockItemName);
         }
 
         //update level text to match
@@ -272,10 +286,14 @@ class UserInterface {
     }
 
     nextUnlockLevel() {
-        this.setUnlockLevel(++this.unlockLevel, true);
+        //increment and save unlock level
+        localStorage.unlockLevel = ++this.unlockLevel;
 
-        //save unlock level
-        localStorage.unlockLevel = this.unlockLevel;
+        //wait a bit before actually setting/playing a notification
+        const ui = this;
+        window.setTimeout(function() {
+            ui.setUnlockLevel(ui.unlockLevel, true);
+        }, 5000);
     }
 
     init() {

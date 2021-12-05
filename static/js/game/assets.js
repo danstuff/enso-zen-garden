@@ -141,15 +141,25 @@ const RakeTypes = [
 
 const SoundEffects = [
     "one_pluck",
-    "one_pluck_low",
-    "one_pluck_high",
     "two_plucks",
     "riff",
     "strum",
     "ring",
-    "ring_low",
-    "ring_high",
     "sand_a",
     "sand_b",
-    "sand_c"
+    "sand_c",
+    "snap_a",
+    "snap_b"
+];
+
+const Dialogues = [
+    { 
+        //The HTML that will be displayed when the dialogue is used
+        html: "<i>Hello World!</i>", 
+
+        //Tags are the conditions for displaying the given HTML
+        //Tags can use logical operators OR and AND, but parenthasis
+        //are not supported. If no operators are specified, AND is assumed.
+        tags: "clear or day"
+    }
 ];
