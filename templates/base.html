@@ -13,9 +13,9 @@
                 width: 100%;
                 height: 100%;
 
-                font-size: 16px;
+                font-size: 1rem;
 
-                background-color: #f7f2ebff;
+                background-color: #ffffff;
             }
 
             canvas {
@@ -28,13 +28,13 @@
                 overflow: unset;
                 opacity: 0;
 
-                background-color: rgb(.2, .2, .4);
+                background-color: #ffffff;
             }
 
             @keyframes title_transition_text {
                 0% {
                     transform: 
-                        translate(-50%, -50%) scale(0, 0) rotate(0deg);
+                        scale(0, 0) rotate(0deg);
                     opacity: 0;
                 }
 
@@ -44,7 +44,7 @@
 
                 90% {
                     transform: 
-                        translate(-50%, -50%) scale(1, 1) rotate(360deg);
+                        scale(1, 1) rotate(360deg);
                     opacity: 100%;
                 }
 
@@ -55,9 +55,8 @@
 
             @keyframes title_transition_enso {
                 0% {
-                    transform: 
-                        translate(-50%, -50%) rotate(0deg);
-                    opacity: 0;
+                    transform:  rotate(0deg);
+                    opacity: 0%;
                 }
 
                 90% {
@@ -65,8 +64,7 @@
                 }
 
                 100% {
-                    transform: 
-                        translate(-50%, -50%) rotate(-360deg);
+                    transform: rotate(-360deg);
                     opacity: 0%;
                 }
             }
@@ -82,38 +80,46 @@
             }
 
             .title {
-                height: 90%;
-
-                animation-duration: 2.5s;
-
                 position: absolute;
-                top: 50%;
-                left: 50%;
+                width: 100%;
+                height: 100%;
+                
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                text-align: center;
 
                 pointer-events: none;
             }
 
             .fadeIn {
-                opacity: 0;
+                opacity: 0%;
             }
 
             .titleText {
-                transform: 
-                    translate(-50%, -50%) scale(1, 1) rotate(360deg);
+                position: fixed;
+                transform: scale(1, 1) rotate(360deg);
                 animation-name: title_transition_text;
+                animation-duration: 2.5s;
                 opacity: 0%;
+
+                height: 75%;
             }
 
             .titleEnso {
-                transform: 
-                    translate(-50%, -50%) rotate(-360deg);
+                position: fixed;
+                transform: rotate(-360deg);
                 animation-name: title_transition_enso;
+                animation-duration: 2.5s;
                 opacity: 0%;
+
+                height: 75%;
             }
 
             .ensoButtonBar {
                 position: absolute;
-                bottom: 0px;
+                bottom: 0;
                 width: 100%;
                 text-align: center;
                 pointer-events: none !important;
@@ -125,7 +131,7 @@
                 display: inline-block;
                 width: 5rem;
                 height: 5rem;
-                margin: 10px;
+                margin: 0.5rem;
                 pointer-events: all !important;
             }
 
@@ -156,8 +162,8 @@
                 bottom: 4rem;
                 text-align: center;
                 width: 100%;
-                padding-left: 0px !important;
-                padding-right: 0px !important;
+                padding-left: 0!important;
+                padding-right: 0 !important;
             }
 
             #feedback_link {
@@ -177,18 +183,21 @@
                 font-family: serif;
                 color: white;
                 position: absolute;
-                padding: 32px;
+                padding: 2rem;
                 margin: 0;
             }
 
             @media (orientation: portrait) {
-                body {
-                    font-size: 32px;
+                #main_dialogue {
+                    padding: 0;
+                    padding-top: 4rem
+                    width: 100%;
+                    text-align: center;
                 }
 
-                #main_dialogue {
-                    padding: 0px;
-                    padding-top: 48px;
+                #main_level_text {
+                    padding: 0;
+                    padding-top: 2rem
                     width: 100%;
                     text-align: center;
                 }
@@ -196,16 +205,18 @@
         </style>
     </head>
     <body>
-        <img class="title titleText"
-        src="{{ assetdir }}/textures/enso-text.png">
-        </img>
-        <img class="title titleEnso"
-        src="{{ assetdir }}/textures/enso-painted.png">
-        </img>
+        <div class="title">
+            <img class="titleText"
+            src="{{ assetdir }}/textures/enso-text.png">
+            </img>
+            <img class="titleEnso"
+            src="{{ assetdir }}/textures/enso-painted.png">
+            </img>
+        </div>
 
         <canvas id="main_canvas" class="fadeIn"></canvas>
 
-        <p id="main_dialogue" class="mainText"></p>
+        <p id="main_dialogue" class="mainText">Test Dialogue</p>
         <p id="main_help_text" class="mainText fadeIn"></p>
         <p id="main_level_text" class="mainText fadeIn"></p>
         <a id="feedback_link" class="mainText fadeIn" href="/feedback/">

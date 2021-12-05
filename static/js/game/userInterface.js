@@ -292,7 +292,7 @@ class UserInterface {
         const ui = this;
         window.setTimeout(function() {
             ui.setUnlockLevel(ui.unlockLevel, true);
-        }, 5000);
+        }, 2500);
     }
 
     init() {
