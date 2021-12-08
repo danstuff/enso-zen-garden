@@ -38,6 +38,8 @@ class BabylonInterface {
         this.camera.panningAxis = PANNING_HOR;
         this.camera.panningSensibility = 500;
 
+        this.camera.useNaturalPinchZoom = true;
+
         this.camera.attachControl(this.canvas, true);
 
         this.sun = new BABYLON.DirectionalLight(

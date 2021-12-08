@@ -8,21 +8,11 @@ const UserMode = {
     PLACING : 3
 };
 
-const LevelTitles = [
-    "Beginner",
-    "Fledgling",
-    "Up-And-Coming",
-    "Active",
-    "Hard-Working",
-    "Professional",
-    "Expert",
-    "Veteran"
-];
-
 class UserInterface {
-    constructor(babInt, garden) {
+    constructor(babInt, garden, unlocks) {
         this.babInt = babInt;
         this.garden = garden;
+        this.unlocks = unlocks;
 
         this.soundMan = new SoundManager();
 
@@ -42,11 +32,6 @@ class UserInterface {
         this.rock_type = RockTypes[0];
 
         this.taps = 0;
-
-        // load unlockLevel from storage or default to 1
-        this.unlockLevel = Number(localStorage.unlockLevel) || 1; 
-        console.log("Your current unlock level is " + this.unlockLevel);
-        this.setUnlockLevel(this.unlockLevel);
     }
 
     setUserMode(new_mode) {
@@ -120,16 +105,14 @@ class UserInterface {
         this.setText("#main_help_text", text);
     }
 
-    setLevelText() {
-        var title_index = Math.round(Math.pow(this.unlockLevel, 0.75))-1;
-
+    setLevelText(level) {
         //cap level titles
-        if(title_index >= LevelTitles.length)
-            title_index = LevelTitles.length-1;
+        var ti = (level < LevelTitles.length) ?
+            level : LevelTitles.length-1;
 
         this.setText("#main_level_text", 
-            "Level " + this.unlockLevel +  " - " +
-            LevelTitles[title_index] + " Gardener");
+            "Level " + (level+1) +  " - " +
+            LevelTitles[ti] + " Gardener");
     }
 
     processTap(onSingle, onDouble) {
@@ -231,68 +214,11 @@ class UserInterface {
         if(!pickPt) return;
 
         this.moveRake(pickPt.x, pickPt.z);
-     }
-
-    setUnlockLevel(level, notify) {
-        this.unlockedRocks = 1;
-        this.unlockedPlants = 1;
-        this.unlockedRakes = 1;
-
-
-        for(var i = 1; i < level; i++) {
-            switch(i % 3) {
-                case 0: this.unlockedPlants++; break;
-                case 1: this.unlockedRocks++; break;
-                case 2: this.unlockedRakes++; break;
-            }
-        }
-
-        var cap = function(v, c) { return (v < c) ? v : c; } 
-        this.unlockedRocks = cap(this.unlockedRocks, RockTypes.length);
-        this.unlockedPlants = cap(this.unlockedPlants, PlantTypes.length);
-        this.unlockedRakes = cap(this.unlockedRakes, RakeTypes.length);
-
-        if(notify) {
-            //if you reached a new unlock level, notify of new items
-            this.randomSound(["riff", "strum"]);
-            
-            var unlockItemName = "";
-
-            var category = level % 3;
-
-            switch(category) {
-                case 0:
-                    unlockItemName =
-                        PlantTypes[this.unlockedPlants-1].name;
-                    break;
-
-                case 1:
-                    unlockItemName =
-                        RockTypes[this.unlockedRocks-1].name;
-                    break;
-
-                case 2:
-                    unlockItemName =
-                        RakeTypes[this.unlockedRakes-1].name;
-                    break;
-            }
-
-            this.setHelpText("You unlocked " + unlockItemName);
-        }
-
-        //update level text to match
-        this.setLevelText();
     }
 
-    nextUnlockLevel() {
-        //increment and save unlock level
-        localStorage.unlockLevel = ++this.unlockLevel;
-
-        //wait a bit before actually setting/playing a notification
-        const ui = this;
-        window.setTimeout(function() {
-            ui.setUnlockLevel(ui.unlockLevel, true);
-        }, 2500);
+    notifyUnlock(name) {
+        this.randomSound(["riff", "strum"]);
+        this.setHelpText("You unlocked " + name);
     }
 
     init() {
@@ -308,7 +234,7 @@ class UserInterface {
                 //if already raking, change rake type
                 if(ui.userMode == UserMode.RAKING) {
                     var i = RakeTypes.indexOf(ui.rake_type)+1;
-                    if(i >= ui.unlockedRakes) i = 0;
+                    if(i > ui.unlocks.rakes) i = 0;
                     ui.rake_type = RakeTypes[i];
                 }
 
@@ -320,7 +246,7 @@ class UserInterface {
                 //if already planting, change plant type
                 if(ui.userMode == UserMode.PLANTING) {
                     var i = PlantTypes.indexOf(ui.plant_type)+1;
-                    if(i >= ui.unlockedPlants) i = 0;
+                    if(i > ui.unlocks.plants) i = 0;
                     ui.plant_type = PlantTypes[i];
                 }
 
@@ -332,7 +258,7 @@ class UserInterface {
                 //if already placing, change stone type
                 if(ui.userMode == UserMode.PLACING) {
                     var i = RockTypes.indexOf(ui.rock_type)+1;
-                    if(i >= ui.unlockedRocks) i = 0;
+                    if(i > ui.unlocks.rocks) i = 0;
                     ui.rock_type = RockTypes[i];
                 }
 

@@ -1,10 +1,15 @@
 const UPDATE_MS = 100;  //10 updates per second
 
 const DEMO_MODE = false;
+const DEBUG_MODE = false;
 
 const FIVE_MINUTES = 5 * 60 * 1000;
+const THREE_MINUTES = 3 * 60 * 1000;
+
+const MS_PER_TICK = 1000;
 
 const PHASE_COUNT = 3;
+const UNLOCK_COUNT = 11;
 
 class Game {
     constructor(canvas_id) {
@@ -15,17 +20,18 @@ class Game {
         this.environment = new Environment(this.babInterface);
         this.garden = new Garden(this.babInterface);
 
+        this.unlocks = new Unlocks();
+
         this.userInterface = new UserInterface(
-            this.babInterface, this.garden);
+            this.babInterface, this.garden, this.unlocks);
 
         this.phaseCount = 0;
-        this.sizeShift = Math.round(this.userInterface.unlockLevel/2);
     }
 
     nextPhase() {
         this.userInterface.randomSound(["ring"]);
 
-        var gsize = (1 + this.phaseCount + this.sizeShift) * 2;
+        var gsize = (1 + this.phaseCount) * 2;
         this.garden.addSandAndFrames(gsize, gsize);
 
         this.phaseCount++; 
@@ -34,8 +40,22 @@ class Game {
         const game = this;
         window.setTimeout(function() {
             game.nextPhase();
-            game.userInterface.nextUnlockLevel();
-        }, (1 + this.phaseCount) * FIVE_MINUTES);
+        }, (this.phaseCount) * FIVE_MINUTES);
+    }
+
+    displayUnlock(ul) {
+        this.userInterface.setLevelText(ul.level);
+        if(ul.name) this.userInterface.notifyUnlock(ul.name);
+    }
+
+    tickUnlocks() {
+        var ul = this.unlocks.incrementUnlockTicks();
+        if(ul.n) this.displayUnlock(ul);
+
+        const game = this;
+        window.setTimeout(function() {
+            game.tickUnlocks();
+        }, MS_PER_TICK);
     }
 
     init(callback) {
@@ -48,26 +68,34 @@ class Game {
                 game.userInterface.setHelpText(
                     "Welcome to Enso! Tap and drag to move around.");
 
-                game.garden.addSandAndFrames(0, game.sizeShift*2);
+                //load and display the unlock level
+                var ul = game.unlocks.init();
+                game.displayUnlock(ul);
 
-                //get environmental data from various APIs
+                game.garden.addSandAndFrames(0, 0);
+
+                //initialize game loop(s)
+                game.nextPhase();
+                game.tickUnlocks();
+
                 if(DEMO_MODE) {
-                    game.nextPhase();
-                    game.babInterface.startFPSLogging();
+                    game.environment.randomDemo();
 
-                    //for demo, gradually increase size
-                    window.setInterval(function() {
-                        game.environment.nextDemo();
-                    }, 20 * 1000);
                 } else {
-                    game.nextPhase();
-                    game.environment.getWeatherData();
+                    //get environmental data from openWeatherMap
+                    game.environment.getWeatherData(function(success) {
+
+                        //if it failed, run a demo
+                        if(!success) game.environment.randomDemo();
+                    });
                 }
+
+                if(DEBUG_MODE) {
+                    game.babInterface.startFPSLogging();
+                } 
 
                 callback();        
             }
         );
-
-
     }
 }

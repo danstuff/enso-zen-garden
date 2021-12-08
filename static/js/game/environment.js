@@ -57,7 +57,7 @@ class Environment {
         this.rain_sound = this.soundMan.addSound("rain");
     }
 
-    getWeatherData() {
+    getWeatherData(cbFun) {
         const env = this;
 
         //start by fetching an approximate location
@@ -81,8 +81,13 @@ class Environment {
                                 console.log(data_fmt);
 
                                 env.processWeatherData(data_fmt);
+
+                                cbFun(true);
                             });
                     });
+            })
+            .fail(function() {
+                cbFun(false);
             });
     }
 
@@ -190,24 +195,13 @@ class Environment {
         this.dialogue.update(data);
     }
 
-    nextDemo() {
-        var take_next = false;
-        for(var i in DEMO_CONDITIONS) {
-            if(i == this.currentDemo) {
-                take_next = true;
-            } else if(take_next) {
-                this.currentDemo = i;
-                take_next = false;
-                break;
-            }
-        }
+    randomDemo() {
+        var c = DEMO_CONDITIONS[Object.keys(DEMO_CONDITIONS)[
+            Math.floor(Math.random()*DEMO_CONDITIONS.length)
+        ]];
 
-        if(take_next || !this.currentDemo) {
-            this.currentDemo = "rainy-morning";
-        }
+        this.processWeatherData(c);
 
-        this.processWeatherData(DEMO_CONDITIONS[this.currentDemo]);
-
-        console.log("Changed demo to " + this.currentDemo);
+        console.log("Changed demo to " + c);
     }
 }

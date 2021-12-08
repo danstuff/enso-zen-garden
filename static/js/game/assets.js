@@ -148,6 +148,21 @@ const SoundEffects = [
     "snap_b"
 ];
 
+const LevelTitles = [
+    "Beginner",
+    "Fledgling",
+    "Novice",
+    "Up-And-Coming",
+    "Active",
+    "Hard-Working",
+    "Dilligent",
+    "Notable",
+    "Professional",
+    "Expert",
+    "Veteran",
+    "Enlightened"
+];
+
 const Dialogues = [
     { 
         //The HTML that will be displayed when the dialogue is used

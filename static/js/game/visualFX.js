@@ -35,7 +35,7 @@ class VisualFX {
 
         for(var i = 0; i < amount; i++) {
             //create cloud emitter
-            var cloud = new BABYLON.GPUParticleSystem("clouds", 100);
+            var cloud = new BABYLON.GPUParticleSystem("clouds", 10);
 
             cloud.particleTexture = 
                 new BABYLON.Texture("/static/assets/textures/cloud.png");
