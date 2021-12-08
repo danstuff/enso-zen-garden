@@ -120,7 +120,7 @@ class Environment {
             if(day_pct > 0.10) day_phase_str = "morning";
             if(day_pct > 0.25) day_phase_str = "day";
             if(day_pct > 0.75) day_phase_str = "evening";
-            if(day_pct > 0.90) day_phase_str = "night";
+            if(day_pct > 0.99) day_phase_str = "night";
 
             data_fmt.day_phase_str = day_phase_str;
         }

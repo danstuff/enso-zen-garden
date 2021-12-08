@@ -357,7 +357,7 @@ const Dialogues = [
         html:
         "\"Take a deep breath, relax and let go of your worries. <br> Let the soothing essence of the night permeate and cleanse your entire being, <br> slowly drawing you into deep, relaxing slumber.\" <br> - Unknown ", 
 
-        tag: "evening"
+        tag: "night"
     },
 
     { 
