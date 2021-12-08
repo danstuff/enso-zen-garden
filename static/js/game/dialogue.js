@@ -9,8 +9,6 @@ class Dialogue {
     update(weatherData) {
         //filter the dialogues by the given weather tags
         var fDialogues = Dialogues.filter(function(d) {
-            console.log(d.html, d.tag == weatherData.main ||
-                d.tag == weatherData.day_phase_str);
             return d.tag == weatherData.main ||
                 d.tag == weatherData.day_phase_str;
         });
