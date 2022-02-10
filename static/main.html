@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Zen Garden</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+
+        <link rel="stylesheet" href="style.css">
+   </head>
+
+    <body>
+        <div class="title">
+            <img class="titleText"
+            src="assets/textures/enso-text.png">
+            </img>
+            <img class="titleEnso"
+            src="assets/textures/enso-painted.png">
+            </img>
+        </div>
+
+        <canvas id="main_canvas" class="fadeIn"></canvas>
+
+        <p id="main_dialogue" class="topLeft mainText"></p>
+        
+        <div class="topRight mainText fadeIn">
+            <svg width="1rem" height="1rem" viewBox="0 0 32 32">
+                <circle id="main_level_progress"
+                    class="progressCircle"
+                    stroke="white" stroke-width="6"
+                    fill="transparent" r="10"
+                    cx="16" cy="16"/>
+            </svg>
+            <p id="main_level_text"></p>
+        </div>
+
+        <p id="main_help_text" class="bottomCenter mainText fadeIn"></p>
+
+        <div class="ensoButtonBar">
+            <button id="btn_move" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="assets/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="assets/textures/arrows.svg"></img>
+            </button>
+            <button id="btn_rake" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="assets/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="assets/textures/rake.png"></img>
+            </button>
+            <button id="btn_plants" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="assets/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="assets/textures/plants.png"></img>
+            </button>
+            <button id="btn_rocks" class="fadeIn">
+                <img class="ensoButtonEnso"
+                    src="assets/textures/enso-button.png"></img>
+                <img class="ensoButtonThumb" 
+                    src="assets/textures/rocks.png"></img>
+            </button>
+        </div>
+
+        <script type="text/javascript" 
+                src="js/vendor/babylon.js"></script>
+        <script type="text/javascript" 
+                src="js/vendor/babylon.skyMaterial.min.js"></script>
+        <script type="text/javascript" 
+                src="js/vendor/pep.min.js"></script>
+        <script type="text/javascript" 
+                src="js/vendor/jquery-3.6.0.min.js"></script>
+
+        <script type="text/javascript" 
+                src="js/game/dialogue.js"></script>
+        <script type="text/javascript" 
+                src="js/game/soundManager.js"></script>
+        <script type="text/javascript" 
+                src="js/game/assets.js"></script>
+        <script type="text/javascript" 
+                src="js/game/visualFX.js"></script>
+        <script type="text/javascript" 
+                src="js/game/environment.js"></script>
+        <script type="text/javascript" 
+                src="js/game/garden.js"></script>
+        <script type="text/javascript" 
+                src="js/game/babylonInterface.js"></script>
+        <script type="text/javascript" 
+                src="js/game/userInterface.js"></script>
+        <script type="text/javascript" 
+                src="js/game/unlocks.js"></script>
+        <script type="text/javascript" 
+                src="js/game/game.js"></script>
+
+        <script type="text/javascript" 
+                src="js/start.js"></script>
+    </body>
+</html>
