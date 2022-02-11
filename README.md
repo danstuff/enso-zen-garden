@@ -5,5 +5,5 @@ Enso is an interactive Zen Garden experience. Designed using the principles of D
 Enso features a variety of plants, rocks, and rakes that are progressively unlocked as you play. To give users a connection to the outdoors, the visual environment reflects the actual weather using geolocation and OpenWeatherMap.
 
 Enso is available for free forever at
-[YostLabs.net/enso-zen-garden](http://www.yostlabs.net/enso-zen-garden).
+[enso.yostlabs.net](http://enso.yostlabs.net/).
 
