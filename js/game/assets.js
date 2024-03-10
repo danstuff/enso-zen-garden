@@ -1,3 +1,15 @@
+function AssetPath(path) {
+    return "/assets/" + path;
+}
+
+function TexturePath(path) {
+    return AssetPath("textures/" + path);
+}
+
+function SoundPath(path) {
+    return AssetPath("sounds/" + path);
+}
+
 const EntityNames = {
     "" : [],
 
@@ -334,7 +346,7 @@ const Dialogues = [
 
     { 
         html:
-        "\"Those who can sit perfectly physically usually take more time to obtain the tru way of Zen, <br> the actual feeling of Zen, the marrow of Zen.\" <br> - Shunryu Suzuki", 
+        "\"Those who can sit perfectly physically usually take more time to obtain the true way of Zen, <br> the actual feeling of Zen, the marrow of Zen.\" <br> - Shunryu Suzuki", 
 
         tag: "day"
     },

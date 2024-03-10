@@ -9,8 +9,16 @@ class Unlocks {
     }
 
     init() {
-        // load unlockTicks from storage or default to 0
-        return this.setUnlockTicks(Number(localStorage.unlockTicks) || 0, false);
+        if (DISABLE_PROGRESSION)
+        {
+            $("#main_progress").css({ display: "none" });
+            return this.setUnlockTicks(9999999, false);
+        }
+        else
+        {
+            // load unlockTicks from storage or default to 0
+            return this.setUnlockTicks(Number(localStorage.unlockTicks) || 0, false);
+        }
     }
 
     setUnlockCircle(level, ticks) {
@@ -86,7 +94,6 @@ class Unlocks {
         if(newPlants > this.plants) {
             this.plants = newPlants;
             ul.name = PlantTypes[this.plants].name;
-
         }
 
         if(newRakes > this.rakes) {

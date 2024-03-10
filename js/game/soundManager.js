@@ -21,7 +21,10 @@ class SoundManager {
     awaitInput(callback) {
         //wait for user to put in some input before playing
         if(!input_done) {
-            setTimeout(callback, 100);
+            const audio = this;
+            setTimeout(function() {
+                audio.awaitInput(callback);
+            }, 500);
             return true;
         };
 
@@ -41,7 +44,9 @@ class SoundManager {
 
         //wait for user to put in some input before playing
         const audio = this;
-        if(this.awaitInput(function() { audio.playNoise(); })) 
+        if(this.awaitInput(function() { 
+            audio.playNoise(); 
+        })) 
             return;
 
         //this is a slightly modified version of:
@@ -74,7 +79,7 @@ class SoundManager {
     }
 
     addSound(sound_file, loop) {
-        var sound = new Audio("/static/assets/sounds/"+sound_file+".ogg");
+        var sound = new Audio(SoundPath(sound_file+".ogg"));
         sound.loop = loop;
 
         return sound;

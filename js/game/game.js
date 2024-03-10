@@ -1,7 +1,9 @@
 const UPDATE_MS = 100;  //10 updates per second
 
 const DEMO_MODE = false;
-const DEBUG_MODE = false;
+const FPS_LOGGING = false;
+const DISABLE_REALTIME_WEATHER = true;
+const DISABLE_PROGRESSION = true;
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const THREE_MINUTES = 3 * 60 * 1000;
@@ -68,15 +70,18 @@ class Game {
                 game.userInterface.setHelpText(
                     "Welcome to Enso! Tap and drag to move around.");
 
-                //load and display the unlock level
+                //initialize game loop(s) including unlock system
                 var ul = game.unlocks.init();
-                game.displayUnlock(ul);
-
-                game.garden.addSandAndFrames(0, 0);
-
-                //initialize game loop(s)
-                game.nextPhase();
-                game.tickUnlocks();
+                if (DISABLE_PROGRESSION) {
+                    game.garden.addSandAndFrames(1, 1);
+                    game.garden.addSandAndFrames(2, 2);
+                    game.garden.addSandAndFrames(4, 4);
+                } else {
+                    game.displayUnlock(ul);
+                    game.garden.addSandAndFrames(0, 0);
+                    game.nextPhase();
+                    game.tickUnlocks();
+                }
 
                 if(DEMO_MODE) {
                     game.environment.randomDemo();
@@ -90,7 +95,7 @@ class Game {
                     });
                 }
 
-                if(DEBUG_MODE) {
+                if(FPS_LOGGING) {
                     game.babInterface.startFPSLogging();
                 } 
 

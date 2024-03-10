@@ -38,7 +38,7 @@ class VisualFX {
             var cloud = new BABYLON.GPUParticleSystem("clouds", 10);
 
             cloud.particleTexture = 
-                new BABYLON.Texture("/static/assets/textures/cloud.png");
+                new BABYLON.Texture(TexturePath("cloud.png"));
 
             cloud.minLifeTime = 5;
             cloud.maxLifeTime = 10;
@@ -71,7 +71,7 @@ class VisualFX {
         }
     }
 
-    addPrecipitation(amount, precip_texture) { 
+    addPrecipitation(amount, speed, precip_texture) { 
         //ignore if row length is less than 1
         if(amount == 0) return;
 
@@ -82,13 +82,13 @@ class VisualFX {
             precip.particleTexture = 
                 new BABYLON.Texture(precip_texture);
 
-            precip.minLifeTime = 1.6;
-            precip.maxLifeTime = 1.6;
+            precip.minLifeTime = 1.6*(25/speed)
+            precip.maxLifeTime = 1.6*(25/speed);
 
             precip.emitter = new BABYLON.Vector3(0, 45, 0);
 
-            precip.direction1 = new BABYLON.Vector3(0, -25, 0);
-            precip.direction2 = new BABYLON.Vector3(0, -25, 0);        
+            precip.direction1 = new BABYLON.Vector3(0, -speed, 0);
+            precip.direction2 = new BABYLON.Vector3(0, -speed, 0);        
 
             precip.isBillboardBased = true;
             precip.billboardMode = 2;

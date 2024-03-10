@@ -60,7 +60,7 @@ class BabylonInterface {
         const babInt = this;
 
         BABYLON.SceneLoader.ImportMeshAsync("", 
-            "static/assets/", "zen-garden.babylon").
+            AssetPath(""), "zen-garden.babylon").
             then(function(result) {
 
                 //hide all meshes

@@ -186,7 +186,7 @@ canvas {
 }
 
 .mainText svg, p {
-    display: inline-block;
+    display: block;
     margin: 0;
 }
 
