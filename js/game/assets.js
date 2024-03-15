@@ -1,5 +1,5 @@
 function AssetPath(path) {
-    return "/assets/" + path;
+    return "assets/" + path;
 }
 
 function TexturePath(path) {
