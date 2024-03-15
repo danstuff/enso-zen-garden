@@ -220,7 +220,7 @@ const Dialogues = [
 
     { 
         html:
-        "\"Zen is not some kind of excitement, <br> but concentration on our usual everyday routine.\" — Shunryu Suzuki", 
+        "\"Zen is not some kind of excitement, <br> but concentration on our usual everyday routine.\" <br> - Shunryu Suzuki", 
 
         tag: "clear"
     },
